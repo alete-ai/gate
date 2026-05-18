@@ -2,26 +2,26 @@
 import PackageDescription
 
 let package = Package(
-    name: "GateClassifierKit",
+    name: "AleteGateKit",
     platforms: [
         .iOS(.v16),
         .macOS(.v13)
     ],
     products: [
         .library(
-            name: "GateClassifierKit",
-            targets: ["GateClassifierKit"]),
+            name: "AleteGateKit",
+            targets: ["AleteGateKit"]),
     ],
     targets: [
         .target(
-            name: "GateClassifierKit",
+            name: "AleteGateKit",
             dependencies: [],
             resources: [
                 .process("Resources/PrivacyGatekeeper.mlmodel")
             ]
         ),
         .testTarget(
-            name: "GateClassifierKitTests",
-            dependencies: ["GateClassifierKit"]),
+            name: "AleteGateKitTests",
+            dependencies: ["AleteGateKit"]),
     ]
 )

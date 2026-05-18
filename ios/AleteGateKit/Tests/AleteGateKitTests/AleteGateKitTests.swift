@@ -1,7 +1,7 @@
 import XCTest
-@testable import GateClassifierKit
+@testable import AleteGateKit
 
-final class GateClassifierKitTests: XCTestCase {
+final class AleteGateKitTests: XCTestCase {
     func testGateClassifierInitialization() throws {
         let agent = try GateClassifier()
         XCTAssertNotNil(agent)

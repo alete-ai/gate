@@ -29,3 +29,11 @@ jobs:
 
       - name: Test
         run: pnpm test
+
+  test-swift-package:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build and Test Swift Package
+        run: cd ios/AleteGateKit && swift test

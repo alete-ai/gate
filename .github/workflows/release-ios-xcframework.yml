@@ -31,15 +31,15 @@ jobs:
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
-          files: dist/ios/AleteClassifierKit.xcframework.zip
+          files: dist/ios/AleteGateKit.xcframework.zip
           body: |
-            ## AleteClassifierKit Release ${{ github.ref_name }}
+            ## AleteGateKit Release ${{ github.ref_name }}
             
             ### SPM Binary Target Configuration:
             ```swift
             .binaryTarget(
-                name: "AleteClassifierKit",
-                url: "https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/AleteClassifierKit.xcframework.zip",
+                name: "AleteGateKit",
+                url: "https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/AleteGateKit.xcframework.zip",
                 checksum: "${{ steps.checksum.outputs.value }}"
             )
             ```

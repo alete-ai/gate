@@ -6,7 +6,7 @@
 set -e
 
 FRAMEWORK_NAME="AleteGateKit"
-PACKAGE_PATH="ios/Gate"
+PACKAGE_PATH="ios/AleteGateKit"
 OUTPUT_DIR="dist/ios"
 ARCHIVE_DIR="${OUTPUT_DIR}/archives"
 
@@ -18,14 +18,24 @@ mkdir -p "${ARCHIVE_DIR}"
 
 # 2. Archive for iOS Device
 echo "📦 Archiving for iOS Device..."
-cd "${PACKAGE_PATH}"
 xcodebuild archive \
+    -workspace "Package.swift" \
     -scheme "${FRAMEWORK_NAME}" \
     -destination "generic/platform=iOS" \
-    -archivePath "../../${ARCHIVE_DIR}/${FRAMEWORK_NAME}-iOS" \
+    -archivePath "${ARCHIVE_DIR}/${FRAMEWORK_NAME}-iOS" \
     SKIP_INSTALL=NO \
-    BUILD_LIBRARY_FOR_DISTRIBUTION=YES
-cd - > /dev/null
+    BUILD_LIBRARY_FOR_DISTRIBUTION=YES \
+    -project "${PACKAGE_PATH}" || {
+        # Fallback for pure SPM package without .xcodeproj
+        cd "${PACKAGE_PATH}"
+        xcodebuild archive \
+            -scheme "${FRAMEWORK_NAME}" \
+            -destination "generic/platform=iOS" \
+            -archivePath "../../${ARCHIVE_DIR}/${FRAMEWORK_NAME}-iOS" \
+            SKIP_INSTALL=NO \
+            BUILD_LIBRARY_FOR_DISTRIBUTION=YES
+        cd - > /dev/null
+    }
 
 # 3. Archive for iOS Simulator
 echo "📦 Archiving for iOS Simulator..."
