@@ -1,46 +1,86 @@
-# Alete Gate: The Sovereign Edge Threshold
+# Alete Gate: The Sovereign Edge Threshold 🛡️
 
-**Alete Gate** is a privacy-first, edge-based ingestion and classification layer for the Alete ecosystem. It serves as a "Privacy Gatekeeper"—a circuit breaker that identifies and blocks sensitive transactional portals (banking, health, PII) locally on the device before any data is sent for further analysis.
+**Alete Gate** is a high-performance, privacy-first ingestion and classification layer for the Alete ecosystem. It serves as a "Sovereign Threshold"—identifying and redacting sensitive transactional portals (banking, health, PII) locally on-device before any data is processed for analysis.
 
-## Features
+## 🚀 Key Features
 
-- **Privacy-First Classification:** Utilizes a sub-megabyte Apple native Maximum Entropy model (`NLModel`) for high-speed, zero-knowledge edge classification.
-- **Structural Ingestion:** Powered by `@mdream/js` with custom structural overrides to preserve the "footprint" of web portals (forms, inputs, nav clusters).
-- **Dual-Mode Output:** Generates both **Structural Tokens** for edge classification and clean **Semantic Markdown** for downstream LLM analysis.
-- **Zero-MB Overhead:** Leverages native Apple frameworks (Natural Language, Core ML) for a near-zero app payload footprint.
+- **On-Device MaxEnt Classification:** Sub-5ms native inference using Apple's `NLModel` substrate.
+- **Narrative-First Redaction:** Integrated `openredaction` pipeline that shields "Toxic IDs" (SSNs, Credit Cards) while preserving story coherence.
+- **Structural Ingestion:** Powered by `@mdream/js` with custom plugins to retain the "structural footprint" of web forms and portals.
+- **WXT-Optimized:** Zero-dependency browser bundle (332KB) with Node.js shims, ready for Safari and Chrome extensions.
+- **Sovereign Substrate:** Centralized Swift Package (`AleteGateKit`) for seamless integration across iOS apps and extensions.
 
-## Project Structure
+---
 
-- `packages/gate-ingest`: Unified Node.js/TypeScript package for structural extraction and token mapping.
-- `conductor/`: Strategic implementation tracks and product specifications.
-- `scripts/`: Data synthesis and model training pipeline.
-- `ios/`: Swift package and minimal harness for Apple native integration.
-- `models/`: Repository for compiled `.mlpackage` artifacts.
+## 📊 Performance Telemetry (Current Substrate)
 
-## Getting Started
+Based on the latest **Strategic Verification Audit** conducted on the native Apple Intelligence substrate:
 
-### Prerequisites
-- [pnpm](https://pnpm.io/)
-- Node.js 22+
-- Xcode (for model training and iOS integration)
+| Metric | Result | Note |
+| :--- | :--- | :--- |
+| **Total Accuracy** | **84.80%** | Comprehensive cross-category validation |
+| **Avg. Inference Latency** | **3.19 ms** | Benchmark on Apple Neural Engine |
+| **Portal Recall** | **97.44%** | Critical safety metric for blocking sensitive portals |
+| **Article Precision** | **100.00%** | Zero leakage of articles into the portal category |
 
-### Installation
+*Tests executed on the `PrivacyGatekeeper` MaxEnt model using the `verify_model.swift` harness.*
+
+---
+
+## 📦 Packages
+
+### 1. `@alete/gate-ingest` (npm)
+The unified pipeline for converting HTML into structural tokens and redacted semantic Markdown.
+
+**Installation:**
 ```bash
+pnpm add @alete/gate-ingest
+```
+
+**Usage (Browser/Node):**
+```typescript
+import { processHtml } from '@alete/gate-ingest';
+
+const html = "<html>...</html>";
+const { structural, semantic, hasSensitiveInfo } = await processHtml(html, { redact: true });
+```
+
+### 2. `AleteGateKit` (Swift Package)
+The native Apple Intelligence bridge for on-device classification.
+
+**Integration (SPM):**
+Add this repository to your Xcode project or `Package.swift`:
+```swift
+.package(url: "https://github.com/alete-ai/gate.git", branch: "main")
+```
+
+---
+
+## 🛠️ Development & Build
+
+### Build Pipeline
+```bash
+# Install dependencies
 pnpm install
-```
 
-### Data Synthesis
-1. Place raw HTML samples in `data/raw/`.
-2. Generate structural, token-mapped training data:
-```bash
-pnpm run synthesize
-pnpm run to-csv
-```
-
-### Build Ingestion Package
-```bash
+# Build all packages (including browser-optimized ESM)
 pnpm build
+
+# Run native substrate tests
+cd ios/AleteGateKit && swift test
 ```
 
-## License
-AGPL-3.0
+### Generating XCFramework
+```bash
+./scripts/build_xcframework.sh
+```
+
+---
+
+## 🛡️ Privacy & Strategy
+Alete Gate prioritizes **Cognitive Sovereignty** by ensuring all PII detection happens on the edge substrate. We utilize empirical performance tracking to ensure the highest possible recall on sensitive data while maintaining a friction-less user experience.
+
+## 📄 License
+© 2026 Stoyan Dimitrov. All rights reserved.
+Licensed under the **GNU Affero General Public License v3.0 (AGPL-3.0)**.
+Part of the Alete.ai ecosystem.
