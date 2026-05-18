@@ -1,26 +1,24 @@
-import { processHtml } from '@alete/gate-ingest';
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { processHtml } from '../packages/gate-ingest/dist/index.js';
 
 const RAW_DIR = 'data/raw';
-const PROCESSED_DIR = 'data/processed';
+const OUTPUT_DIR = 'data/processed';
 
 async function synthesize() {
-  // Ensure directories exist
-  await fs.mkdir(RAW_DIR, { recursive: true });
-  await fs.mkdir(PROCESSED_DIR, { recursive: true });
+  await fs.mkdir(OUTPUT_DIR, { recursive: true });
 
   const files = await fs.readdir(RAW_DIR);
-  const trainingSet = [];
 
   if (files.length === 0) {
-    console.warn(`No raw HTML files found in ${RAW_DIR}. Please add some for synthesis.`);
+    console.warn(`⚠️  Alete Gate: No raw HTML files found in ${RAW_DIR}. Substrate synthesis aborted.`);
     return;
   }
 
-  for (const file of files) {
-    if (!file.endsWith('.html')) continue;
+  console.log(`🚀 Alete Gate: Synthesizing structural substrate from ${files.length} samples...`);
 
+  const trainingSet = [];
+  for (const file of files) {
     const filePath = path.join(RAW_DIR, file);
     const html = await fs.readFile(filePath, 'utf-8');
 
@@ -28,7 +26,7 @@ async function synthesize() {
     const { structural, semantic, hasSensitiveInfo } = await processHtml(html, { redact: true });
 
     if (!structural || structural.trim().length === 0) {
-      console.warn(`⚠️  Skipping ${file}: No structural tokens extracted.`);
+      console.warn(`⚠️  Alete Gate: Skipping ${file} - No structural artifacts extracted.`);
       continue;
     }
 
@@ -36,7 +34,7 @@ async function synthesize() {
     let label = 'noise';
     if (file.includes('portal') || file.includes('login') || file.includes('form') || file.includes('bank') || file.includes('health')) {
       label = 'sensitive_portal';
-    } else if (file.includes('article') || file.includes('blog') || file.includes('substack') || file.includes('news')) {
+    } else if (file.includes('article') || file.includes('blog') || file.includes('news') || file.includes('substack')) {
       label = 'digestible_article';
     }
 
@@ -48,9 +46,9 @@ async function synthesize() {
     });
   }
 
-  const jsonOutputPath = path.join(PROCESSED_DIR, 'training_set.json');
+  const jsonOutputPath = path.join(OUTPUT_DIR, 'training_set.json');
   await fs.writeFile(jsonOutputPath, JSON.stringify(trainingSet, null, 2));
-  console.log(`Synthesized ${trainingSet.length} samples to ${jsonOutputPath}`);
+  console.log(`💎 Alete Gate: Synthesized ${trainingSet.length} samples to ${jsonOutputPath}`);
 }
 
 synthesize().catch(console.error);

@@ -6,7 +6,7 @@ let projectRoot = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
 let trainingDataPath = projectRoot.appendingPathComponent("data/processed/training_set.csv")
 let modelOutputPath = projectRoot.appendingPathComponent("models/PrivacyGatekeeper.mlpackage")
 
-print("Starting training with data from: \(trainingDataPath.path)")
+print("🚀 Alete Gate: Starting training pipeline with data from: \(trainingDataPath.path)")
 
 do {
     // 1. Load Data
@@ -20,15 +20,15 @@ do {
     let trainingAccuracy = (1.0 - classifier.trainingMetrics.classificationError) * 100
     let validationAccuracy = (1.0 - classifier.validationMetrics.classificationError) * 100
     
-    print("--- Training Complete ---")
-    print("Training Accuracy: \(String(format: "%.2f", trainingAccuracy))%")
-    print("Validation Accuracy: \(String(format: "%.2f", validationAccuracy))%")
+    print("\n--- 📊 Substrate Training Complete ---")
+    print("✅ Training Accuracy:   \(String(format: "%.2f", trainingAccuracy))%")
+    print("✅ Validation Accuracy: \(String(format: "%.2f", validationAccuracy))%")
     
     // 4. Export Model
     let metadata = MLModelMetadata(
         author: "Stoyan Dimitrov <https://github.com/StoyanD>",
-        shortDescription: "Alete PrivacyGatekeeper Structural Text Classifier",
-        version: "1.0"
+        shortDescription: "Alete PrivacyGatekeeper: Edge-based structural text classifier.",
+        version: "0.1.0"
     )
     
     // Remove existing model if it exists
@@ -38,7 +38,7 @@ do {
     
     try classifier.write(to: modelOutputPath, metadata: metadata)
     
-    print("Success: Model exported to \(modelOutputPath.path)")
+    print("💎 Success: Sovereign model substrate exported to \(modelOutputPath.path)")
 } catch {
     print("Error during training: \(error)")
     exit(1)

@@ -22,10 +22,10 @@ async function convertToCsv() {
     const rows = data.map(item => `${escape(item.structural)},${escape(item.label)}`).join('\n');
 
     await fs.writeFile(csvPath, header + rows);
-    console.log(`Converted to CSV at ${csvPath}`);
+    console.log(`💎 Alete Gate: Converted substrate to CSV at ${csvPath}`);
   } catch (error) {
     if (error.code === 'ENOENT') {
-      console.error(`Error: ${jsonPath} not found. Run synthesis first.`);
+      console.error(`❌ Alete Gate: Error - ${jsonPath} not found. Run substrate synthesis first.`);
     } else {
       throw error;
     }

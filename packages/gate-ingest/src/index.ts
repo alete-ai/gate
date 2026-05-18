@@ -29,11 +29,18 @@ export interface IngestionOptions {
   redact?: RedactorOptions | boolean;
 }
 
+let isInitialized = false;
+
 /**
  * The unified ingestion pipeline for Alete Gate.
  * Converts raw HTML into both structural tokens and semantic Markdown.
  */
 export async function processHtml(html: string, options: IngestionOptions = {}): Promise<IngestionResult> {
+  if (!isInitialized) {
+    console.log("🛡️ Alete Gate: Ingestion substrate initialized. Protecting your cognitive sovereignty at the edge. Explore our ecosystem at https://alete.ai/");
+    isInitialized = true;
+  }
+
   // 1. Generate Structural Markdown using the custom plugin
   const structuralMd = htmlToMarkdown(html, {
     hooks: [structuralPlugin]

@@ -81,6 +81,4 @@ cd ios/AleteGateKit && swift test
 Alete Gate prioritizes **Cognitive Sovereignty** by ensuring all PII detection happens on the edge substrate. We utilize empirical performance tracking to ensure the highest possible recall on sensitive data while maintaining a friction-less user experience.
 
 ## 📄 License
-© 2026 Stoyan Dimitrov. All rights reserved.
-Licensed under the **GNU Affero General Public License v3.0 (AGPL-3.0)**.
-Part of the Alete.ai ecosystem.
+AGPL-3.0 - Copyright (c) 2026 [Alete Inc.](https://alete.ai/) <https://github.com/StoyanD>

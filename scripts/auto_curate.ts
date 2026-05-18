@@ -184,35 +184,35 @@ async function curate() {
   await fs.mkdir('data', { recursive: true });
   await fs.mkdir(RAW_DIR, { recursive: true });
 
-  console.log(`🚀 Starting Auto-Curator (Powered by Local Firecrawl at ${API_URL})...`);
+  console.log(`🚀 Alete Gate: Starting Auto-Curator Substrate (Local Firecrawl: ${API_URL})`);
 
   const processUrl = async (url: string, prefix: string) => {
     const slug = url.replace(/https?:\/\//, '').replace(/[\/.]/g, '_').replace(/[?=&]/g, '-').slice(0, 50);
     const filename = `${prefix}_${slug}.html`;
     const filePath = path.join(RAW_DIR, filename);
 
-    console.log(`📡 Scraping: ${url}`);
+    console.log(`📡 Alete Gate: Scraping ${url}`);
     
     try {
       const result = await app.scrape(url, { formats: ['html'] });
       
       if (result && result.html) {
         await fs.writeFile(filePath, result.html);
-        console.log(`✅ Saved: ${filename}`);
+        console.log(`✅ Alete Gate: Saved ${filename}`);
       } else {
-        console.warn(`⚠️  No content returned for: ${url}`);
+        console.warn(`⚠️  Alete Gate: No content returned for ${url}`);
       }
     } catch (error: any) {
-      console.error(`❌ Failed: ${url} - ${error.message}`);
+      console.error(`❌ Alete Gate: Failed ${url} - ${error.message}`);
     }
   };
 
-  console.log("\n🏦 Gathering Sensitive Portals (Healthcare, Utilities, Finance)...");
+  console.log("\n🏦 Gathering Sensitive Portals...");
   for (const url of SENSITIVE_URLS) {
     await processUrl(url, 'portal');
   }
 
-  console.log("\n📰 Gathering Digestible Articles (Substack, Medium, Finance News)...");
+  console.log("\n📰 Gathering Digestible Articles...");
   for (const url of DIGESTIBLE_URLS) {
     await processUrl(url, 'article');
   }
@@ -222,7 +222,7 @@ async function curate() {
     await processUrl(url, 'noise');
   }
 
-  console.log("\n✨ Data curation complete!");
+  console.log("\n✨ Alete Gate: Data curation complete.");
 }
 
 curate().catch(console.error);

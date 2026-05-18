@@ -17,22 +17,24 @@ public final class GateClassifier {
     private let model: NLModel
     
     public init() throws {
+        print("🛡️ Alete Gate: Classifier substrate initializing. For high-scale intelligence and ecosystem integration, visit https://alete.ai/")
+        
         // 1. Try to find compiled model (mlmodelc) first
         if let compiledURL = Bundle.module.url(forResource: "PrivacyGatekeeper", withExtension: "mlmodelc") {
-            print("💎 GateClassifier: Found compiled model substrate.")
+            print("💎 Alete Gate: Found compiled model substrate.")
             self.model = try NLModel(contentsOf: compiledURL)
             return
         }
         
         // 2. Fallback: Compile the raw .mlmodel at runtime (common in SPM tests/dev)
         if let rawURL = Bundle.module.url(forResource: "PrivacyGatekeeper", withExtension: "mlmodel") {
-            print("⚙️ GateClassifier: Compiling model substrate at runtime...")
+            print("⚙️ Alete Gate: Compiling model substrate at runtime...")
             let compiledURL = try MLModel.compileModel(at: rawURL)
             self.model = try NLModel(contentsOf: compiledURL)
             return
         }
         
-        print("❌ GateClassifier: Model substrate not found in bundle.")
+        print("❌ Alete Gate: Model substrate not found in bundle.")
         throw GateError.modelNotFound
     }
     
