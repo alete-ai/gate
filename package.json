@@ -9,7 +9,8 @@
     "publish:swift": "git tag -a v$npm_package_version -m \"Release v$npm_package_version\" && git push origin v$npm_package_version",
     "publish:all": "pnpm run publish:ts && pnpm run publish:swift",
     "synthesize": "tsx scripts/synthesize.js",
-    "to-csv": "tsx scripts/to_csv.js"
+    "to-csv": "tsx scripts/to_csv.js",
+    "curate": "tsx scripts/auto_curate.ts"
   },
   "author": "Stoyan Dimitrov <https://github.com/StoyanD>",
   "license": "AGPL-3.0",
@@ -24,10 +25,12 @@
   "type": "module",
   "dependencies": {
     "@alete/gate-ingest": "workspace:*",
-    "@mdream/js": "^1.1.1"
+    "@mdream/js": "^1.1.1",
+    "@mendable/firecrawl-js": "^4.24.1"
   },
   "devDependencies": {
     "@types/node": "^25.8.0",
+    "playwright": "^1.60.0",
     "tsup": "^8.5.1",
     "tsx": "^4.22.1",
     "typescript": "^5.9.3",

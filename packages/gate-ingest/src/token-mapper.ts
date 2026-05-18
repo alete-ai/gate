@@ -24,7 +24,13 @@ export function mapToTokens(text: string): string {
       const cleanContent = content.replace(/[^a-zA-Z0-9]/g, '').split(/[-_ ]/).map((s: string) => s.charAt(0).toUpperCase() + s.slice(1)).join('');
       return `structButton ${cleanContent}`;
     })
+    .replace(/\[LINK:javascript:[^\]]*\]/g, 'structLinkJavascript')
     .replace(/\[LINK:([^\]]*)\]/g, 'structLinkElement')
+    
+    // SPA / Loading States (Catches high-sensitivity portals in-flight)
+    .replace(/\bLoading\b\.*/gi, 'structStateLoading')
+    .replace(/\bPlease wait\b\.*/gi, 'structStateWaiting')
+    .replace(/\bAuthenticating\b\.*/gi, 'structStateAuth')
     
     // Headers
     .replace(/^# (.*$)/gm, (_, content) => {

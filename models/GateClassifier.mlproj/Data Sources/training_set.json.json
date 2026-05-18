@@ -1,0 +1,31 @@
+{
+  "activityEntities" : [
+    "dataSourceCreated",
+    [
+      {
+        "createdDate" : "2026-05-18T19:52:40Z",
+        "event" : "dataSourceCreated",
+        "id" : "18508604-50F8-42AF-B7BB-63F1559E9012",
+        "subtitle" : "training_set.json",
+        "title" : "Data Source Created"
+      }
+    ]
+  ],
+  "createdDate" : "2026-05-18T19:52:40Z",
+  "dataPathRelativeToProjectURL" : "../../data/processed/training_set.json/",
+  "dataResult" : {
+    "createdDate" : "2026-05-18T19:52:40Z",
+    "dataSourceID" : "3B86D5D5-F5D5-48B1-946A-BE2F7421A5A6",
+    "dataURL" : "file:///Users/stoyan/git/gate/data/processed/training_set.json"
+  },
+  "dataURL" : "file:///Users/stoyan/git/gate/data/processed/training_set.json",
+  "experimentIDs" : [
+    "1A4AEA09-4FEC-4F8E-AAA4-0E09FAEAC7BE"
+  ],
+  "id" : "3B86D5D5-F5D5-48B1-946A-BE2F7421A5A6",
+  "modifiedDate" : "2026-05-18T19:52:40Z",
+  "pathType" : 0,
+  "preferredFilename" : "training_set.json",
+  "title" : "training_set.json",
+  "version" : "1.0"
+}

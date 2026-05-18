@@ -1,0 +1,423 @@
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US" dir="ltr" xmlns:fb="http://ogp.me/ns/fb#" xmlns:og="http://ogp.me/ns#" data-color-mode="dark" class="user-logged-out dark-mode">
+
+
+  
+  
+    
+  
+
+
+<body class=" theme-background floating-surface-theme-bg   
+  board-layout
+  hide-board-icons
+        with-players  with-controls  with-und      with-evaluation" onkeydown="if (event.keyCode === 9) this.classList.add('keyboard-navigation-in-use')" onmousedown="this.classList.remove('keyboard-navigation-in-use')">
+        <div class="board-layout-nav">
+      
+      
+
+
+      
+  
+
+
+
+<div id="login-register-modal"></div>
+
+<div id="shareable-game-url-modal"></div>
+
+<div id="message-modal"></div>
+
+<div id="first-time-modal"></div>
+
+<div id="achievements-modal"></div>
+
+
+  <div id="offline-challenge-toaster" data-badge="challenges" data-badge-count="0"></div>
+
+  <div id="old-browser-modal"></div>
+
+
+
+
+
+    
+  
+<div id="mobile-content-shroud"></div>
+
+
+
+
+      </div>
+  
+    
+      <div id="mobile-top-section"></div>
+  
+            <div id="board-layout-main" class="board-layout-main">
+              <div id="board-layout-player-top" class="board-layout-player board-layout-top player-component player-top">
+                  <div class="player-playerContent"><!----> <!----> <!----> <div class="player-avatar"><div class="cc-avatar-component cc-avatar-size-40 dark-mode"><img data-cy="avatar" class="cc-avatar-img" loading="lazy" src="https://www.chess.com/bundles/web/images/black_400@2x.png" srcset="https://www.chess.com/bundles/web/images/black_400.png 1x, https://www.chess.com/bundles/web/images/black_400@2x.png 2x" alt="Avatar of Opponent" height="40" width="40"> </div> <!----></div> <div class="player-tagline"><div class="cc-user-block-component cc-user-block-white cc-user-block-small" rating-type="rapid"><!----> <!----> <div role="button" tabindex="0" class="cc-text-medium-bold cc-user-username-component cc-user-username-white" data-test-element="user-tagline-username">Opponent</div> <!----> <!----> <!----> <!----> <!----></div> <!----> <!----></div></div> <div class="clock-component clock-top clock-black"><!----> <!----> <div class="clock-icon-icon" data-cy="clock-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" class="" style="transform: rotate(-54000deg);"><path d="M5.48,9a.93.93,0,0,0-.3.71v.58a.94.94,0,0,0,.3.71,1,1,0,0,0,.71.3h4.58a1,1,0,0,0,.71-.3.94.94,0,0,0,.29-.71V9.7A.92.92,0,0,0,11.48,9a1,1,0,0,0-.71-.27H6.19A1,1,0,0,0,5.48,9Z"></path><path d="M19.22,6.1a9.9,9.9,0,0,0-2.14-3.18A10.23,10.23,0,0,0,13.9.78,9.76,9.76,0,0,0,10,0,9.86,9.86,0,0,0,6.1.78,10,10,0,0,0,.78,6.1,9.81,9.81,0,0,0,0,10a9.81,9.81,0,0,0,.78,3.9A10,10,0,0,0,6.1,19.22,9.86,9.86,0,0,0,10,20a9.76,9.76,0,0,0,3.89-.78,10.23,10.23,0,0,0,3.18-2.14,9.9,9.9,0,0,0,2.14-3.18A9.81,9.81,0,0,0,20,10,9.81,9.81,0,0,0,19.22,6.1ZM17.07,13a7.65,7.65,0,0,1-1.65,2.42A7.81,7.81,0,0,1,13,17.06a7.46,7.46,0,0,1-3,.6,7.51,7.51,0,0,1-3-.6,7.74,7.74,0,0,1-2.43-1.65A8,8,0,0,1,2.94,13a7.46,7.46,0,0,1-.6-3,7.46,7.46,0,0,1,.6-3A8,8,0,0,1,4.58,4.59,7.74,7.74,0,0,1,7,2.94a7.51,7.51,0,0,1,3-.6,7.45,7.45,0,0,1,3,.6,7.74,7.74,0,0,1,2.43,1.65A7.65,7.65,0,0,1,17.07,7a7.46,7.46,0,0,1,.6,3A7.46,7.46,0,0,1,17.07,13Z"></path></svg></div> <span class="clock-time-monospace" data-cy="clock-time" role="timer">10:00</span></div></div>
+            <div id="board-layout-chessboard" class="board-layout-chessboard board-board">
+                  <div id="board-layout-evaluation" class="board-layout-evaluation">
+              <div id="evaluation"></div>
+          </div>
+                          <div id="board-layout-pieces" class="board-layout-pieces">
+                      </div>
+                  
+
+
+
+<div id="board" class="board" data-coordinates="1" style="background: var(--theme-board-style-image, url(&quot;https://images.chesscomfiles.com/chess-themes/boards/green/150.png&quot;)) 0 0 / cover no-repeat;">
+    <div style="
+                    width: 100%;
+                    height: 100%;
+                    position: relative;
+                    z-index: 1;
+                    color: black;
+                    background:
+            var(--theme-piece-set-br, url(&quot;https://images.chesscomfiles.com/chess-themes/pieces/neo/150/br.png&quot;)) 0 0 / 12.5% no-repeat,
+            var(--theme-piece-set-bn, url(&quot;https://images.chesscomfiles.com/chess-themes/pieces/neo/150/bn.png&quot;)) 14.29% 0 / 12.5% no-repeat,
+            var(--theme-piece-set-bb, url(&quot;https://images.chesscomfiles.com/chess-themes/pieces/neo/150/bb.png&quot;)) 28.57% 0 / 12.5% no-repeat,
+            var(--theme-piece-set-bq, url(&quot;https://images.chesscomfiles.com/chess-themes/pieces/neo/150/bq.png&quot;)) 42.86% 0 / 12.5% no-repeat,
+            var(--theme-piece-set-bk, url(&quot;https://images.chesscomfiles.com/chess-themes/pieces/neo/150/bk.png&quot;)) 57.14% 0 / 12.5% no-repeat,
+            var(--theme-piece-set-bb, url(&quot;https://images.chesscomfiles.com/chess-themes/pieces/neo/150/bb.png&quot;)) 71.43% 0 / 12.5% no-repeat,
+            var(--theme-piece-set-bn, url(&quot;https://images.chesscomfiles.com/chess-themes/pieces/neo/150/bn.png&quot;)) 85.71% 0 / 12.5% no-repeat,
+            var(--theme-piece-set-br, url(&quot;https://images.chesscomfiles.com/chess-themes/pieces/neo/150/br.png&quot;)) 100% 0 / 12.5% no-repeat,
+
+            var(--theme-piece-set-bp, url(&quot;https://images.chesscomfiles.com/chess-themes/pieces/neo/150/bp.png&quot;)) 0 14.29% / 12.5% no-repeat,
+            var(--theme-piece-set-bp, url(&quot;https://images.chesscomfiles.com/chess-themes/pieces/neo/150/bp.png&quot;)) 14.29% 14.29% / 12.5% no-repeat,
+            var(--theme-piece-set-bp, url(&quot;https://images.chesscomfiles.com/chess-themes/pieces/neo/150/bp.png&quot;)) 28.57% 14.29% / 12.5% no-repeat,
+            var(--theme-piece-set-bp, url(&quot;https://images.chesscomfiles.com/chess-themes/pieces/neo/150/bp.png&quot;)) 42.86% 14.29% / 12.5% no-repeat,
+            var(--theme-piece-set-bp, url(&quot;https://images.chesscomfiles.com/chess-themes/pieces/neo/150/bp.png&quot;)) 57.14% 14.29% / 12.5% no-repeat,
+            var(--theme-piece-set-bp, url(&quot;https://images.chesscomfiles.com/chess-themes/pieces/neo/150/bp.png&quot;)) 71.43% 14.29% / 12.5% no-repeat,
+            var(--theme-piece-set-bp, url(&quot;https://images.chesscomfiles.com/chess-themes/pieces/neo/150/bp.png&quot;)) 85.71% 14.29% / 12.5% no-repeat,
+            var(--theme-piece-set-bp, url(&quot;https://images.chesscomfiles.com/chess-themes/pieces/neo/150/bp.png&quot;)) 100% 14.29% / 12.5% no-repeat,
+
+            var(--theme-piece-set-wr, url(&quot;https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wr.png&quot;)) 0 100% / 12.5% no-repeat,
+            var(--theme-piece-set-wn, url(&quot;https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wn.png&quot;)) 14.29% 100% / 12.5% no-repeat,
+            var(--theme-piece-set-wb, url(&quot;https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wb.png&quot;)) 28.57% 100% / 12.5% no-repeat,
+            var(--theme-piece-set-wq, url(&quot;https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wq.png&quot;)) 42.86% 100% / 12.5% no-repeat,
+            var(--theme-piece-set-wk, url(&quot;https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wk.png&quot;)) 57.14% 100% / 12.5% no-repeat,
+            var(--theme-piece-set-wb, url(&quot;https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wb.png&quot;)) 71.43% 100% / 12.5% no-repeat,
+            var(--theme-piece-set-wn, url(&quot;https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wn.png&quot;)) 85.71% 100% / 12.5% no-repeat,
+            var(--theme-piece-set-wr, url(&quot;https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wr.png&quot;)) 100% 100% / 12.5% no-repeat,
+
+            var(--theme-piece-set-wp, url(&quot;https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wp.png&quot;)) 0 85.71% / 12.5% no-repeat,
+            var(--theme-piece-set-wp, url(&quot;https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wp.png&quot;)) 14.29% 85.71% / 12.5% no-repeat,
+            var(--theme-piece-set-wp, url(&quot;https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wp.png&quot;)) 28.57% 85.71% / 12.5% no-repeat,
+            var(--theme-piece-set-wp, url(&quot;https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wp.png&quot;)) 42.86% 85.71% / 12.5% no-repeat,
+            var(--theme-piece-set-wp, url(&quot;https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wp.png&quot;)) 57.14% 85.71% / 12.5% no-repeat,
+            var(--theme-piece-set-wp, url(&quot;https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wp.png&quot;)) 71.43% 85.71% / 12.5% no-repeat,
+            var(--theme-piece-set-wp, url(&quot;https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wp.png&quot;)) 85.71% 85.71% / 12.5% no-repeat,
+            var(--theme-piece-set-wp, url(&quot;https://images.chesscomfiles.com/chess-themes/pieces/neo/150/wp.png&quot;)) 100% 85.71% / 12.5% no-repeat;
+                    "></div>
+
+    
+            
+        <svg viewBox="0 0 100 100" class="coordinates">
+            <text x="0.75" y="3.5" font-size="2.8" class="coordinate-light">8</text>
+            <text x="0.75" y="15.75" font-size="2.8" class="coordinate-dark">7</text>
+            <text x="0.75" y="28.25" font-size="2.8" class="coordinate-light">6</text>
+            <text x="0.75" y="40.75" font-size="2.8" class="coordinate-dark">5</text>
+            <text x="0.75" y="53.25" font-size="2.8" class="coordinate-light">4</text>
+            <text x="0.75" y="65.75" font-size="2.8" class="coordinate-dark">3</text>
+            <text x="0.75" y="78.25" font-size="2.8" class="coordinate-light">2</text>
+            <text x="0.75" y="90.75" font-size="2.8" class="coordinate-dark">1</text>
+            <text x="10" y="99" font-size="2.8" class="coordinate-dark">a</text>
+            <text x="22.5" y="99" font-size="2.8" class="coordinate-light">b</text>
+            <text x="35" y="99" font-size="2.8" class="coordinate-dark">c</text>
+            <text x="47.5" y="99" font-size="2.8" class="coordinate-light">d</text>
+            <text x="60" y="99" font-size="2.8" class="coordinate-dark">e</text>
+            <text x="72.5" y="99" font-size="2.8" class="coordinate-light">f</text>
+            <text x="85" y="99" font-size="2.8" class="coordinate-dark">g</text>
+            <text x="97.5" y="99" font-size="2.8" class="coordinate-light">h</text>
+        </svg>
+    </div>
+
+    
+  
+  
+                  <div id="board-layout-controls" class="board-layout-controls">
+              <div id="board-controls"><div class="dark-mode"><button aria-label="Settings" class="cc-icon-button-component cc-icon-button-small cc-icon-button-ghost cc-bg-ghost board-controls-button" type="button" id="board-controls-settings"><!----> <span aria-hidden="true" class="cc-icon-glyph cc-icon-size-16"><svg xmlns="http://www.w3.org/2000/svg" data-glyph="utility-cogwheel" aria-hidden="true" viewBox="0 0 24 24"><path d="M9.57,20.53 l-1.17,1.27 c-0.37,0.4,-0.67,0.43,-1.13,0.17 l-1.53,-0.87 c-0.47,-0.27,-0.57,-0.57,-0.43,-1.07 l0.53,-1.67 c0.13,-0.5,0.1,-0.87,-0.17,-1.33 l-1.17,-2.07 c-0.27,-0.47,-0.57,-0.67,-1.07,-0.8 l-1.73,-0.4 c-0.5,-0.13,-0.7,-0.37,-0.7,-0.9 l0,-1.77 c0,-0.5,0.2,-0.73,0.7,-0.87 l1.73,-0.4 c0.5,-0.13,0.8,-0.33,1.07,-0.8 l1.17,-2.07 c0.27,-0.47,0.3,-0.83,0.17,-1.33 l-0.53,-1.67 c-0.13,-0.5,-0.03,-0.8,0.43,-1.07 l1.53,-0.87 c0.47,-0.27,0.77,-0.23,1.13,0.17 l1.17,1.27 c0.37,0.4,0.7,0.53,1.23,0.53 l2.43,0 c0.5,0,0.83,-0.13,1.2,-0.53 l1.17,-1.27 c0.37,-0.4,0.67,-0.43,1.13,-0.17 l1.53,0.87 c0.47,0.27,0.57,0.57,0.43,1.07 l-0.53,1.67 c-0.13,0.5,-0.1,0.87,0.17,1.33 l1.17,2.07 c0.27,0.47,0.57,0.67,1.07,0.8 l1.73,0.4 c0.5,0.13,0.7,0.37,0.7,0.87 l0,1.77 c0,0.53,-0.2,0.77,-0.7,0.9 l-1.73,0.4 c-0.5,0.13,-0.8,0.33,-1.07,0.8 l-1.17,2.07 c-0.27,0.47,-0.3,0.83,-0.17,1.33 l0.53,1.67 c0.13,0.5,0.03,0.8,-0.43,1.07 l-1.53,0.87 c-0.47,0.27,-0.77,0.23,-1.13,-0.17 l-1.17,-1.27 c-0.37,-0.4,-0.7,-0.53,-1.2,-0.53 l-2.43,0 c-0.53,0,-0.87,0.13,-1.23,0.53 Z M12.03,15.5 c1.9,0,3.5,-1.57,3.5,-3.53 c0,-1.9,-1.6,-3.47,-3.5,-3.47 c-1.93,0,-3.5,1.57,-3.5,3.47 c0,1.97,1.57,3.53,3.5,3.53 Z M12.03,15.5"></path></svg></span> </button> <button aria-label="Click to enable voice move" class="cc-icon-button-component cc-icon-button-small cc-icon-button-ghost cc-bg-ghost voice-move-icon-button  board-controls-hover" type="button" id="board-controls-voice-move"><!----> <span class="cc-icon-glyph cc-icon-size-16"><svg aria-hidden="true" data-glyph="media-audio-microphone-mute" viewBox="0 0 24 24" height="16" width="16" xmlns="http://www.w3.org/2000/svg"><path xmlns="http://www.w3.org/2000/svg" d="M12.9999 22.0001V23.0701C12.9999 23.6701 12.6699 24.0001 12.0699 24.0001H11.9399C11.3399 24.0001 11.0099 23.6701 11.0099 23.0701V22.0001C9.30988 22.0001 7.93988 21.8401 6.82988 21.4801L8.43988 19.8701C8.98988 19.9601 9.61988 20.0101 10.3399 20.0101H13.6699C17.6699 20.0101 18.9999 18.6801 18.9999 14.6801V12.9501C18.9999 12.3501 19.3299 12.0201 19.9299 12.0201H20.0599C20.6599 12.0201 20.9899 12.3501 20.9899 12.9501V14.0201C20.9899 20.0201 18.9899 22.0201 12.9899 22.0201L12.9999 22.0001ZM11.9999 17.0001C11.7699 17.0001 11.5499 16.9901 11.3299 16.9701L15.9999 12.3001V13.1301C15.9999 15.6301 14.5999 17.0001 11.9999 17.0001ZM23.3999 2.03008L15.9999 9.43008L9.23988 16.1901L6.38988 19.0401L4.96988 20.4601L2.09988 23.3301L2.06988 23.3601C1.63988 23.7901 1.16988 23.7901 0.739883 23.3601L0.639883 23.2601C0.209883 22.8301 0.209883 22.3601 0.639883 21.9301L3.76988 18.8001C3.22988 17.6101 2.99988 16.0301 2.99988 14.0001V12.9301C2.99988 12.3301 3.32988 12.0001 3.92988 12.0001H4.05988C4.65988 12.0001 4.98988 12.3301 4.98988 12.9301V14.6601C4.98988 15.7001 5.07988 16.5601 5.27988 17.2701L8.12988 14.4201C8.02988 14.0301 7.97988 13.6001 7.97988 13.1301V5.53008C7.97988 3.03008 9.37988 1.66008 11.9799 1.66008C14.5799 1.66008 15.9799 3.03008 15.9799 5.53008V6.56008L21.9499 0.590078C22.3799 0.160078 22.8499 0.160078 23.2799 0.590078L23.3799 0.690078C23.7999 1.11008 23.8099 1.57008 23.4099 1.99008C23.3999 2.00008 23.3899 2.01008 23.3799 2.02008L23.3999 2.03008Z"></path></svg></span> </button> <button aria-label="Focus Mode" class="cc-icon-button-component cc-icon-button-small cc-icon-button-ghost cc-bg-ghost board-controls-button board-controls-hover" type="button" id="board-controls-focus"><!----> <span aria-hidden="true" class="cc-icon-glyph cc-icon-size-16"><svg xmlns="http://www.w3.org/2000/svg" data-glyph="arrows-triangle-expand-concentric" aria-hidden="true" viewBox="0 0 24 24"><path d="M8.37,22.03 l-5.77,0 c-0.43,0,-0.6,-0.17,-0.6,-0.6 l-0.03,-5.87 c0,-0.63,0.2,-0.67,0.67,-0.2 l6.03,6.03 c0.47,0.47,0.37,0.63,-0.3,0.63 Z M7.97,14 c0.73,-0.73,1.3,-0.73,2.03,0 l0,0 c0.73,0.73,0.73,1.3,0,2.03 l-4.9,4.97 l-2.07,-2.1 Z M1.97,8.43 l0.03,-5.87 c0,-0.43,0.17,-0.6,0.6,-0.6 l5.77,0 c0.67,0,0.77,0.17,0.3,0.63 l-6.03,6.03 c-0.47,0.47,-0.67,0.43,-0.67,-0.2 Z M7.97,10 l-4.93,-4.9 l2.07,-2.1 l4.9,4.97 c0.73,0.73,0.73,1.3,0,2.03 l0,0 c-0.73,0.73,-1.3,0.73,-2.03,0 Z M22.03,15.57 l-0.03,5.87 c0,0.43,-0.17,0.6,-0.6,0.6 l-5.77,0 c-0.67,0,-0.77,-0.17,-0.3,-0.63 l6.03,-6.03 c0.47,-0.47,0.67,-0.43,0.67,0.2 Z M16.03,14 l4.93,4.9 l-2.07,2.1 l-4.9,-4.97 c-0.73,-0.73,-0.73,-1.3,0,-2.03 l0,0 c0.73,-0.73,1.3,-0.73,2.03,0 Z M15.63,1.97 l5.77,0 c0.43,0,0.6,0.17,0.6,0.6 l0.03,5.87 c0,0.63,-0.2,0.67,-0.67,0.2 l-6.03,-6.03 c-0.47,-0.47,-0.37,-0.63,0.3,-0.63 Z M16.03,10 c-0.73,0.73,-1.3,0.73,-2.03,0 l0,0 c-0.73,-0.73,-0.73,-1.3,0,-2.03 l4.9,-4.97 l2.07,2.1 Z M16.03,10"></path></svg></span> </button> <button aria-label="Theatre Mode" class="cc-icon-button-component cc-icon-button-small cc-icon-button-ghost cc-bg-ghost board-controls-button board-controls-hover" type="button" id="board-controls-theatre"><!----> <span aria-hidden="true" class="cc-icon-glyph cc-icon-size-16"><svg xmlns="http://www.w3.org/2000/svg" data-glyph="rectangle-hollow-blank" aria-hidden="true" viewBox="0 0 24 24"><path d="M19.03,20.0 c2.64,0.0,2.97,-0.33,2.97,-2.97 l0,-10.07 c0.0,-2.64,-0.33,-2.97,-2.97,-2.97 l-14.07,0 c-2.64,-0.0,-2.97,0.33,-2.97,2.97 l0.0,10.07 c-0.0,2.64,0.33,2.97,2.97,2.97 Z M19.03,22 l-14.07,0 c-3.67,0,-4.97,-1.3,-4.97,-4.97 l0,-10.07 c0,-3.67,1.3,-4.97,4.97,-4.97 l14.07,0 c3.67,0,4.97,1.3,4.97,4.97 l0,10.07 c-0.0,3.67,-1.3,4.97,-4.97,4.97 Z M19.03,22"></path></svg></span> </button> <button aria-label="Flip Board" class="cc-icon-button-component cc-icon-button-small cc-icon-button-ghost cc-bg-ghost board-controls-button board-controls-hover" type="button" id="board-controls-flip"><!----> <span aria-hidden="true" class="cc-icon-glyph cc-icon-size-16"><svg xmlns="http://www.w3.org/2000/svg" data-glyph="arrow-triangle-flip-vertical" aria-hidden="true" viewBox="0 0 24 24"><path d="M18,8.13 c0,-1.6,-0.53,-2.13,-2.13,-2.13 l-2.43,0 c-1.03,0,-1.43,-0.4,-1.43,-1.43 l0,-0.13 c0,-1.03,0.4,-1.43,1.43,-1.43 l2.23,0 c4.0,0,5.33,1.33,5.33,5.33 l0,8.83 l-3,0 Z M10.57,21 l-2.23,0 c-4.0,0,-5.33,-1.33,-5.33,-5.33 l0,-8.83 l3,0 l0,9.03 c0,1.6,0.53,2.13,2.13,2.13 l2.43,0 c1.03,0,1.43,0.4,1.43,1.43 l0,0.13 c0,1.03,-0.4,1.43,-1.43,1.43 Z M0.43,5.83 l3.2,-4.07 c0.67,-0.83,1.13,-0.83,1.8,0 l3.2,4.1 c0.57,0.7,0.33,1.13,-0.57,1.13 l-7.07,0 c-0.93,0,-1.13,-0.43,-0.57,-1.17 Z M23.57,18.17 l-3.2,4.07 c-0.67,0.83,-1.13,0.83,-1.8,0 l-3.2,-4.1 c-0.57,-0.7,-0.33,-1.13,0.57,-1.13 l7.07,0 c0.93,0,1.13,0.43,0.57,1.17 Z M23.57,18.17"></path></svg></span> </button> <!----> <!----></div></div>
+            <span class="board-layout-icon icon-font-chess resize"></span>
+          </div>
+              </div>
+              <div id="board-layout-player-bottom" class="board-layout-player board-layout-bottom player-component player-bottom">
+                  <div class="player-playerContent"><!----> <!----> <!----> <div class="player-avatar"><div class="cc-avatar-component cc-avatar-size-40 dark-mode"><img data-cy="avatar" class="cc-avatar-img" loading="lazy" src="https://www.chess.com/bundles/web/images/white_400@2x.png" srcset="https://www.chess.com/bundles/web/images/white_400.png 1x, https://www.chess.com/bundles/web/images/white_400@2x.png 2x" alt="Avatar of Player" height="40" width="40"> </div> <!----></div> <div class="player-tagline"><div class="cc-user-block-component cc-user-block-white cc-user-block-small" rating-type="rapid"><!----> <!----> <div role="button" tabindex="0" class="cc-text-medium-bold cc-user-username-component cc-user-username-white" data-test-element="user-tagline-username">Player</div> <!----> <!----> <!----> <!----> <!----></div> <!----> <!----></div></div> <div class="clock-component clock-bottom clock-white"><!----> <!----> <div class="clock-icon-icon" data-cy="clock-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" class="" style="transform: rotate(-54000deg);"><path d="M5.48,9a.93.93,0,0,0-.3.71v.58a.94.94,0,0,0,.3.71,1,1,0,0,0,.71.3h4.58a1,1,0,0,0,.71-.3.94.94,0,0,0,.29-.71V9.7A.92.92,0,0,0,11.48,9a1,1,0,0,0-.71-.27H6.19A1,1,0,0,0,5.48,9Z"></path><path d="M19.22,6.1a9.9,9.9,0,0,0-2.14-3.18A10.23,10.23,0,0,0,13.9.78,9.76,9.76,0,0,0,10,0,9.86,9.86,0,0,0,6.1.78,10,10,0,0,0,.78,6.1,9.81,9.81,0,0,0,0,10a9.81,9.81,0,0,0,.78,3.9A10,10,0,0,0,6.1,19.22,9.86,9.86,0,0,0,10,20a9.76,9.76,0,0,0,3.89-.78,10.23,10.23,0,0,0,3.18-2.14,9.9,9.9,0,0,0,2.14-3.18A9.81,9.81,0,0,0,20,10,9.81,9.81,0,0,0,19.22,6.1ZM17.07,13a7.65,7.65,0,0,1-1.65,2.42A7.81,7.81,0,0,1,13,17.06a7.46,7.46,0,0,1-3,.6,7.51,7.51,0,0,1-3-.6,7.74,7.74,0,0,1-2.43-1.65A8,8,0,0,1,2.94,13a7.46,7.46,0,0,1-.6-3,7.46,7.46,0,0,1,.6-3A8,8,0,0,1,4.58,4.59,7.74,7.74,0,0,1,7,2.94a7.51,7.51,0,0,1,3-.6,7.45,7.45,0,0,1,3,.6,7.74,7.74,0,0,1,2.43,1.65A7.65,7.65,0,0,1,17.07,7a7.46,7.46,0,0,1,.6,3A7.46,7.46,0,0,1,17.07,13Z"></path></svg></div> <span class="clock-time-monospace" data-cy="clock-time" role="timer">10:00</span></div></div>
+                </div>
+
+    <div id="board-layout-sidebar" class="board-layout-sidebar sidebar-component">
+                    
+          <!----> <div role="tablist" class="tabs-component"><div data-tab="newGame" role="tab" tabindex="0" class="tabs-tab tabs-active"><span aria-hidden="true" class="cc-icon-glyph cc-icon-size-24 tabs-icon"><svg xmlns="http://www.w3.org/2000/svg" data-glyph="square-fill-plus" aria-hidden="true" viewBox="0 0 24 24"><path d="M17.03,22 l-10.07,0 c-3.67,0,-4.97,-1.3,-4.97,-4.97 l0,-10.07 c0,-3.67,1.3,-4.97,4.97,-4.97 l10.07,0 c3.67,0,4.97,1.3,4.97,4.97 l0,10.07 c0,3.67,-1.3,4.97,-4.97,4.97 Z M10.5,17.53 c0,1.07,0.4,1.47,1.43,1.47 l0.1,0 c1.07,0,1.47,-0.4,1.47,-1.43 l0,-4.07 l4.07,0 c1.03,0,1.43,-0.4,1.43,-1.47 l0,-0.1 c0,-1.03,-0.4,-1.43,-1.47,-1.43 l-4.03,0 l0,-4.03 c0,-1.07,-0.4,-1.47,-1.43,-1.47 l-0.1,0 c-1.07,0,-1.47,0.4,-1.47,1.43 l0,4.07 l-4.07,0 c-1.03,0,-1.43,0.4,-1.43,1.47 l0,0.1 c0,1.03,0.4,1.43,1.47,1.43 l4.03,0 Z M10.5,17.53"></path></svg></span> <span class="tabs-label">New Game</span> <!----> <!----> <!----></div><div data-tab="games" role="tab" tabindex="0" class="tabs-tab"><span aria-hidden="true" class="cc-icon-glyph cc-icon-size-24 tabs-icon"><svg xmlns="http://www.w3.org/2000/svg" data-glyph="board" aria-hidden="true" viewBox="0 0 24 24"><path d="M19.33,22 l-14.67,0 c-2.0,0,-2.67,-0.67,-2.67,-2.67 l0,-14.67 c0,-2,0.67,-2.67,2.67,-2.67 l14.67,0 c2,0,2.67,0.67,2.67,2.67 l0,14.67 c0,2,-0.67,2.67,-2.67,2.67 Z M4,20 l4,0 l0,-4 l-4,0 Z M12,20 l4,0 l0,-4 l-4,0 Z M8,16 l4,0 l0,-4 l-4,0 Z M4,12 l4,0 l0,-4 l-4,0 Z M16,16 l4,0 l0,-4 l-4,0 Z M12,12 l4,0 l0,-4 l-4,0 Z M8,8 l4,0 l0,-4 l-4,0 Z M16,8 l4,0 l0,-4 l-4,0 Z M16,8"></path></svg></span> <span class="tabs-label">Games</span> <!----> <!----> <!----></div><div data-tab="players" role="tab" tabindex="0" class="tabs-tab"><span aria-hidden="true" class="cc-icon-glyph cc-icon-size-24 tabs-icon"><svg xmlns="http://www.w3.org/2000/svg" data-glyph="users" aria-hidden="true" viewBox="0 0 24 24"><path d="M8,18 l0,-1.87 c0,-1.83,0.63,-2.7,2.4,-3.23 l1.38,-0.48 c-0.4,1.52,-1.21,1.74,-1.21,2.61 c0.0,0.6,0.17,0.9,0.73,1.07 l2.3,0.8 c0.87,0.26,1.46,0.6,1.84,1.1 Z M12.07,5.24 c0.28,-2.1,1.4,-3.24,3.36,-3.24 c2.47,0,3.57,1.57,3.57,4.4 c0,3.6,-1.43,3.4,-1.43,4.63 c0,0.6,0.2,0.9,0.73,1.07 l2.33,0.8 c1.73,0.53,2.37,1.4,2.37,3.23 l0,1.87 l-5.39,0 c-0.57,-1.44,-1.75,-2.51,-3.39,-3.0 l-1.07,-0.37 c0.4,-0.78,0.86,-2.27,0.86,-4.23 c-0.0,-2.39,-0.72,-4.11,-1.93,-5.16 Z M1,22 l0,-1.87 c0,-1.83,0.63,-2.7,2.4,-3.23 l2.2,-0.77 c0.53,-0.2,0.77,-0.47,0.77,-1.1 c0,-1.17,-1.37,-1.17,-1.37,-4.63 c0,-2.83,1.1,-4.4,3.43,-4.4 c2.47,0,3.57,1.57,3.57,4.4 c0,3.47,-1.43,3.47,-1.43,4.63 c0,0.6,0.17,0.9,0.73,1.07 l2.3,0.8 c1.77,0.53,2.4,1.4,2.4,3.23 l0,1.87 Z M1,22"></path></svg></span> <span class="tabs-label">Players</span> <!----> <!----> <!----></div></div> <div class="sidebar-content" data-cy="sidebar-tab-newGame"><div class="new-game-component"><div class="new-game-primary"><div data-cy="new-game-time-selector" class="time-selector-next-component"><button class="cc-dropdown-button-component cc-dropdown-button-x-large cc-dropdown-button-secondary cc-bg-secondary cc-dropdown-button-full" type="button" data-cy="new-game-time-selector-button"><div class="cc-dropdown-button-label-wrapper cc-dropdown-button-align-center"><span aria-hidden="true" class="cc-icon-glyph cc-icon-size-24 cc-dropdown-button-icon glyph-colored"><svg xmlns="http://www.w3.org/2000/svg" data-glyph="game-time-rapid" aria-hidden="true" viewBox="0 0 24 24"><path d="M11.97,14.63 c-0.9,0,-1.87,-0.73,-1.5,-2.23 l1.03,-4.4 l1,0 l1.03,4.37 c0.37,1.53,-0.63,2.27,-1.57,2.27 Z M12,22.5 c-5.23,0,-9.5,-4.27,-9.5,-9.5 c0,-5.23,4.27,-9.5,9.5,-9.5 c5.23,0,9.5,4.27,9.5,9.5 c0,5.23,-4.27,9.5,-9.5,9.5 Z M12,19.5 c4,0,6.5,-2.5,6.5,-6.5 c0,-4,-2.5,-6.5,-6.5,-6.5 c-4,0,-6.5,2.5,-6.5,6.5 c0,4,2.5,6.5,6.5,6.5 Z M10.5,5.23 l0,-4.23 l3,0 l0,4.23 Z M15.5,2 l-7,0 c0,-1.7,0.43,-2,3.5,-2 c3.07,0,3.5,0.3,3.5,2 Z M15.5,2"></path></svg></span> <span class="cc-dropdown-button-label">10 min (Rapid)</span></div> <span aria-hidden="true" class="cc-icon-glyph cc-icon-size-16 cc-dropdown-button-icon cc-dropdown-button-chevron"><svg xmlns="http://www.w3.org/2000/svg" data-glyph="arrow-chevron-bottom" aria-hidden="true" viewBox="0 0 24 24"><path d="M21.13,7.07 l0.07,0.07 c1.13,1.13,1.13,1.6,0,2.73 l-6.37,6.4 c-1.77,1.73,-3.9,1.73,-5.67,0 l-6.37,-6.4 c-1.13,-1.13,-1.13,-1.6,0,-2.73 l0.07,-0.07 c1.13,-1.13,1.6,-1.13,2.73,0 l6.4,6.37 l6.4,-6.37 c1.13,-1.13,1.6,-1.13,2.73,0 Z M21.13,7.07"></path></svg></span></button> <!----> <!----> <!----> <!----></div> <button class="cc-button-component cc-button-primary cc-button-x-large cc-bg-primary cc-button-full" type="button" data-cy="new-game-index-play"><!----> <!----> <span class="">Start Game</span> </button></div> <div class="new-game-secondaryCta"><button class="cc-button-component cc-button-secondary cc-button-x-large cc-bg-secondary cc-button-full" type="button" data-cy="new-game-option-custom-game"><!----> <img data-cy="cc-icon" aria-hidden="true" alt="board-settings" class="cc-icon-img cc-icon-size-24 cc-button-icon" height="24" src="https://www.chess.com/bundles/web/images/color-icons/board-settings.svg" width="24"> <span class="">Custom Challenge</span> </button> <button class="cc-button-component cc-button-secondary cc-button-x-large cc-bg-secondary cc-button-full" type="button" data-cy="new-game-option-play-a-friend"><!----> <img data-cy="cc-icon" aria-hidden="true" alt="hand-shake" class="cc-icon-img cc-icon-size-24 cc-button-icon" height="24" src="https://www.chess.com/bundles/web/images/color-icons/hand-shake.svg" width="24"> <span class="">Play a Friend</span> </button> <button class="cc-button-component cc-button-secondary cc-button-x-large cc-bg-secondary cc-button-full" type="button" data-cy="new-game-option-tournaments"><!----> <img data-cy="cc-icon" aria-hidden="true" alt="tournaments" class="cc-icon-img cc-icon-size-24 cc-button-icon" height="24" src="https://www.chess.com/bundles/web/images/color-icons/tournaments.svg" width="24"> <span class="">Tournaments</span> </button></div> </div>  <div class="live-stats-component" data-cy="live-stats"><!----> <button data-cy="new-game-stats-button" type="button" aria-label="Watch games" class="live-stats-text"><span class="live-stats-wide"><strong>254,359</strong> Playing <strong>22,876,173</strong> Games Today</span> <span class="live-stats-narrow"><strong>254,359</strong> Playing <strong>22,876,173</strong> Games</span></button></div> <!----></div></div>
+  
+  
+  
+      <div id="board-layout-comments" class="board-layout-comments">
+          </div>
+  
+  
+  
+      <div id="board-layout-ad" class="board-layout-ad">
+        <div id="sidebar-ad"></div>
+    </div>
+  
+    <div id="share-menu"></div>
+
+
+  <div id="share-modal"></div>
+  <div id="add-to-library-modal"></div>
+
+        
+  
+        
+      
+  
+  <div id="widget-alert-flash" class="alerts-container">
+      </div>
+
+  
+      
+
+        
+    
+    
+      <link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.B_0ip42ktD.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.YkNzsLVi5F.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.JmfHCySHmW.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.BohLfKT9eW.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.8OzTaaLA2i.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.LBslmSf8HI.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.aA2U1dbu6T.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.T0W6_76HgG.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.BCdqwkS2uy.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.CzjPeUm_mZ.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.BvUuK4UQgk.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.hfI3az5WYd.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.CBTmMjMxGi.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.XtqMqkSF34.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.GlNGdrBYu9.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.BehdhsXHQC.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.DlhTT0kff5.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.BEY1FBq_wn.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.BCAILzPAiV.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.CdBPhkFz6t.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.CxfTjAGfPQ.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.DG0avovy_V.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.C_yUavIlNK.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.2cWl8xkBkR.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.DHK1V3oHsj.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.CxKDQk6g8H.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.DiuYMKRNry.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.NKfz5BBB1c.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.B6p-NOirUo.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.CpHUPvxhyC.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.CsSabE4X0P.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.DFd9fyL1rk.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/rolldown-runtime.AbQ52wHxdq.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.DlezefTEyk.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.epMq33mqWy.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.ChgjT1UI1u.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.DVlpF4LfJB.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.p3Wao0bUWr.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.CrP3-8mqL_.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.C9qwSz1weh.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.78Zij5-A88.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.BnLFZT1goz.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.Bnx2K_VRFT.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.CAoaA1J31E.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.f2f1Xa_GNi.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.COQ4DtBL7B.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.Cls_559yP5.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.Cohe1HSwG9.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.sdg72CATO6.chunk.js">
+<link rel="modulepreload" href="/r2/client-packages/play/2026.5.3/common.DGJCpATbY-.chunk.js">
+<link rel="stylesheet" href="/r2/client-packages/play/2026.5.3/common.DJ6FyLm7Z8.css">
+<link rel="stylesheet" href="/r2/client-packages/play/2026.5.3/common.CjRPt32ZKl.css">
+<link rel="stylesheet" href="/r2/client-packages/play/2026.5.3/common.CMTMwN_rte.css">
+<link rel="stylesheet" href="/r2/client-packages/play/2026.5.3/common.BNFyV9NvSv.css">
+<link rel="stylesheet" href="/r2/client-packages/play/2026.5.3/common.ChZMfNliyh.css">
+<link rel="stylesheet" href="/r2/client-packages/play/2026.5.3/common.Dymo12PLWo.css">
+<link rel="stylesheet" href="/r2/client-packages/play/2026.5.3/common.CQ6utdEJxj.css">
+<link rel="stylesheet" href="/r2/client-packages/play/2026.5.3/common.Dy2PHhHgIl.css">
+<link rel="stylesheet" href="/r2/client-packages/play/2026.5.3/common.SUKU8qegS7.css">
+<link rel="stylesheet" href="/r2/client-packages/play/2026.5.3/common.1s1UPEN6lF.css">
+<link rel="stylesheet" href="/r2/client-packages/play/2026.5.3/common.CzrZThQiSk.css">
+<link rel="stylesheet" href="/r2/client-packages/play/2026.5.3/common.CEwquXfO2o.css">
+<link rel="stylesheet" href="/r2/client-packages/play/2026.5.3/common.BlG9pEtnQ9.css">
+<link rel="stylesheet" href="/r2/client-packages/play/2026.5.3/common.kapaWTA4z-.css">
+<link rel="stylesheet" href="/r2/client-packages/play/2026.5.3/common.CYq1yQOpPT.css">
+<link rel="stylesheet" href="/r2/client-packages/play/2026.5.3/common.CWK0jVFWVM.css">
+<link rel="stylesheet" href="/r2/client-packages/play/2026.5.3/common.By2Tk8AJUG.css">
+<link rel="stylesheet" href="/r2/client-packages/play/2026.5.3/common.sniiUr7Kyl.css">
+<link rel="stylesheet" href="/r2/client-packages/play/2026.5.3/common.C6OqBSZmDW.css">
+<link rel="stylesheet" href="/r2/client-packages/play/2026.5.3/common.Bm_pyIC56b.css">
+<link rel="stylesheet" href="/r2/client-packages/play/2026.5.3/common.CYsAu54peS.css">
+<link rel="stylesheet" href="/r2/client-packages/play/2026.5.3/common.CjFIxOtf2i.css">
+<link rel="stylesheet" href="/r2/client-packages/play/2026.5.3/common.C3if8Xfh8X.css">
+<link rel="stylesheet" href="/r2/client-packages/play/2026.5.3/common.C6eGIjs5r_.css">
+  
+  
+      <link crossorigin="" rel="stylesheet" href="/bundles/app/vite/common.BXrJXm-7wu.css"><link crossorigin="" rel="stylesheet" href="/bundles/app/vite/common.ByVZX6icc-.css"><link crossorigin="" rel="stylesheet" href="/bundles/app/vite/common.D_r1JKHjDl.css"><link crossorigin="" rel="stylesheet" href="/bundles/app/vite/common.Dr6CJx2I85.css"><link crossorigin="" rel="stylesheet" href="/bundles/app/vite/common.DWFVQN-F7S.css"><link crossorigin="" rel="stylesheet" href="/bundles/app/vite/common.eaMkxOKtgS.css"><link crossorigin="" rel="stylesheet" href="/bundles/app/vite/common.C7nA4hHuVP.css"><link crossorigin="" rel="stylesheet" href="/bundles/app/vite/common.B82DCl2Pb9.css"><link crossorigin="" rel="stylesheet" href="/bundles/app/vite/common.CDasA7gZGr.css"><link crossorigin="" rel="stylesheet" href="/bundles/app/vite/common.CvRNZYxYWu.css"><link crossorigin="" rel="stylesheet" href="/bundles/app/vite/common.upFN3ubHLa.css"><link crossorigin="" rel="stylesheet" href="/bundles/app/vite/common.BDM7-woFob.css"><link crossorigin="" rel="stylesheet" href="/bundles/app/vite/common.BfD96SafQz.css">
+
+
+
+    
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+        
+
+  
+    
+  
+  
+  
+  
+  
+
+
+
+
+    
+    
+    
+      
+  
+
+
+
+  
+      
+
+        
+      
+  
+      
+  
+  
+  
+
+
+  
+    
+  
+  
+  
+  
+  
+
+
+      
+
+
+
+  
+
+      
+      
+  
+      
+  
+  
+
+
+    
+
+
+  
+
+
+  
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+  
+
+
+
+
+  
+
+  
+        
+    
+    
+      
+  
+  
+
+          
+  
+  
+  
+  
+  
+
+  
+  
+  <div id="checkmate"></div> 
+      <div id="toaster-center"></div>
+  
+      
+    <div id="subscription-status-modal"></div>
+    <div id="tenure-based-offer-modal"></div>
+  
+      <div id="league-promotion-modal"></div>
+    <div id="leagues-division-started-modal"></div>
+    <div id="league-promotion-share-modal"></div>
+  
+        <div id="board-popover"></div>
+    <div id="confirm-popover"></div>
+    <div id="confirm-popover-inline"></div>
+    <div id="form-datepicker"></div>
+    <div id="language-picker-modal"></div>
+    <div id="message-popover"></div>
+    <div id="modal-video"></div>
+    <div id="trophy-popover"></div>
+    <div id="user-popover"></div>
+    
+      
+            <div id="login-modal" data-is-web-view="" data-turnstile-token="true">
+      </div>
+    
+          <div id="authentication-modal" data-is-web-view="">
+      </div>
+      
+  <div id="guest-modal"></div>
+  <div id="report-modal"></div>
+  <div id="report-ad-modal"></div>
+
+    
+    
+        
+    
+  
+        
+  
+  
+
+  
+  
+
+    
+  
+
+          
+      
+  
+      
+  
+  
+  
+  <div id="opm-modal"></div>
+
+
+</body></html>

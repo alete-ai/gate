@@ -19,7 +19,7 @@ async function convertToCsv() {
     const escape = (text) => `"${text.replace(/"/g, '""').replace(/\n/g, ' ')}"`;
 
     const header = 'text,label\n';
-    const rows = data.map(item => `${escape(item.text)},${escape(item.label)}`).join('\n');
+    const rows = data.map(item => `${escape(item.structural)},${escape(item.label)}`).join('\n');
 
     await fs.writeFile(csvPath, header + rows);
     console.log(`Converted to CSV at ${csvPath}`);

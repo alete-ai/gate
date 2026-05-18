@@ -25,7 +25,12 @@ async function synthesize() {
     const html = await fs.readFile(filePath, 'utf-8');
 
     // Convert HTML into both structural tokens and semantic Markdown
-    const { structural, semantic } = processHtml(html);
+    const { structural, semantic, hasSensitiveInfo } = await processHtml(html, { redact: true });
+
+    if (!structural || structural.trim().length === 0) {
+      console.warn(`⚠️  Skipping ${file}: No structural tokens extracted.`);
+      continue;
+    }
 
     // Inference for basic labels based on filename/content for the initial bootstrapping
     let label = 'noise';
@@ -36,9 +41,10 @@ async function synthesize() {
     }
 
     trainingSet.push({
-      text: structural,
-      semantic: semantic,
-      label: label
+      structural,
+      semantic,
+      label,
+      hasSensitiveInfo
     });
   }
 

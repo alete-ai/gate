@@ -1,0 +1,29 @@
+{
+  "activityEntities" : [
+    "projectCreated",
+    [
+      {
+        "createdDate" : "2026-05-18T19:45:40Z",
+        "event" : "projectCreated",
+        "id" : "DC804B9A-EA2E-4E98-B5FB-A229489186A8",
+        "subtitle" : "GateClassifier",
+        "title" : "Project Created"
+      }
+    ]
+  ],
+  "authorName" : "Stoyan Dimitrov",
+  "createdDate" : "2026-05-18T19:45:40Z",
+  "description" : "A classifier for filtering out sensitive html material",
+  "id" : "D0763B47-2592-443C-A821-DB6DA6D0B2EA",
+  "license" : "",
+  "location" : "",
+  "modifiedDate" : "2026-05-18T19:45:40Z",
+  "projectName" : "GateClassifier",
+  "settingsEntity" : {
+    "snapshotOnExtendTraining" : true,
+    "snapshotOnResumeTraining" : false
+  },
+  "taskType" : "textClassifier",
+  "title" : "Text Classification",
+  "version" : "1.1"
+}

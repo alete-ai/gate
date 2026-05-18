@@ -1,0 +1,118 @@
+{
+  "activityEntities" : [
+    "dataSourceTrainingStarted",
+    [
+      {
+        "createdDate" : "2026-05-18T19:45:54Z",
+        "event" : "dataSourceTrainingStarted",
+        "id" : "992DD720-FB0C-49B0-AC64-4255662151FE",
+        "subtitle" : "GateClassifier 1",
+        "title" : "Used By"
+      },
+      {
+        "createdDate" : "2026-05-18T19:53:01Z",
+        "event" : "dataSourceTrainingStarted",
+        "id" : "671D177B-7621-4346-9689-20608556CEE9",
+        "subtitle" : "GateClassifier 2",
+        "title" : "Used By"
+      },
+      {
+        "createdDate" : "2026-05-18T20:05:12Z",
+        "event" : "dataSourceTrainingStarted",
+        "id" : "575C8973-B220-4A67-ADCA-105155C6CF94",
+        "subtitle" : "GateClassifier 3",
+        "title" : "Used By"
+      }
+    ],
+    "dataSourceMetrics",
+    [
+      {
+        "createdDate" : "2026-05-18T19:45:54Z",
+        "event" : "dataSourceMetrics",
+        "id" : "C185CE21-9B97-4235-B722-2B5DA2602BEF",
+        "subtitle" : "3 Classes, 87 Items",
+        "title" : "Data Summary"
+      },
+      {
+        "createdDate" : "2026-05-18T19:53:01Z",
+        "event" : "dataSourceMetrics",
+        "id" : "7CB84BE5-6504-439E-881C-4F203EDBD02A",
+        "subtitle" : "3 Classes, 114 Items",
+        "title" : "Data Summary"
+      },
+      {
+        "createdDate" : "2026-05-18T20:05:12Z",
+        "event" : "dataSourceMetrics",
+        "id" : "110F1A89-CE61-4200-BF89-FBB5691141D1",
+        "subtitle" : "3 Classes, 125 Items",
+        "title" : "Data Summary"
+      }
+    ],
+    "dataSourceCreated",
+    [
+      {
+        "createdDate" : "2026-05-18T19:45:47Z",
+        "event" : "dataSourceCreated",
+        "id" : "EB9A8745-F8EA-4314-95EE-CA55AD8F3F16",
+        "subtitle" : "training_set.csv",
+        "title" : "Data Source Created"
+      }
+    ]
+  ],
+  "createdDate" : "2026-05-18T19:45:47Z",
+  "dataPathRelativeToProjectURL" : "../../data/processed/training_set.csv/",
+  "dataResult" : {
+    "classesCount" : 3,
+    "createdDate" : "2026-05-18T19:45:47Z",
+    "dataAnalysis" : {
+      "classifierAnalysis" : {
+        "labelStats" : {
+          "digestible_article" : 48,
+          "noise" : 38,
+          "sensitive_portal" : 39
+        }
+      },
+      "issues" : [
+        {
+          "description" : "3 classes found, including digestible_article, sensitive_portal, noise",
+          "severity" : "debug"
+        },
+        {
+          "description" : "125 texts found, automatically creating validation set",
+          "severity" : "good"
+        },
+        {
+          "description" : "Smallest class is \"noise\" with 38 texts",
+          "severity" : "debug"
+        },
+        {
+          "description" : "Largest class is \"digestible_article\" with 48 text",
+          "severity" : "debug"
+        }
+      ],
+      "objectDetectorAnalysis" : {
+        "details" : {
+
+        }
+      },
+      "summary" : {
+        "canUseValidation" : 1,
+        "classCount" : 3,
+        "sampleCount" : 125
+      }
+    },
+    "dataSourceID" : "8ED9CC9E-9F9D-4684-BC14-51AEE2F4C983",
+    "dataURL" : "file:///Users/stoyan/git/gate/data/processed/training_set.csv",
+    "itemsCount" : 125
+  },
+  "dataURL" : "file:///Users/stoyan/git/gate/data/processed/training_set.csv",
+  "experimentIDs" : [
+    "8183BE66-CE1F-4B0F-A887-6BF5CA9198CF"
+  ],
+  "id" : "8ED9CC9E-9F9D-4684-BC14-51AEE2F4C983",
+  "modifiedDate" : "2026-05-18T20:05:24Z",
+  "pathType" : 0,
+  "preferredFilename" : "training_set.csv",
+  "title" : "training_set.csv",
+  "version" : "1.0"
+}

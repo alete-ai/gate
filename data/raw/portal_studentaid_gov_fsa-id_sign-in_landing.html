@@ -1,0 +1,25 @@
+<!DOCTYPE html><html lang="en">
+
+<body class="h-100">
+  <div id="fsa-data-preloader" class="fsa-data-preloader spinner-grow text-primary" role="status">
+    <span style="position:absolute; left:-10000px; top:auto; width:1px; height:1px; overflow:hidden;">Loading...</span>
+  </div>
+
+  <fsa-root></fsa-root>
+
+  <!-- Universal Navigation -->
+  <!--  TODO: use link rel='modulepreload' once this feature is supported by Firefox/Edge -->
+  
+  <link rel="preload" href="/universal-navigation/universal-navigation/universal-navigation.js" as="script" onload="insertPreloadedScript(this.href, 'fsa-universal-navigation-script', true)">
+
+  <!-- Tealium -->
+  <!-- TODO: set up Tealium base URL to be an environment variable. -->
+  <link rel="preload" href="//tags.tiqcdn.com/utag/fsa/fsa-digital-platform/prod/utag.js" as="script" onload="insertPreloadedScript(this.href, 'utag_fsa.fsa-digital-platform', false)">
+
+  <!-- Virtual Assistant -->
+  <!--  TODO: use link rel='modulepreload' once this feature is supported by Firefox/Edge -->
+  
+  <link rel="preload" href="/virtual-assistant-ui/virtual-assistant-ui/virtual-assistant-ui.js" as="script" onload="insertPreloadedScript(this.href, 'fsa-virtual-assistant-script', true)">
+
+
+<link rel="stylesheet" type="text/css" href="/VSty/AIuq/uSB/jvy/vwiw/QD3p/DmsKCFEB/OSpN/HlBydldY"><div id="sec-overlay" style="display:none;"><div id="sec-container"></div></div></body></html>
