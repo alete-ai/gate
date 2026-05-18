@@ -47,7 +47,8 @@ Establish a robust pipeline for gathering real-world structural data.
 - [x] Evaluate `noise` vs `sensitive_portal` confusion on SPA loading states (Index 90).
   - Resolved via `structStateLoading` token mapping.
 - [x] Implement Native Bridge for WKWebView / Safari Extension.
-  - Created `ios/GateClassifierKit` Swift Package.
+  - Created `ios/AleteGateKit` Swift Package.
   - Implemented `GateClassifier` with auto-compiling model substrate.
   - Verified logic via Swift Package tests (100% success on safety checks).
-- [ ] Integrate `GateClassifierKit` into the main iOS app target.
+  - Aligned linguistic tone and branding across all substrates.
+- [ ] Integrate `AleteGateKit` into the main iOS app target.
