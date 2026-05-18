@@ -2,13 +2,13 @@ import XCTest
 @testable import GateClassifierKit
 
 final class GateClassifierKitTests: XCTestCase {
-    func testGateAgentInitialization() throws {
-        let agent = try GateAgent()
+    func testGateClassifierInitialization() throws {
+        let agent = try GateClassifier()
         XCTAssertNotNil(agent)
     }
     
     func testClassification() throws {
-        let agent = try GateAgent()
+        let agent = try GateClassifier()
         
         let portalTokens = "structFormStart structLabel Username structInputText Username EnterUsername structButton Login structFormEnd"
         let portalLabel = agent.classify(tokens: portalTokens)

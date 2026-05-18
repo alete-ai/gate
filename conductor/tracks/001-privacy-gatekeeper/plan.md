@@ -48,6 +48,6 @@ Establish a robust pipeline for gathering real-world structural data.
   - Resolved via `structStateLoading` token mapping.
 - [x] Implement Native Bridge for WKWebView / Safari Extension.
   - Created `ios/GateClassifierKit` Swift Package.
-  - Implemented `GateAgent` with auto-compiling model substrate.
+  - Implemented `GateClassifier` with auto-compiling model substrate.
   - Verified logic via Swift Package tests (100% success on safety checks).
 - [ ] Integrate `GateClassifierKit` into the main iOS app target.
