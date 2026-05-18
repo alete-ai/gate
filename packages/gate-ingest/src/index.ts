@@ -1,5 +1,5 @@
 import { htmlToMarkdown } from '@mdream/js';
-import { STRUCTURAL_TAG_OVERRIDES } from './config.js';
+import { structuralPlugin } from './config.js';
 import { mapToTokens } from './token-mapper.js';
 
 export interface IngestionResult {
@@ -21,11 +21,9 @@ export interface IngestionResult {
  * Converts raw HTML into both structural tokens and semantic Markdown.
  */
 export function processHtml(html: string): IngestionResult {
-  // 1. Generate Structural Markdown
+  // 1. Generate Structural Markdown using the custom plugin
   const structuralMd = htmlToMarkdown(html, {
-    plugins: {
-      tagOverrides: STRUCTURAL_TAG_OVERRIDES
-    }
+    hooks: [structuralPlugin]
   });
 
   // 2. Generate Semantic Markdown (Clean default)
@@ -37,5 +35,5 @@ export function processHtml(html: string): IngestionResult {
   };
 }
 
-export { STRUCTURAL_TAG_OVERRIDES as TAG_OVERRIDES } from './config.js';
+export { structuralPlugin as plugin } from './config.js';
 export { mapToTokens } from './token-mapper.js';

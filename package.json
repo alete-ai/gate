@@ -8,8 +8,8 @@
     "publish:ts": "pnpm publish -r --tag beta --no-git-checks",
     "publish:swift": "git tag -a v$npm_package_version -m \"Release v$npm_package_version\" && git push origin v$npm_package_version",
     "publish:all": "pnpm run publish:ts && pnpm run publish:swift",
-    "synthesize": "node scripts/synthesize.js",
-    "to-csv": "node scripts/to_csv.js"
+    "synthesize": "tsx scripts/synthesize.js",
+    "to-csv": "tsx scripts/to_csv.js"
   },
   "author": "Stoyan Dimitrov <https://github.com/StoyanD>",
   "license": "AGPL-3.0",

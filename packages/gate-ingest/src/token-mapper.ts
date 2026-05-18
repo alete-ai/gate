@@ -1,30 +1,50 @@
 /**
  * Maps structural Markdown/HTML artifacts to explicit alphanumeric tokens.
  * This prevents Apple's NLTokenizer from stripping critical punctuation.
+ * We use camelCase because NLTokenizer splits snake_case (STRUCT_FORM_START -> STRUCT, FORM, START).
  */
 export function mapToTokens(text: string): string {
   return text
     // Structural Tags
-    .replace(/\[FORM_START\]/g, 'STRUCT_FORM_START')
-    .replace(/\[FORM_END\]/g, 'STRUCT_FORM_END')
-    .replace(/\[SELECT_START\]/g, 'STRUCT_SELECT_START')
-    .replace(/\[SELECT_END\]/g, 'STRUCT_SELECT_END')
-    .replace(/\[NAV_START\]/g, 'STRUCT_NAV_START')
-    .replace(/\[NAV_END\]/g, 'STRUCT_NAV_END')
+    .replace(/\[FORM_START\]/g, 'structFormStart')
+    .replace(/\[FORM_END\]/g, 'structFormEnd')
+    .replace(/\[SELECT_START\]/g, 'structSelectStart')
+    .replace(/\[SELECT_END\]/g, 'structSelectEnd')
+    .replace(/\[NAV_START\]/g, 'structNavStart')
+    .replace(/\[NAV_END\]/g, 'structNavEnd')
     
     // Complex Components (Capturing type/name context)
     .replace(/\[INPUT:([^:]+):([^:]*):([^\]]*)\]/g, (_, type, name, placeholder) => {
-      return `STRUCT_INPUT_${type.toUpperCase()} ${name.toUpperCase()} ${placeholder.toUpperCase()}`;
+      const cleanType = type.charAt(0).toUpperCase() + type.slice(1).toLowerCase();
+      const cleanName = name.replace(/[^a-zA-Z0-9]/g, '').split(/[-_ ]/).map((s: string) => s.charAt(0).toUpperCase() + s.slice(1)).join('');
+      const cleanPlaceholder = placeholder.replace(/[^a-zA-Z0-9]/g, '').split(/[-_ ]/).map((s: string) => s.charAt(0).toUpperCase() + s.slice(1)).join('');
+      return `structInput${cleanType} ${cleanName} ${cleanPlaceholder}`;
     })
     .replace(/\[BUTTON:([^\]]*)\]/g, (_, content) => {
-      return `STRUCT_BUTTON ${content.toUpperCase()}`;
+      const cleanContent = content.replace(/[^a-zA-Z0-9]/g, '').split(/[-_ ]/).map((s: string) => s.charAt(0).toUpperCase() + s.slice(1)).join('');
+      return `structButton ${cleanContent}`;
     })
-    .replace(/\[LINK:([^\]]*)\]/g, 'STRUCT_LINK_ELEMENT')
+    .replace(/\[LINK:([^\]]*)\]/g, 'structLinkElement')
     
     // Headers
-    .replace(/^# (.*$)/gm, 'SYS_HEADER_1 $1')
-    .replace(/^## (.*$)/gm, 'SYS_HEADER_2 $1')
-    .replace(/^### (.*$)/gm, 'SYS_HEADER_3 $1')
+    .replace(/^# (.*$)/gm, (_, content) => {
+      const clean = content.replace(/[^a-zA-Z0-9]/g, '').split(/[-_ ]/).map((s: string) => s.charAt(0).toUpperCase() + s.slice(1)).join('');
+      return `sysHeader1 ${clean}`;
+    })
+    .replace(/^## (.*$)/gm, (_, content) => {
+      const clean = content.replace(/[^a-zA-Z0-9]/g, '').split(/[-_ ]/).map((s: string) => s.charAt(0).toUpperCase() + s.slice(1)).join('');
+      return `sysHeader2 ${clean}`;
+    })
+    .replace(/^### (.*$)/gm, (_, content) => {
+      const clean = content.replace(/[^a-zA-Z0-9]/g, '').split(/[-_ ]/).map((s: string) => s.charAt(0).toUpperCase() + s.slice(1)).join('');
+      return `sysHeader3 ${clean}`;
+    })
+
+    // Labels
+    .replace(/LABEL\[([^\]]*)\]/g, (_, content) => {
+      const clean = content.replace(/[^a-zA-Z0-9]/g, '').split(/[-_ ]/).map((s: string) => s.charAt(0).toUpperCase() + s.slice(1)).join('');
+      return `structLabel ${clean}`;
+    })
     
     // Clean up remaining punctuation that might confuse MaxEnt
     .replace(/[#*`_\[\]()]/g, ' ')

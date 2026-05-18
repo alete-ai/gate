@@ -1,0 +1,30 @@
+<div class="login-container">
+  <div class="brand">
+    <img src="/logo-bank.png" alt="Alete Global Bank">
+  </div>
+  <form id="login-form" action="/auth/login" method="POST">
+    <h1>Sign In to Your Account</h1>
+    <div class="field">
+      <label for="uid">Username</label>
+      <input type="text" id="uid" name="username" placeholder="Enter your username">
+    </div>
+    <div class="field">
+      <label for="pwd">Password</label>
+      <input type="password" id="pwd" name="password" placeholder="Enter your password">
+    </div>
+    <div class="mfa-section">
+      <p>Security Code (optional if using hardware key)</p>
+      <input type="text" name="mfa_code" placeholder="6-digit code">
+    </div>
+    <div class="actions">
+      <button type="submit">Sign In Safely</button>
+      <a href="/auth/forgot">Forgot Password?</a>
+    </div>
+  </form>
+  <div class="support">
+    <nav>
+      <a href="/support/security">Security Center</a>
+      <a href="/support/contact">Contact Us</a>
+    </nav>
+  </div>
+</div>

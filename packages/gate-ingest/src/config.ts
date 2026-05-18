@@ -1,42 +1,60 @@
+import { createPlugin } from '@mdream/js/plugins';
+
 /**
- * Custom tag overrides for @mdream/js to retain structural HTML tags.
- * This preserves the "structural footprint" of sensitive portals.
+ * Custom mdream plugin to retain structural artifacts.
+ * This preserves the "structural footprint" of sensitive portals
+ * by injecting intermediate markers with attribute context.
  */
-export const STRUCTURAL_TAG_OVERRIDES: any = {
-  'form': {
-    enter: '\n[FORM_START]\n',
-    exit: '\n[FORM_END]\n',
-    spacing: [2, 2],
+export const structuralPlugin = createPlugin({
+  onNodeEnter(element) {
+    const tag = element.name;
+    const attrs = element.attributes || {};
+
+    switch (tag) {
+      case 'form':
+        return '\n[FORM_START]\n';
+      case 'input': {
+        const type = attrs.type || 'text';
+        const name = attrs.name || attrs.id || '';
+        const placeholder = attrs.placeholder || '';
+        return `[INPUT:${type}:${name}:${placeholder}]`;
+      }
+      case 'select':
+        return '[SELECT_START]';
+      case 'option':
+        return ' (OPTION:';
+      case 'button':
+        return '[BUTTON:';
+      case 'label':
+        return 'LABEL[';
+      case 'nav':
+        return '\n[NAV_START]\n';
+      case 'a': {
+        const href = attrs.href || '#';
+        return `[LINK:${href}]`;
+      }
+      default:
+        return undefined;
+    }
   },
-  'input': (element: any) => {
-    const type = element.attributes.type || 'text';
-    const name = element.attributes.name || '';
-    const placeholder = element.attributes.placeholder || '';
-    return `[INPUT:${type}:${name}:${placeholder}]`;
-  },
-  'select': {
-    enter: '[SELECT_START]',
-    exit: '[SELECT_END]',
-  },
-  'option': {
-    enter: ' (OPTION:',
-    exit: ') ',
-  },
-  'button': {
-    enter: '[BUTTON:',
-    exit: ']',
-  },
-  'label': {
-    enter: 'LABEL[',
-    exit: ']',
-  },
-  'nav': {
-    enter: '\n[NAV_START]\n',
-    exit: '\n[NAV_END]\n',
-    spacing: [2, 2],
-  },
-  'a': (element: any) => {
-    const href = element.attributes.href || '#';
-    return `[LINK:${href}]`;
+
+  onNodeExit(element) {
+    const tag = element.name;
+    switch (tag) {
+      case 'form':
+        return '\n[FORM_END]\n';
+      case 'select':
+        return '[SELECT_END]';
+      case 'option':
+        return ') ';
+      case 'button':
+        return ']';
+      case 'label':
+        return ']';
+      case 'nav':
+        return '\n[NAV_END]\n';
+      default:
+        return undefined;
+    }
   }
-};
+});
