@@ -10,6 +10,7 @@ let package = Package(
     products: [
         .library(
             name: "AleteGateKit",
+            type: .dynamic,
             targets: ["AleteGateKit"]),
     ],
     targets: [
