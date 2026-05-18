@@ -2,6 +2,14 @@
   "name": "@alete/gate-ingest",
   "version": "0.1.0",
   "description": "Unified ingestion and token-mapping pipeline for the Alete PrivacyGatekeeper.",
+  "keywords": [
+    "edge",
+    "crawler",
+    "scraper",
+    "firecrawl",
+    "crawl4ai",
+    "analysis"
+  ],
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
