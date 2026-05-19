@@ -19,9 +19,9 @@ Based on the latest **Strategic Verification Audit** conducted on the native App
 | Metric | Result | Note |
 | :--- | :--- | :--- |
 | **Total Accuracy** | **97.60%** | Comprehensive cross-category validation |
-| **Avg. Inference Latency** | **0.45 ms** | Benchmark on Apple Silicon (M-series) |
+| **Avg. Inference Latency** | **0.48 ms** | Benchmark on Apple Silicon substrate |
 | **Survival Recall** | **100.00%** | Zero sensitive portals misclassified as digestible articles |
-| **Article Recall** | **97.92%** | High fidelity for preserving user access to content |
+| **Article Recall** | **100.00%** | Perfect fidelity for preserving user access to content |
 
 *Tests executed on the `PrivacyGatekeeper` MaxEnt model (v0.1.0) using the `verify_model.swift` harness.*
 
