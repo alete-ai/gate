@@ -3,6 +3,13 @@ import { structuralPlugin } from './config.js';
 import { mapToTokens } from './token-mapper.js';
 import { Redactor, type RedactorOptions } from './sanitization/Redactor.js';
 
+export enum GateLabel {
+  SENSITIVE_PORTAL = 'sensitive_portal',
+  DIGESTIBLE_ARTICLE = 'digestible_article',
+  NOISE = 'noise',
+  UNKNOWN = 'unknown',
+}
+
 export interface IngestionResult {
   /**
    * Alphanumeric tokenized text for Apple MaxEnt classifier.
