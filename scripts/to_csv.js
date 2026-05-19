@@ -16,10 +16,26 @@ async function convertToCsv() {
     }
 
     // Escape quotes and handle newlines for CSV
-    const escape = (text) => `"${text.replace(/"/g, '""').replace(/\n/g, ' ')}"`;
+    const escape = (text) => `"${(text || '').replace(/"/g, '""').replace(/\n/g, ' ')}"`;
 
-    const header = 'text,label\n';
-    const rows = data.map(item => `${escape(item.structural)},${escape(item.label)}`).join('\n');
+    const header = 'text,title,description,label\n';
+    const rows = data.map(item => {
+      const title = item.metadata?.title || '';
+      const description = item.metadata?.description || '';
+      // Truncate structural substrate to avoid overwhelming the model with long rows
+      // 2000 chars is usually plenty for structural signals
+      const structural = (item.structural || '').slice(0, 2000);
+      
+      // Concatenate metadata into the primary text field for maximum feature visibility
+      let combinedText = '';
+      if (title) combinedText += `${title}. `;
+      if (description) combinedText += `${description}. `;
+      combinedText += structural;
+      
+      const label = item.label;
+      
+      return `${escape(combinedText)},${escape(title)},${escape(description)},${escape(label)}`;
+    }).join('\n');
 
     await fs.writeFile(csvPath, header + rows);
     console.log(`💎 Alete Gate: Converted substrate to CSV at ${csvPath}`);

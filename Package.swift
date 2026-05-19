@@ -18,18 +18,15 @@ let package = Package(
     targets: [
         .target(
             name: "AleteGateKit",
-            path: "ios/Gate/Sources/Gate",
+            path: "ios/AleteGateKit/Sources/AleteGateKit",
             resources: [
-                // .process("Resources")
+                .process("Resources/PrivacyGatekeeper.mlmodel")
             ]
         ),
         .testTarget(
             name: "AleteGateKitTests",
             dependencies: ["AleteGateKit"],
-            path: "ios/Gate/Tests/GateTests",
-            resources: [
-                // .process("Resources")
-            ]
+            path: "ios/AleteGateKit/Tests/AleteGateKitTests"
         )
     ]
 )

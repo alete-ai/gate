@@ -4,7 +4,7 @@ import CreateML
 // Ensure we have the necessary file paths
 let projectRoot = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
 let trainingDataPath = projectRoot.appendingPathComponent("data/processed/training_set.csv")
-let modelOutputPath = projectRoot.appendingPathComponent("models/PrivacyGatekeeper.mlpackage")
+let modelOutputPath = projectRoot.appendingPathComponent("models/PrivacyGatekeeper.mlmodel")
 
 print("🚀 Alete Gate: Starting training pipeline with data from: \(trainingDataPath.path)")
 

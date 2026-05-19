@@ -20,6 +20,11 @@ export interface IngestionResult {
    * Whether the semantic content contains sensitive PII that was redacted.
    */
   hasSensitiveInfo?: boolean;
+
+  /**
+   * Extracted metadata from the HTML (title, description, author, etc.)
+   */
+  metadata?: Record<string, string>;
 }
 
 export interface IngestionOptions {
@@ -46,8 +51,35 @@ export async function processHtml(html: string, options: IngestionOptions = {}):
     hooks: [structuralPlugin]
   });
 
-  // 2. Generate Semantic Markdown (Clean default)
-  let semantic = htmlToMarkdown(html).trim();
+  let metadata: Record<string, string> = {};
+  let semantic = htmlToMarkdown(html, {
+    plugins: {
+      frontmatter: {
+        onExtract: (fm) => {
+          metadata = fm;
+        }
+      }
+    }
+  }).trim();
+
+  // 2.1 Fallback metadata if not found in head
+  if (!metadata.title) {
+    const h1Match = semantic.match(/^# (.*)$/m);
+    if (h1Match) {
+      // Clean markdown from title (e.g. [text](url) -> text)
+      metadata.title = h1Match[1].replace(/\[([^\]]+)\]\([^)]+\)/g, '$1').replace(/[#*`_]/g, '').trim();
+    }
+  }
+  if (!metadata.description) {
+    // Take first 150 chars of semantic (excluding title)
+    const bodyOnly = semantic.replace(/^# .*$/m, '').trim();
+    if (bodyOnly) {
+      // Clean markdown from description
+      const cleanBody = bodyOnly.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1').replace(/[#*`_]/g, '').trim();
+      metadata.description = cleanBody.slice(0, 150).replace(/\n/g, ' ') + (cleanBody.length > 150 ? '...' : '');
+    }
+  }
+
   let hasSensitiveInfo = false;
 
   // 3. Redaction Pipeline
@@ -62,7 +94,8 @@ export async function processHtml(html: string, options: IngestionOptions = {}):
   return {
     structural: mapToTokens(structuralMd),
     semantic,
-    hasSensitiveInfo
+    hasSensitiveInfo,
+    metadata
   };
 }
 

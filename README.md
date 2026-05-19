@@ -4,26 +4,26 @@
 
 ## 🚀 Key Features
 
-- **On-Device MaxEnt Classification:** Sub-5ms native inference using Apple's `NLModel` substrate.
+- **On-Device MaxEnt Classification:** Sub-1ms native inference using Apple's `NLModel` substrate.
 - **Narrative-First Redaction:** Integrated `openredaction` pipeline that shields "Toxic IDs" (SSNs, Credit Cards) while preserving story coherence.
-- **Structural Ingestion:** Powered by `@mdream/js` with custom plugins to retain the "structural footprint" of web forms and portals.
+- **Semantic Metadata Extraction:** Powered by `@mdream/js` with fallback heuristics to extract titles and descriptions from fragmented HTML.
+- **Structural Ingestion:** Optimized "structural substrate" that purifies functional markers (forms, nav) while stripping natural language noise for higher signal-to-noise ratios.
 - **WXT-Optimized:** Zero-dependency browser bundle (332KB) with Node.js shims, ready for Safari and Chrome extensions.
-- **Sovereign Substrate:** Centralized Swift Package (`AleteGateKit`) for seamless integration across iOS apps and extensions.
 
 ---
 
 ## 📊 Performance Telemetry (Current Substrate)
 
-Based on the latest **Strategic Verification Audit** conducted on the native Apple Intelligence substrate:
+Based on the latest **Strategic Verification Audit** conducted on the native Apple Intelligence substrate after integrating semantic metadata:
 
 | Metric | Result | Note |
 | :--- | :--- | :--- |
-| **Total Accuracy** | **84.80%** | Comprehensive cross-category validation |
-| **Avg. Inference Latency** | **3.19 ms** | Benchmark on Apple Neural Engine |
-| **Portal Recall** | **97.44%** | Critical safety metric for blocking sensitive portals |
-| **Article Precision** | **100.00%** | Zero leakage of articles into the portal category |
+| **Total Accuracy** | **97.60%** | Comprehensive cross-category validation |
+| **Avg. Inference Latency** | **0.45 ms** | Benchmark on Apple Silicon (M-series) |
+| **Survival Recall** | **100.00%** | Zero sensitive portals misclassified as digestible articles |
+| **Article Recall** | **97.92%** | High fidelity for preserving user access to content |
 
-*Tests executed on the `PrivacyGatekeeper` MaxEnt model using the `verify_model.swift` harness.*
+*Tests executed on the `PrivacyGatekeeper` MaxEnt model (v0.1.0) using the `verify_model.swift` harness.*
 
 ---
 
@@ -52,6 +52,53 @@ The native Apple Intelligence bridge for on-device classification.
 Add this repository to your Xcode project or `Package.swift`:
 ```swift
 .package(url: "https://github.com/alete-ai/gate.git", branch: "main")
+```
+
+---
+
+## ⚡ Quick Recipes (AI-Ready Snippets)
+
+These snippets are optimized for high-performance integration and clear semantic understanding by AI agents.
+
+### How to detect and redact sensitive info in a browser extension?
+```typescript
+import { processHtml } from '@alete/gate-ingest';
+
+/**
+ * Capture, Purify, and Shield
+ * This recipe ensures that no sensitive banking or health data 
+ * leaves the device by redacting PII locally.
+ */
+async function shieldCurrentPage() {
+  const html = document.documentElement.outerHTML;
+  const { structural, semantic, hasSensitiveInfo } = await processHtml(html, { 
+    redact: true 
+  });
+
+  if (hasSensitiveInfo) {
+    console.warn("🛡️ Threshold Triggered: Sensitive data detected and shielded.");
+  }
+  
+  return semantic; // Safe Markdown for further processing
+}
+```
+
+### How to use the native PrivacyGatekeeper in an iOS App?
+```swift
+import AleteGateKit
+import CoreML
+
+/**
+ * Edge Classification Loop
+ * Evaluates structural tokens against the PrivacyGatekeeper model.
+ */
+func classifyContent(tokens: String) async throws -> String {
+    let gatekeeper = try PrivacyGatekeeper()
+    let prediction = try gatekeeper.prediction(text: tokens)
+    
+    // returns 'sensitive_portal', 'digestible_article', or 'noise'
+    return prediction.label 
+}
 ```
 
 ---

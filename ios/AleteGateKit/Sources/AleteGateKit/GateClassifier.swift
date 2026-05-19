@@ -14,6 +14,15 @@ public final class GateClassifier {
         case unknown = "unknown"
     }
     
+    /**
+     * The result of a classification, including the label and optional confidence scores.
+     */
+    public struct GateResult {
+        public let label: GateLabel
+        public let confidence: Double
+        public let scores: [GateLabel: Double]?
+    }
+
     private let model: NLModel
     
     public init() throws {
@@ -40,10 +49,28 @@ public final class GateClassifier {
     
     /**
      * Classifies a string of structural tokens.
+     * - Parameter tokens: The structural tokens to classify.
+     * - Parameter includeScores: Whether to include the full probability distribution.
+     * - Returns: A GateResult containing the predicted label and confidence metrics.
      */
-    public func classify(tokens: String) -> GateLabel {
+    public func classify(tokens: String, includeScores: Bool = false) -> GateResult {
+        let hypotheses = model.predictedLabelHypotheses(for: tokens, maximumCount: GateLabel.allCases.count)
         let prediction = model.predictedLabel(for: tokens) ?? "unknown"
-        return GateLabel(rawValue: prediction) ?? .unknown
+        let label = GateLabel(rawValue: prediction) ?? .unknown
+        let confidence = hypotheses[prediction] ?? 0.0
+        
+        var scores: [GateLabel: Double]? = nil
+        if includeScores {
+            var scoreMap: [GateLabel: Double] = [:]
+            for (key, value) in hypotheses {
+                if let gateLabel = GateLabel(rawValue: key) {
+                    scoreMap[gateLabel] = value
+                }
+            }
+            scores = scoreMap
+        }
+        
+        return GateResult(label: label, confidence: confidence, scores: scores)
     }
     
     public enum GateError: Error {

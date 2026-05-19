@@ -4,56 +4,57 @@
  * We use camelCase because NLTokenizer splits snake_case (STRUCT_FORM_START -> STRUCT, FORM, START).
  */
 export function mapToTokens(text: string): string {
-  return text
-    // Structural Tags
+  // 1. Process explicit markers first
+  let processed = text
     .replace(/\[FORM_START\]/g, 'structFormStart')
     .replace(/\[FORM_END\]/g, 'structFormEnd')
     .replace(/\[SELECT_START\]/g, 'structSelectStart')
     .replace(/\[SELECT_END\]/g, 'structSelectEnd')
     .replace(/\[NAV_START\]/g, 'structNavStart')
-    .replace(/\[NAV_END\]/g, 'structNavEnd')
-    
-    // Complex Components (Capturing type/name context)
-    .replace(/\[INPUT:([^:]+):([^:]*):([^\]]*)\]/g, (_, type, name, placeholder) => {
-      const cleanType = type.charAt(0).toUpperCase() + type.slice(1).toLowerCase();
-      const cleanName = name.replace(/[^a-zA-Z0-9]/g, '').split(/[-_ ]/).map((s: string) => s.charAt(0).toUpperCase() + s.slice(1)).join('');
-      const cleanPlaceholder = placeholder.replace(/[^a-zA-Z0-9]/g, '').split(/[-_ ]/).map((s: string) => s.charAt(0).toUpperCase() + s.slice(1)).join('');
-      return `structInput${cleanType} ${cleanName} ${cleanPlaceholder}`;
+    .replace(/\[NAV_END\]/g, 'structNavEnd');
+
+  // 2. Process Standard Markdown artifacts into clean tokens
+  processed = processed
+    // Links: [text](url) -> structLinkElement {text}
+    .replace(/\[([^\]]*)\]\(([^)]+)\)/g, (_, content) => {
+      const clean = content.replace(/[^a-zA-Z0-9]/g, '').slice(0, 20);
+      return `structLinkElement${clean}`;
     })
-    .replace(/\[BUTTON:([^\]]*)\]/g, (_, content) => {
-      const cleanContent = content.replace(/[^a-zA-Z0-9]/g, '').split(/[-_ ]/).map((s: string) => s.charAt(0).toUpperCase() + s.slice(1)).join('');
-      return `structButton ${cleanContent}`;
-    })
-    .replace(/\[LINK:javascript:[^\]]*\]/g, 'structLinkJavascript')
-    .replace(/\[LINK:([^\]]*)\]/g, 'structLinkElement')
-    
-    // SPA / Loading States (Catches high-sensitivity portals in-flight)
-    .replace(/\bLoading\b\.*/gi, 'structStateLoading')
-    .replace(/\bPlease wait\b\.*/gi, 'structStateWaiting')
-    .replace(/\bAuthenticating\b\.*/gi, 'structStateAuth')
-    
-    // Headers
+    // Images: ![alt](url) -> structImage {alt}
+    .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_, alt) => {
+      const clean = alt.replace(/[^a-zA-Z0-9]/g, '').slice(0, 20);
+      return `structImage${clean}`;
+    });
+
+  // 3. Process Headers into clean tokens
+  processed = processed
     .replace(/^# (.*$)/gm, (_, content) => {
-      const clean = content.replace(/[^a-zA-Z0-9]/g, '').split(/[-_ ]/).map((s: string) => s.charAt(0).toUpperCase() + s.slice(1)).join('');
-      return `sysHeader1 ${clean}`;
+      // Remove any leftover markdown links or punctuation from header content
+      const clean = content.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1').replace(/[^a-zA-Z0-9]/g, '').slice(0, 30);
+      return `sysHeader1${clean}`;
     })
     .replace(/^## (.*$)/gm, (_, content) => {
-      const clean = content.replace(/[^a-zA-Z0-9]/g, '').split(/[-_ ]/).map((s: string) => s.charAt(0).toUpperCase() + s.slice(1)).join('');
-      return `sysHeader2 ${clean}`;
+      const clean = content.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1').replace(/[^a-zA-Z0-9]/g, '').slice(0, 30);
+      return `sysHeader2${clean}`;
     })
     .replace(/^### (.*$)/gm, (_, content) => {
-      const clean = content.replace(/[^a-zA-Z0-9]/g, '').split(/[-_ ]/).map((s: string) => s.charAt(0).toUpperCase() + s.slice(1)).join('');
-      return `sysHeader3 ${clean}`;
-    })
+      const clean = content.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1').replace(/[^a-zA-Z0-9]/g, '').slice(0, 30);
+      return `sysHeader3${clean}`;
+    });
 
-    // Labels
-    .replace(/LABEL\[([^\]]*)\]/g, (_, content) => {
-      const clean = content.replace(/[^a-zA-Z0-9]/g, '').split(/[-_ ]/).map((s: string) => s.charAt(0).toUpperCase() + s.slice(1)).join('');
-      return `structLabel ${clean}`;
+  // 4. Final cleaning: remove URLs and punctuation
+  processed = processed
+    .replace(/https?:\/\/[^\s]+/g, '') // Remove URLs
+    .replace(/[#*`_\[\]()]/g, ' '); // Remove remaining markdown chars
+
+  // 5. Aggressively strip remaining natural language noise
+  return processed
+    .split(/\s+/)
+    .filter(word => {
+      return word.startsWith('struct') || 
+             word.startsWith('sys') || 
+             (/^[A-Z]/.test(word) && word.length > 2); // Keep capitalized words (titles, labels) > 2 chars
     })
-    
-    // Clean up remaining punctuation that might confuse MaxEnt
-    .replace(/[#*`_\[\]()]/g, ' ')
-    .replace(/\s+/g, ' ')
+    .join(' ')
     .trim();
 }

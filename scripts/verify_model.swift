@@ -47,10 +47,26 @@ do {
     print("🔍 Evaluating \(json.count) samples...")
     
     for (index, sample) in json.enumerated() {
-        guard let text = sample["structural"] as? String, let expected = sample["label"] as? String else { continue }
+        let structural = sample["structural"] as? String ?? ""
+        let metadata = sample["metadata"] as? [String: String] ?? [:]
+        let expected = sample["label"] as? String ?? "unknown"
+        
+        let title = metadata["title"] ?? ""
+        let description = metadata["description"] ?? ""
+        
+        // Truncate to match CSV prep
+        let truncatedStructural = String(structural.prefix(2000))
+        
+        // Combined text format
+        var combinedText = ""
+        if !title.isEmpty { combinedText += "\(title). " }
+        if !description.isEmpty { combinedText += "\(description). " }
+        combinedText += truncatedStructural
         
         let start = CFAbsoluteTimeGetCurrent()
-        let prediction = model.predictedLabel(for: text) ?? "unknown"
+        let hypotheses = model.predictedLabelHypotheses(for: combinedText, maximumCount: 3)
+        let prediction = model.predictedLabel(for: combinedText) ?? "unknown"
+        let confidence = hypotheses[prediction] ?? 0.0
         let latency = CFAbsoluteTimeGetCurrent() - start
         
         metrics.total += 1
@@ -70,22 +86,22 @@ do {
                 }
                 print("\n🚨 SENSITIVE PORTAL MISS at Index \(index):")
                 print("   Expected: \(expected)")
-                print("   Got:      \(prediction)")
-                print("   Input:    \(text.prefix(200))...")
+                print("   Got:      \(prediction) (\(String(format: "%.2f", confidence * 100))%)")
+                print("   Input:    \(combinedText.prefix(200))...")
             } else if expected == "digestible_article" {
                 if prediction == "sensitive_portal" {
                     metrics.falsePositives += 1
                 }
                 print("\n📖 ARTICLE MISS at Index \(index):")
                 print("   Expected: \(expected)")
-                print("   Got:      \(prediction)")
-                print("   Input:    \(text.prefix(200))...")
+                print("   Got:      \(prediction) (\(String(format: "%.2f", confidence * 100))%)")
+                print("   Input:    \(combinedText.prefix(200))...")
             } else if expected == "noise" && prediction == "sensitive_portal" {
                 // Noise blocked as sensitive is okay but worth noting
                 print("\n🟡 NOISE BLOCKED at Index \(index):")
                 print("   Expected: \(expected)")
-                print("   Got:      \(prediction)")
-                print("   Input:    \(text.prefix(200))...")
+                print("   Got:      \(prediction) (\(String(format: "%.2f", confidence * 100))%)")
+                print("   Input:    \(combinedText.prefix(200))...")
             }
         }
         

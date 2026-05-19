@@ -11,14 +11,17 @@ final class AleteGateKitTests: XCTestCase {
         let agent = try GateClassifier()
         
         let portalTokens = "structFormStart structLabel Username structInputText Username EnterUsername structButton Login structFormEnd"
-        let portalLabel = agent.classify(tokens: portalTokens)
+        let portalResult = agent.classify(tokens: portalTokens)
         // Note: Based on the Parity Audit, short/synthetic portal tokens often fallback to 'noise' 
         // because the model is trained on rich real-world portals. We accept 'noise' or 'sensitivePortal'
         // as long as it's NOT 'digestibleArticle'.
-        XCTAssertNotEqual(portalLabel, .digestibleArticle)
+        XCTAssertNotEqual(portalResult.label, .digestibleArticle)
+        XCTAssertGreaterThan(portalResult.confidence, 0.0)
         
         let articleTokens = "sysHeader1 BreakingNews This is a story about privacy and technology"
-        let articleLabel = agent.classify(tokens: articleTokens)
-        XCTAssertEqual(articleLabel, .digestibleArticle)
+        let articleResult = agent.classify(tokens: articleTokens, includeScores: true)
+        XCTAssertEqual(articleResult.label, .digestibleArticle)
+        XCTAssertNotNil(articleResult.scores)
+        XCTAssertEqual(articleResult.scores?[.digestibleArticle], articleResult.confidence)
     }
 }

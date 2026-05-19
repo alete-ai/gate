@@ -1,0 +1,609 @@
+{
+  "activityEntities" : [
+    "experimentCreated",
+    [
+      {
+        "createdDate" : "2026-05-19T00:16:09Z",
+        "event" : "experimentCreated",
+        "id" : "BD93071D-ED92-4333-AFE3-C4A0718B5A92",
+        "subtitle" : "GateClassifier 4",
+        "title" : "Model Source Created"
+      }
+    ],
+    "trainingDataAdded",
+    [
+      {
+        "createdDate" : "2026-05-19T00:16:13Z",
+        "event" : "trainingDataAdded",
+        "id" : "32900B8C-B62E-4DCF-B085-E9462CDE701F",
+        "subtitle" : "training_set.csv",
+        "title" : "Training Data Added"
+      }
+    ],
+    "trainingFinished",
+    [
+      {
+        "createdDate" : "2026-05-19T00:16:21Z",
+        "event" : "trainingFinished",
+        "id" : "220689AE-DAC9-4EFE-8837-4096B9016AD3",
+        "subtitle" : "Model converged at 2 iterations",
+        "title" : "Training Completed"
+      }
+    ],
+    "trainingStarted",
+    [
+      {
+        "createdDate" : "2026-05-19T00:16:21Z",
+        "event" : "trainingStarted",
+        "id" : "88E68115-432C-422A-9189-0D3FD522F7C8",
+        "subtitle" : "100 iterations",
+        "title" : "Training Started"
+      }
+    ]
+  ],
+  "contentDataResult" : {
+    "createdDate" : "2026-05-19T00:16:13Z"
+  },
+  "createdDate" : "2026-05-19T00:16:09Z",
+  "evaluationContainerEntity" : {
+    "createdDate" : "2026-05-19T00:16:21Z",
+    "evaluationEntities" : [
+      {
+        "analysedDataType" : "none",
+        "createdDate" : "2026-05-19T00:16:21Z",
+        "dataResult" : {
+
+        },
+        "id" : "eb2e020a-64d7-4e06-aa8b-a005fd5b6916"
+      }
+    ],
+    "id" : "10a38ef6-12c8-471c-aa25-042e1915cf97",
+    "modifiedDate" : "2026-05-19T00:16:21Z",
+    "previewType" : "textClassifier",
+    "testingEvaluationEntity" : {
+      "analysedDataType" : "none",
+      "createdDate" : "2026-05-19T00:16:09Z",
+      "dataResult" : {
+        "createdDate" : "2026-05-19T00:16:13Z"
+      },
+      "id" : "1fc92406-8809-4539-a5c4-f35239dd0b55"
+    },
+    "trainingEvaluationEntity" : {
+      "analysedDataType" : "none",
+      "createdDate" : "2026-05-19T00:16:09Z",
+      "dataResult" : {
+        "classesCount" : 3,
+        "createdDate" : "2026-05-19T00:16:13Z",
+        "dataAnalysis" : {
+          "classifierAnalysis" : {
+            "labelStats" : {
+              "digestible_article" : 48,
+              "noise" : 38,
+              "sensitive_portal" : 39
+            }
+          },
+          "issues" : [
+            {
+              "description" : "3 classes found, including digestible_article, sensitive_portal, noise",
+              "severity" : "debug"
+            },
+            {
+              "description" : "125 texts found, automatically creating validation set",
+              "severity" : "good"
+            },
+            {
+              "description" : "Smallest class is \"noise\" with 38 texts",
+              "severity" : "debug"
+            },
+            {
+              "description" : "Largest class is \"digestible_article\" with 48 text",
+              "severity" : "debug"
+            }
+          ],
+          "objectDetectorAnalysis" : {
+            "details" : {
+
+            }
+          },
+          "summary" : {
+            "canUseValidation" : 1,
+            "classCount" : 3,
+            "sampleCount" : 125
+          }
+        },
+        "dataSourceID" : "8ED9CC9E-9F9D-4684-BC14-51AEE2F4C983",
+        "dataURL" : "file:///Users/stoyan/git/gate/data/processed/training_set.csv",
+        "itemsCount" : 125
+      },
+      "dataSourceID" : "8ED9CC9E-9F9D-4684-BC14-51AEE2F4C983",
+      "evaluationResult" : {
+        "textClassifier" : {
+          "accuracy" : 1,
+          "confusionMatrix" : [
+            {
+              "actual" : "digestible_article",
+              "count" : 46,
+              "expected" : "digestible_article"
+            },
+            {
+              "actual" : "noise",
+              "count" : 32,
+              "expected" : "noise"
+            },
+            {
+              "actual" : "sensitive_portal",
+              "count" : 35,
+              "expected" : "sensitive_portal"
+            }
+          ],
+          "statsByLabel" : {
+            "digestible_article" : {
+              "count" : 46,
+              "precisionRecall" : {
+                "success" : {
+                  "precision" : 1,
+                  "recall" : 1
+                }
+              }
+            },
+            "noise" : {
+              "count" : 32,
+              "precisionRecall" : {
+                "success" : {
+                  "precision" : 1,
+                  "recall" : 1
+                }
+              }
+            },
+            "sensitive_portal" : {
+              "count" : 35,
+              "precisionRecall" : {
+                "success" : {
+                  "precision" : 1,
+                  "recall" : 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "id" : "67f70a44-57af-4b20-a1a7-b0a8967bf408"
+    },
+    "validationEvaluationEntity" : {
+      "analysedDataType" : "auto",
+      "createdDate" : "2026-05-19T00:16:09Z",
+      "dataResult" : {
+        "createdDate" : "2026-05-19T00:16:13Z"
+      },
+      "evaluationResult" : {
+        "textClassifier" : {
+          "accuracy" : 0.75,
+          "confusionMatrix" : [
+            {
+              "actual" : "digestible_article",
+              "count" : 2,
+              "expected" : "digestible_article"
+            },
+            {
+              "actual" : "noise",
+              "count" : 1,
+              "expected" : "digestible_article"
+            },
+            {
+              "actual" : "noise",
+              "count" : 3,
+              "expected" : "noise"
+            },
+            {
+              "actual" : "noise",
+              "count" : 2,
+              "expected" : "sensitive_portal"
+            },
+            {
+              "actual" : "sensitive_portal",
+              "count" : 4,
+              "expected" : "sensitive_portal"
+            }
+          ],
+          "statsByLabel" : {
+            "digestible_article" : {
+              "count" : 2,
+              "precisionRecall" : {
+                "success" : {
+                  "precision" : 0.6666666666666666,
+                  "recall" : 1
+                }
+              }
+            },
+            "noise" : {
+              "count" : 6,
+              "precisionRecall" : {
+                "success" : {
+                  "precision" : 1,
+                  "recall" : 0.5
+                }
+              }
+            },
+            "sensitive_portal" : {
+              "count" : 4,
+              "precisionRecall" : {
+                "success" : {
+                  "precision" : 0.6666666666666666,
+                  "recall" : 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "id" : "1493aa25-f936-4903-a465-5bda695b1843"
+    }
+  },
+  "evaluationEntity" : {
+    "analysedDataType" : "none",
+    "dataResult" : {
+
+    },
+    "id" : "11a36d39-55f1-426e-9e40-44216b9159de"
+  },
+  "evaluationState" : "uninitialized",
+  "id" : "C1081728-0138-4D7F-8EA4-DBEF3DEC10A0",
+  "modelEntity" : {
+    "createdDate" : "2026-05-19T00:16:09Z",
+    "experimentID" : "C1081728-0138-4D7F-8EA4-DBEF3DEC10A0",
+    "id" : "0EA8CB58-0A93-4602-A607-CC8E96F088FA",
+    "modelURL" : "Models/GateClassifier%204.mlmodel",
+    "modifiedDate" : "2026-05-19T00:16:09Z",
+    "title" : "",
+    "version" : "1.0"
+  },
+  "modifiedDate" : "2026-05-19T00:16:21Z",
+  "preferredFilename" : "GateClassifier 4",
+  "settingEntity" : {
+    "algorithmType" : "maxEnt",
+    "augmentations" : [
+
+    ],
+    "featureNames" : [
+
+    ],
+    "handActionClassifierAugmentations" : [
+
+    ],
+    "handPoseClassifierAugmentations" : [
+
+    ],
+    "harVideoAugmentations" : 0,
+    "iterationCount" : 100,
+    "seedType" : "default",
+    "styleTransferAlgorithmType" : "image",
+    "taskType" : "textClassifier",
+    "textClassifierArabicLanguage" : "automatic",
+    "textClassifierCJKLanguage" : "automatic",
+    "textClassifierCyrillicLanguage" : "automatic",
+    "textClassifierIndicLanguage" : "automatic",
+    "textClassifierLatin" : "automatic",
+    "textClassifierScript" : "latin",
+    "textClassifierThaiLanguage" : "automatic"
+  },
+  "snapshotRole" : {
+    "withoutSnapshots" : 0
+  },
+  "state" : "trained",
+  "title" : "GateClassifier 4",
+  "trainingEntity" : {
+    "analysedDataType" : "datasource",
+    "checkpointMetrics" : {
+
+    },
+    "dataResult" : {
+      "classesCount" : 3,
+      "createdDate" : "2026-05-19T00:16:13Z",
+      "dataAnalysis" : {
+        "classifierAnalysis" : {
+          "labelStats" : {
+            "digestible_article" : 48,
+            "noise" : 38,
+            "sensitive_portal" : 39
+          }
+        },
+        "issues" : [
+          {
+            "description" : "3 classes found, including digestible_article, sensitive_portal, noise",
+            "severity" : "debug"
+          },
+          {
+            "description" : "125 texts found, automatically creating validation set",
+            "severity" : "good"
+          },
+          {
+            "description" : "Smallest class is \"noise\" with 38 texts",
+            "severity" : "debug"
+          },
+          {
+            "description" : "Largest class is \"digestible_article\" with 48 text",
+            "severity" : "debug"
+          }
+        ],
+        "objectDetectorAnalysis" : {
+          "details" : {
+
+          }
+        },
+        "summary" : {
+          "canUseValidation" : 1,
+          "classCount" : 3,
+          "sampleCount" : 125
+        }
+      },
+      "dataSourceID" : "8ED9CC9E-9F9D-4684-BC14-51AEE2F4C983",
+      "dataURL" : "file:///Users/stoyan/git/gate/data/processed/training_set.csv",
+      "itemsCount" : 125
+    },
+    "dataSourceID" : "8ED9CC9E-9F9D-4684-BC14-51AEE2F4C983",
+    "featureExtractionCheckpointMayBeAvailable" : false,
+    "finishTime" : "2026-05-19T00:16:21Z",
+    "progress" : [
+      {
+        "count" : 1,
+        "currentRowIndex" : 0,
+        "isLast" : false,
+        "percentComplete" : 0,
+        "tableDone" : false,
+        "tableIndex" : 1,
+        "tcTrainingColumnHeader" : {
+          "elapsedTime" : 0,
+          "hasTraining" : true,
+          "hasValidation" : false,
+          "remainingIterationCount" : 10,
+          "trainingAccuracy" : 0.40707963705062866,
+          "validationAccuracy" : 0
+        }
+      },
+      {
+        "count" : 2,
+        "currentRowIndex" : 0,
+        "isLast" : false,
+        "percentComplete" : 0,
+        "tableDone" : true,
+        "tableIndex" : 1,
+        "tcTrainingColumnHeader" : {
+          "elapsedTime" : 0,
+          "hasTraining" : true,
+          "hasValidation" : false,
+          "remainingIterationCount" : 9,
+          "trainingAccuracy" : 0.991150438785553,
+          "validationAccuracy" : 0
+        }
+      },
+      {
+        "count" : 3,
+        "currentRowIndex" : 0,
+        "isLast" : false,
+        "percentComplete" : 0,
+        "tableDone" : false,
+        "tableIndex" : 0
+      },
+      {
+        "count" : 13,
+        "currentRowIndex" : 0,
+        "isLast" : false,
+        "percentComplete" : 0,
+        "tableDone" : false,
+        "tableIndex" : 0
+      },
+      {
+        "count" : 23,
+        "currentRowIndex" : 0,
+        "isLast" : false,
+        "percentComplete" : 0,
+        "tableDone" : false,
+        "tableIndex" : 0
+      },
+      {
+        "count" : 33,
+        "currentRowIndex" : 0,
+        "isLast" : false,
+        "percentComplete" : 0,
+        "tableDone" : false,
+        "tableIndex" : 0
+      },
+      {
+        "count" : 43,
+        "currentRowIndex" : 0,
+        "isLast" : false,
+        "percentComplete" : 0,
+        "tableDone" : false,
+        "tableIndex" : 0
+      },
+      {
+        "count" : 53,
+        "currentRowIndex" : 0,
+        "isLast" : false,
+        "percentComplete" : 0,
+        "tableDone" : false,
+        "tableIndex" : 0
+      },
+      {
+        "count" : 63,
+        "currentRowIndex" : 0,
+        "isLast" : false,
+        "percentComplete" : 0,
+        "tableDone" : false,
+        "tableIndex" : 0
+      },
+      {
+        "count" : 73,
+        "currentRowIndex" : 0,
+        "isLast" : false,
+        "percentComplete" : 0,
+        "tableDone" : false,
+        "tableIndex" : 0
+      },
+      {
+        "count" : 83,
+        "currentRowIndex" : 0,
+        "isLast" : false,
+        "percentComplete" : 0,
+        "tableDone" : false,
+        "tableIndex" : 0
+      },
+      {
+        "count" : 93,
+        "currentRowIndex" : 0,
+        "isLast" : false,
+        "percentComplete" : 0,
+        "tableDone" : false,
+        "tableIndex" : 0
+      },
+      {
+        "count" : 103,
+        "currentRowIndex" : 0,
+        "isLast" : false,
+        "percentComplete" : 0,
+        "tableDone" : false,
+        "tableIndex" : 0
+      },
+      {
+        "count" : 113,
+        "currentRowIndex" : 0,
+        "isLast" : false,
+        "percentComplete" : 0,
+        "tableDone" : true,
+        "tableIndex" : 0
+      }
+    ],
+    "snapshottableCheckpoints" : {
+
+    },
+    "startTime" : "2026-05-19T00:16:21Z",
+    "trainingAccuracy" : 1,
+    "trainingResults" : {
+      "textClassifier" : {
+        "accuracy" : 1,
+        "confusionMatrix" : [
+          {
+            "actual" : "digestible_article",
+            "count" : 46,
+            "expected" : "digestible_article"
+          },
+          {
+            "actual" : "noise",
+            "count" : 32,
+            "expected" : "noise"
+          },
+          {
+            "actual" : "sensitive_portal",
+            "count" : 35,
+            "expected" : "sensitive_portal"
+          }
+        ],
+        "statsByLabel" : {
+          "digestible_article" : {
+            "count" : 46,
+            "precisionRecall" : {
+              "success" : {
+                "precision" : 1,
+                "recall" : 1
+              }
+            }
+          },
+          "noise" : {
+            "count" : 32,
+            "precisionRecall" : {
+              "success" : {
+                "precision" : 1,
+                "recall" : 1
+              }
+            }
+          },
+          "sensitive_portal" : {
+            "count" : 35,
+            "precisionRecall" : {
+              "success" : {
+                "precision" : 1,
+                "recall" : 1
+              }
+            }
+          }
+        }
+      }
+    },
+    "validationAccuracy" : 0.75,
+    "validationResults" : {
+      "textClassifier" : {
+        "accuracy" : 0.75,
+        "confusionMatrix" : [
+          {
+            "actual" : "digestible_article",
+            "count" : 2,
+            "expected" : "digestible_article"
+          },
+          {
+            "actual" : "noise",
+            "count" : 1,
+            "expected" : "digestible_article"
+          },
+          {
+            "actual" : "noise",
+            "count" : 3,
+            "expected" : "noise"
+          },
+          {
+            "actual" : "noise",
+            "count" : 2,
+            "expected" : "sensitive_portal"
+          },
+          {
+            "actual" : "sensitive_portal",
+            "count" : 4,
+            "expected" : "sensitive_portal"
+          }
+        ],
+        "statsByLabel" : {
+          "digestible_article" : {
+            "count" : 2,
+            "precisionRecall" : {
+              "success" : {
+                "precision" : 0.6666666666666666,
+                "recall" : 1
+              }
+            }
+          },
+          "noise" : {
+            "count" : 6,
+            "precisionRecall" : {
+              "success" : {
+                "precision" : 1,
+                "recall" : 0.5
+              }
+            }
+          },
+          "sensitive_portal" : {
+            "count" : 4,
+            "precisionRecall" : {
+              "success" : {
+                "precision" : 0.6666666666666666,
+                "recall" : 1
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "validationEntity" : {
+    "analysedDataType" : "auto",
+    "dataResult" : {
+      "createdDate" : "2026-05-19T00:16:13Z"
+    },
+    "splitOptions" : {
+      "strategy" : {
+        "automatic" : {
+
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

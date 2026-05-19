@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { processHtml } from './index.js';
 
 describe('gate-ingest pipeline', () => {
-  it('processes a login form into structural tokens', () => {
+  it('processes a login form into structural tokens', async () => {
     const html = `
       <html>
         <body>
@@ -20,7 +20,7 @@ describe('gate-ingest pipeline', () => {
       </html>
     `;
 
-    const { structural, semantic } = processHtml(html);
+    const { structural, semantic } = await processHtml(html);
 
     // Check structural tokens
     expect(structural).toContain('structNavStart');
@@ -40,7 +40,7 @@ describe('gate-ingest pipeline', () => {
     expect(semantic).not.toContain('STRUCT_FORM_START');
   });
 
-  it('processes a news article into clean markdown', () => {
+  it('processes a news article into clean markdown', async () => {
     const html = `
       <html>
         <body>
@@ -53,7 +53,7 @@ describe('gate-ingest pipeline', () => {
       </html>
     `;
 
-    const { structural, semantic } = processHtml(html);
+    const { structural, semantic } = await processHtml(html);
 
     // Check structural tokens
     expect(structural).toContain('sysHeader1 BreakingNews');
@@ -61,5 +61,25 @@ describe('gate-ingest pipeline', () => {
     // Check semantic markdown
     expect(semantic).toContain('# Breaking News');
     expect(semantic).toContain('This is a **major** story about privacy.');
+  });
+
+  it('extracts page metadata', async () => {
+    const html = `
+      <html>
+        <head>
+          <title>Privacy Policy</title>
+          <meta name="description" content="Our commitment to your data.">
+        </head>
+        <body>
+          <p>We respect your privacy.</p>
+        </body>
+      </html>
+    `;
+
+    const { metadata } = await processHtml(html);
+
+    expect(metadata).toBeDefined();
+    expect(metadata?.title).toBe('Privacy Policy');
+    expect(metadata?.description).toBe('Our commitment to your data.');
   });
 });

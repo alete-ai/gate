@@ -23,7 +23,7 @@ async function synthesize() {
     const html = await fs.readFile(filePath, 'utf-8');
 
     // Convert HTML into both structural tokens and semantic Markdown
-    const { structural, semantic, hasSensitiveInfo } = await processHtml(html, { redact: true });
+    const { structural, semantic, hasSensitiveInfo, metadata } = await processHtml(html, { redact: true });
 
     if (!structural || structural.trim().length === 0) {
       console.warn(`⚠️  Alete Gate: Skipping ${file} - No structural artifacts extracted.`);
@@ -42,7 +42,8 @@ async function synthesize() {
       structural,
       semantic,
       label,
-      hasSensitiveInfo
+      hasSensitiveInfo,
+      metadata: metadata || {}
     });
   }
 

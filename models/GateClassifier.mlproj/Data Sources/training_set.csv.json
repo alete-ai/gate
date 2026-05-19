@@ -22,6 +22,20 @@
         "id" : "575C8973-B220-4A67-ADCA-105155C6CF94",
         "subtitle" : "GateClassifier 3",
         "title" : "Used By"
+      },
+      {
+        "createdDate" : "2026-05-19T00:15:55Z",
+        "event" : "dataSourceTrainingStarted",
+        "id" : "7AED2008-1980-443F-B6F2-FC1ACA2D2A07",
+        "subtitle" : "GateClassifier 4",
+        "title" : "Used By"
+      },
+      {
+        "createdDate" : "2026-05-19T00:16:21Z",
+        "event" : "dataSourceTrainingStarted",
+        "id" : "E1ABA711-4474-4FEE-83CD-2337B9B8DEDD",
+        "subtitle" : "GateClassifier 4",
+        "title" : "Used By"
       }
     ],
     "dataSourceMetrics",
@@ -44,6 +58,20 @@
         "createdDate" : "2026-05-18T20:05:12Z",
         "event" : "dataSourceMetrics",
         "id" : "110F1A89-CE61-4200-BF89-FBB5691141D1",
+        "subtitle" : "3 Classes, 125 Items",
+        "title" : "Data Summary"
+      },
+      {
+        "createdDate" : "2026-05-19T00:15:55Z",
+        "event" : "dataSourceMetrics",
+        "id" : "0D583545-41FF-493D-9CE9-A06F8EC4C748",
+        "subtitle" : "3 Classes, 125 Items",
+        "title" : "Data Summary"
+      },
+      {
+        "createdDate" : "2026-05-19T00:16:21Z",
+        "event" : "dataSourceMetrics",
+        "id" : "16D514E9-729E-41FF-901C-687533C81302",
         "subtitle" : "3 Classes, 125 Items",
         "title" : "Data Summary"
       }
@@ -107,10 +135,11 @@
   },
   "dataURL" : "file:///Users/stoyan/git/gate/data/processed/training_set.csv",
   "experimentIDs" : [
-    "8183BE66-CE1F-4B0F-A887-6BF5CA9198CF"
+    "8183BE66-CE1F-4B0F-A887-6BF5CA9198CF",
+    "C1081728-0138-4D7F-8EA4-DBEF3DEC10A0"
   ],
   "id" : "8ED9CC9E-9F9D-4684-BC14-51AEE2F4C983",
-  "modifiedDate" : "2026-05-18T20:05:24Z",
+  "modifiedDate" : "2026-05-19T00:16:21Z",
   "pathType" : 0,
   "preferredFilename" : "training_set.csv",
   "title" : "training_set.csv",
