@@ -22,14 +22,15 @@ async function convertToCsv() {
     const rows = data.map(item => {
       const title = item.metadata?.title || '';
       const description = item.metadata?.description || '';
-      // Truncate structural substrate to avoid overwhelming the model with long rows
-      // 2000 chars is usually plenty for structural signals
+      const semantic = (item.semantic || '').slice(0, 2000);
       const structural = (item.structural || '').slice(0, 2000);
       
-      // Concatenate metadata into the primary text field for maximum feature visibility
+      // Concatenate metadata and semantic content into the primary text field.
+      // We prioritize semantic content over structural substrate for narrative-heavy classification.
       let combinedText = '';
       if (title) combinedText += `${title}. `;
       if (description) combinedText += `${description}. `;
+      if (semantic) combinedText += `${semantic}. `;
       combinedText += structural;
       
       const label = item.label;
