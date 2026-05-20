@@ -37,12 +37,12 @@ Establish a robust pipeline for gathering real-world structural data.
 - [x] Establish **Parity Audit** between TypeScript `gate-ingest` and Swift `NLModel` tokenization.
   - Added `structStateLoading`, `structStateWaiting`, `structStateAuth` tokens.
   - Improved `sensitive_portal` recall to 97.44% in native substrate.
-- [x] Implement **Redactor** in `gate-ingest` pipeline.
+- [x] Implement **Redactor** in `gate-ingest` pipeline. (Note: Deprecated and removed in v0.1.3 for strategic simplification and performance).
   - Ported `openredaction` logic from `~/git/edge`.
   - Adopts "Narrative-First" strategy.
 - [x] Optimize **Packaging** for Browser Extensions (WXT).
   - Configured `tsup` for dual Node/Browser builds.
-  - Bundled `@mdream/js` and `openredaction` into a single 332KB browser ESM.
+  - Bundled `@mdream/js` into a single 42KB browser ESM (reduced from 332KB after removing `openredaction`).
   - Implemented Node.js built-in shims (`fs`, `crypto`, `path`) for extension compatibility.
 - [x] Evaluate `noise` vs `sensitive_portal` confusion on SPA loading states (Index 90).
   - Resolved via `structStateLoading` token mapping.

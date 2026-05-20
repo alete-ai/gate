@@ -1,7 +1,6 @@
 import { htmlToMarkdown, withMinimalPreset } from '@mdream/js';
 import { structuralPlugin } from './config.js';
 import { mapToTokens } from './token-mapper.js';
-import { Redactor, type RedactorOptions } from './sanitization/Redactor.js';
 
 export enum GateLabel {
   SENSITIVE_PORTAL = 'sensitive_portal',
@@ -24,11 +23,6 @@ export interface IngestionResult {
   semantic: string;
 
   /**
-   * Whether the semantic content contains sensitive PII that was redacted.
-   */
-  hasSensitiveInfo?: boolean;
-
-  /**
    * Extracted metadata from the HTML (title, description, author, etc.)
    */
   metadata?: Record<string, string>;
@@ -40,11 +34,6 @@ export interface IngestionResult {
 }
 
 export interface IngestionOptions {
-  /**
-   * Redaction configuration. If true, uses default settings.
-   */
-  redact?: RedactorOptions | boolean;
-
   /**
    * Override the semantic token cap for this specific call.
    */
@@ -158,21 +147,9 @@ export async function processHtml(html: string, options: IngestionOptions = {}):
   const { truncated, isTruncated } = truncateToCap(semantic, cap);
   semantic = truncated;
 
-  let hasSensitiveInfo = false;
-
-  // 3. Redaction Pipeline
-  if (options.redact) {
-    const redactorOptions = typeof options.redact === 'object' ? options.redact : {};
-    const redactor = new Redactor(redactorOptions);
-    const result = await redactor.process(semantic);
-    semantic = result.redacted;
-    hasSensitiveInfo = result.hasSensitiveInfo;
-  }
-
   return {
     structural: mapToTokens(structuralMd),
     semantic,
-    hasSensitiveInfo,
     metadata,
     isTruncated
   };
@@ -180,4 +157,3 @@ export async function processHtml(html: string, options: IngestionOptions = {}):
 
 export { structuralPlugin as plugin } from './config.js';
 export { mapToTokens } from './token-mapper.js';
-export { Redactor, type RedactorOptions };

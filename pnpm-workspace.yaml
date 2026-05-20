@@ -3,3 +3,5 @@ packages:
   - 'packages/*'
 allowBuilds:
   esbuild: true
+overrides:
+  '@alete-ai/gate-ingest': link:packages/gate-ingest

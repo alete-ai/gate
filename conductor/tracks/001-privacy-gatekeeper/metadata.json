@@ -1,6 +1,6 @@
 {
   "id": "001-privacy-gatekeeper",
   "name": "PrivacyGatekeeper Classifier",
-  "status": "Active",
+  "status": "Completed",
   "description": "Implementing an Apple native classifier for edge-based sensitivity filtering."
 }

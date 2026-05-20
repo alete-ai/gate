@@ -14,7 +14,7 @@ export default defineConfig([
     minify: true,
     treeshake: true,
     platform: 'node',
-    external: ['@mdream/js', 'openredaction'],
+    external: ['@mdream/js'],
   },
   {
     entry: {
@@ -27,7 +27,7 @@ export default defineConfig([
     minify: true,
     treeshake: true,
     platform: 'browser',
-    noExternal: ['@mdream/js', 'openredaction'],
+    noExternal: ['@mdream/js'],
     define: {
       'process.versions.node': 'undefined',
       'process.platform': '"browser"',
