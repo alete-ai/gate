@@ -33,7 +33,7 @@
 - **Serra (Performance Systems):**
   "For **Sarah (The Optimizer)**, the edge training pipeline must remain highly efficient. We will write a curation script `scripts/compile_datasets.ts` that:
   - Takes `data/raw_staging_labeled.json` and randomly splits it: 20% into `data/staging_test_set.json` (left off to the side) and 80% to be merged with our existing `data/processed/training_set.json`.
-  - Re-compiles `data/processed/training_set.csv` for Create ML.
+  - Re-compiles `data/processed/training_set.csv` for Create ML training.
   - We'll run `scripts/train_model.swift` to train the new MaxEnt model.
   - We'll extend `scripts/verify_model.swift` to evaluate performance separately on the validation set AND the new `data/staging_test_set.json`. We will verify if we achieve higher accuracy and recall relative to the LLM labels without growing the model size past 1MB, ensuring Sarah's strict battery/latency targets remain met."
 
@@ -48,10 +48,53 @@
 
 ---
 
-## Time to Value (TTV) Synthesis & Scorecard
+## Time to Value (TTV) Synthesis & Scorecard (Initial Plan)
 
 | Persona | Target TTV Commitment | Focus Metric & Path to Value |
 | :--- | :--- | :--- |
 | **The Alpha-Curator (Marcus)** | **9.8 / 10** | Resolves over-sensitivity immediately, ensuring narrative digests are rich with high-signal content. |
 | **The Optimizer (Sarah)** | **9.7 / 10** | Using Gemini 3.5 Flash High as the ground truth guarantees model decisions map to human-level precision. |
 | **The Substrate Specialist (Leo)** | **9.6 / 10** | Lightweight edge model (MaxEnt) retains sub-1ms inference speeds and local execution with zero central compliance risks. |
+
+---
+
+## Refinement Input (2026-06-08)
+
+> **Stoyan (User):**
+> I'm not sure exactly how to proceed here, but we need to understand what the data that we're pulling out of the database is, because right now we have a public repo that we're saving the data in, and I want to make sure that there is nothing sensitive being leaked, because I was just scraping all of my own internal content as I navigated through my browser over the weekend.
+> Let's add a step to that, and let's hold off adding that raw staging labeled.json data to GitHub right away before we can analyze if there's anything sensitive we don't want to put in a public repo. Add that to the conductor track.
+
+### Simulated Team Discussion: Privacy Preservation & git-ignore Mandates
+
+- **Lyra (Product Lead):**
+  "This is a critical security vulnerability. Since Stoyan's browser extension recorded real-world traffic over the weekend, the staging dataset likely contains personal PII, authentication cookies, auth tokens, names, personal emails, or private documents. 
+  
+  Since the `gate` repository is public, committing raw staging files like `raw_staging_labeled.json` or `staging_test_set.json` is a absolute blocker. We must immediately update the track spec and plan to enforce that all downloaded/generated staging datasets are git-ignored. They must remain strictly local to the developer sandbox."
+
+- **Julian (Narrative & Vision):**
+  "Absolutely. For **Marcus (The Alpha-Curator)**, the narrative of 'Cognitive Sovereignty' requires absolute data safety. A leak of founder browser history in a public GitHub commit would completely destroy the project's credibility. The TTV scorecard remains high only if we can guarantee zero PII leakage."
+
+- **Maya (Substrate Architect):**
+  "Technically, we will update the git-ignore rules at the very start of the track:
+  - Add `data/raw_staging_*.json` and `data/staging_test_set.json` to `.gitignore`.
+  - Ensure the local directory `data/processed/` is configured to only track anonymized, stripped token sets, not raw Markdown with personal contents.
+  - Introduce an **Anonymization & Auditing Step** in Phase 1 before any data merges."
+
+- **Serra (Performance Systems):**
+  "Right. The Create ML model only needs structural tokens (e.g. `structFormStart`, `structButtonSave`) to classify structural layouts. It does NOT train on specific natural language content for portal detection.
+  We will implement a local scrubbing script `scripts/anonymize_staging_data.ts` that:
+  1. Scans the fetched staging JSON.
+  2. Automatically strips or redacts potential PII patterns (emails, tokens, private names, UUIDs).
+  3. Prepares purely tokenized representation or redacted text before combining it with the training set.
+  This allows us to train the model locally on production-accurate structures without committing any private text content to Git."
+
+- **Aris (Sensory Friction):**
+  "This eliminates all developer anxiety for Stoyan. The system becomes a safe container. Let's update the specifications and plans accordingly."
+
+## Updated Time to Value (TTV) Synthesis & Scorecard
+
+| Persona | Target TTV Commitment | Focus Metric & Path to Value |
+| :--- | :--- | :--- |
+| **The Alpha-Curator (Marcus)** | **9.9 / 10** | Strict local boundaries prevent leakage of browsing sessions, preserving absolute brand trust. |
+| **The Optimizer (Sarah)** | **9.7 / 10** | Local-only evaluation on the git-ignored `staging_test_set.json` validates real-world accuracy without compromising security. |
+| **The Substrate Specialist (Leo)** | **9.8 / 10** | Clear `.gitignore` rules and local script-based PII redaction ensure compliance and zero data risk. |
