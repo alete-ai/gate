@@ -1,6 +1,6 @@
 {
   "name": "alete-gate-workspace",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "description": "Workspace for Alete Gate packages",
   "scripts": {
@@ -30,7 +30,10 @@
     "@mendable/firecrawl-js": "^4.24.1"
   },
   "devDependencies": {
+    "@google/genai": "^2.8.0",
     "@types/node": "^25.8.0",
+    "mongodb": "^7.2.0",
+    "mongoose": "^9.6.3",
     "playwright": "^1.60.0",
     "tsup": "^8.5.1",
     "tsx": "^4.22.1",

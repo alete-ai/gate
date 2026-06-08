@@ -43,3 +43,11 @@ coverage/
 
 # Dev
 .worktrees/
+
+# Staging Data Isolation (Track 002)
+data/raw_staging_*.json
+data/staging_test_set.json
+data/processed/staging_training_set.json
+data/processed/training_set_flat.json
+data/processed/training_set_flat.csv
+scratch/
