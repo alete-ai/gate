@@ -108,8 +108,8 @@ export async function processHtml(html: string, options: IngestionOptions = {}):
 
   let metadata: Record<string, string> = {};
   let semantic = htmlToMarkdown(html, withMinimalPreset({
-    isolateMain: false,
     plugins: {
+      isolateMain: false,
       tagOverrides: {
         a: { enter: '', exit: '' },
         img: { enter: '', exit: '' },
