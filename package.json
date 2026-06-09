@@ -11,7 +11,8 @@
     "publish:all": "pnpm run publish:ts && pnpm run publish:swift",
     "synthesize": "tsx scripts/synthesize.js",
     "to-csv": "tsx scripts/to_csv.js",
-    "curate": "tsx scripts/auto_curate.ts"
+    "curate": "tsx scripts/auto_curate.ts",
+    "db:retrain-pipeline": "tsx scripts/retrain_pipeline.ts"
   },
   "author": "Stoyan Dimitrov <https://github.com/StoyanD>",
   "license": "AGPL-3.0",
