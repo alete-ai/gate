@@ -18,7 +18,7 @@ final class AleteGateKitTests: XCTestCase {
         XCTAssertNotEqual(portalResult.label, .digestibleArticle)
         XCTAssertGreaterThan(portalResult.confidence, 0.0)
         
-        let articleTokens = "sysHeader1 BreakingNews This is a story about privacy and technology"
+        let articleTokens = "structLinkElement sysHeader1 Mathematicsisoutthere sysHeader2 SergiuKlainermanspentyearsprov structLinkElement!structLinkElementAbstractdigitalillus structButtonSaveessayMathematics Mathematics Sergiu Klainerman Steve Nadis sysHeader2 Popularthismonth structLinkElement!structLinkElementTwopeopleonatrainone structButtonSaveessayStories Does Stripped Flora Champy structLinkElement!structLinkElementAgroupofrunnersonaro structButtonSaveessaySports The Ethiopian One The Michael Crawley Geoff Burns structLinkElement!structLinkElementAbustlingoutdoormark structButtonSaveessayDemography The Indians Genetic India Kiran Kumbhar structLinkElement!structLinkElementAbstractdigitalartwo structButtonSaveessayQuantum Reality Particles Universe Felix Flicker structLinkElement!structLinkElementPaintingoffourmensit structButtonSaveessayProgress Gen Emily Herring structLinkElement!structLinkElementIllustrationofastyli structButtonSavevideoStories The Indian structLinkElement!structLinkElementAcolourfulgraffitico structButtonSaveessayHuman Rights Talk Attiya Waris"
         let articleResult = agent.classify(tokens: articleTokens, includeScores: true)
         XCTAssertEqual(articleResult.label, .digestibleArticle)
         XCTAssertNotNil(articleResult.scores)
