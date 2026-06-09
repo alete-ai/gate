@@ -1,0 +1,8 @@
+{
+  "track_id": "002-edge-classifier-retraining",
+  "type": "chore",
+  "status": "new",
+  "created_at": "2026-06-08T16:48:00Z",
+  "updated_at": "2026-06-08T16:48:00Z",
+  "description": "Retrain edge classifier (PrivacyGatekeeper) using raw staging extractions labeled with Gemini 3.5 Flash High as the ground truth."
+}

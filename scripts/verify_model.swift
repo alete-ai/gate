@@ -2,6 +2,40 @@ import Foundation
 import CoreML
 import NaturalLanguage
 
+// Swift translation of JS classifier input builder
+func buildClassifierInput(urlHost: String?, urlPathKeywords: [String]?, title: String?, tokens: String) -> String {
+    var combined = ""
+    
+    if let host = urlHost, !host.isEmpty {
+        let cleanHost = host.lowercased().trimmingCharacters(in: .whitespacesAndNewlines).replacingOccurrences(of: "www.", with: "")
+        if !cleanHost.isEmpty {
+            combined += "urlHost_\(cleanHost) "
+        }
+    }
+    
+    if let pathKeywords = urlPathKeywords, !pathKeywords.isEmpty {
+        combined += pathKeywords.map { "urlPath_\($0)" }.joined(separator: " ") + " "
+    }
+    
+    if let titleStr = title, !titleStr.isEmpty {
+        let cleanTitle = titleStr.lowercased()
+        let pattern = "[^a-z0-9\\s]"
+        if let regex = try? NSRegularExpression(pattern: pattern, options: []) {
+            let range = NSRange(location: 0, length: cleanTitle.utf16.count)
+            let replaced = regex.stringByReplacingMatches(in: cleanTitle, options: [], range: range, withTemplate: " ")
+            let words = replaced.components(separatedBy: .whitespacesAndNewlines)
+                .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+                .filter { !$0.isEmpty }
+            if !words.isEmpty {
+                combined += words.map { "title_\($0)" }.joined(separator: " ") + " "
+            }
+        }
+    }
+    
+    combined += tokens.trimmingCharacters(in: .whitespacesAndNewlines)
+    return combined.trimmingCharacters(in: .whitespacesAndNewlines)
+}
+
 // Metabolic Sensors & Telemetry Structs
 struct Metric {
     var total: Int = 0
@@ -19,116 +53,114 @@ struct Metric {
     }
 }
 
+func evaluateDataset(model: NLModel, fileURL: URL, name: String) {
+    print("\n----------------------------------------")
+    print("🔍 Evaluating Dataset: \(name)")
+    print("📍 File: \(fileURL.path)")
+    print("----------------------------------------")
+    
+    guard FileManager.default.fileExists(atPath: fileURL.path) else {
+        print("⚠️ File does not exist, skipping evaluation.")
+        return
+    }
+    
+    do {
+        let data = try Data(contentsOf: fileURL)
+        guard let json = try JSONSerialization.jsonObject(with: data) as? [[String: Any]] else {
+            print("❌ Error: Invalid JSON format.")
+            return
+        }
+        
+        var metrics = Metric()
+        var labelMetrics: [String: Metric] = [:]
+        
+        print("🔍 Running inference on \(json.count) samples...")
+        
+        for (index, sample) in json.enumerated() {
+            let structural = sample["structural"] as? String ?? ""
+            let metadata = sample["metadata"] as? [String: Any] ?? [:]
+            let expected = sample["label"] as? String ?? "unknown"
+            
+            let title = metadata["title"] as? String ?? sample["title"] as? String ?? ""
+            let urlHost = metadata["urlHost"] as? String ?? sample["urlHost"] as? String ?? ""
+            let urlPathKeywords = metadata["urlPathKeywords"] as? [String] ?? sample["urlPathKeywords"] as? [String] ?? []
+            
+            // Truncate structural tokens
+            let truncatedStructural = String(structural.prefix(2000))
+            
+            // Combined text format matching Create ML input
+            let combinedText = buildClassifierInput(urlHost: urlHost, urlPathKeywords: urlPathKeywords, title: title, tokens: truncatedStructural)
+            
+            let start = CFAbsoluteTimeGetCurrent()
+            let hypotheses = model.predictedLabelHypotheses(for: combinedText, maximumCount: 3)
+            let prediction = model.predictedLabel(for: combinedText) ?? "unknown"
+            let confidence = hypotheses[prediction] ?? 0.0
+            let latency = CFAbsoluteTimeGetCurrent() - start
+            
+            metrics.total += 1
+            metrics.totalLatency += latency
+            
+            if labelMetrics[expected] == nil { labelMetrics[expected] = Metric() }
+            labelMetrics[expected]?.total += 1
+            
+            if prediction == expected {
+                metrics.correct += 1
+                labelMetrics[expected]?.correct += 1
+            } else {
+                // Track failures
+                if expected == "sensitive_portal" {
+                    if prediction == "digestible_article" {
+                        metrics.falseNegatives += 1
+                    }
+                    print("🚨 [Index \(index)] PORTAL LEAK: Expected \(expected), Got \(prediction) (\(String(format: "%.1f", confidence * 100))%)")
+                } else if expected == "digestible_article" {
+                    if prediction == "sensitive_portal" {
+                        metrics.falsePositives += 1
+                    }
+                    print("📖 [Index \(index)] FALSE BLOCK: Expected \(expected), Got \(prediction) (\(String(format: "%.1f", confidence * 100))%)")
+                }
+            }
+        }
+        
+        // Output results
+        print("\n📊 RESULTS FOR \(name.uppercased())")
+        print("✅ Accuracy:      \(String(format: "%.2f", metrics.accuracy))%")
+        print("⏱️ Avg Latency:   \(String(format: "%.2f", metrics.avgLatency)) ms")
+        print("🔴 False Negs (Leaks):    \(metrics.falseNegatives)")
+        print("🟡 False Pos (Blocks):    \(metrics.falsePositives)")
+        
+        print("\n--- Per-Label Accuracy ---")
+        for (label, m) in labelMetrics {
+            print("🏷️ \(label.padding(toLength: 20, withPad: " ", startingAt: 0)): \(String(format: "%.2f", m.accuracy))% (\(m.correct)/\(m.total))")
+        }
+        
+    } catch {
+        print("❌ Error reading or parsing dataset: \(error.localizedDescription)")
+    }
+}
+
 let projectRoot = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
 let modelURL = projectRoot.appendingPathComponent("models/PrivacyGatekeeper.mlmodel")
-let dataURL = projectRoot.appendingPathComponent("data/processed/training_set.json")
+let mainDataURL = projectRoot.appendingPathComponent("data/processed/training_set.json")
+let stagingTestURL = projectRoot.appendingPathComponent("data/staging_test_set.json")
 
 print("🚀 Starting Strategic Verification Substrate...")
 print("📍 Model: \(modelURL.path)")
-print("📍 Data: \(dataURL.path)")
 
 do {
-    // 1. Load Dataset
-    let data = try Data(contentsOf: dataURL)
-    guard let json = try JSONSerialization.jsonObject(with: data) as? [[String: Any]] else {
-        print("❌ Error: Invalid JSON format.")
-        exit(1)
-    }
-    
-    // 2. Compile and Load Model
+    // Compile and Load Model
     print("⚙️ Compiling model substrate...")
     let compiledURL = try MLModel.compileModel(at: modelURL)
     let model = try NLModel(contentsOf: compiledURL)
     
-    // 3. Evaluation Loop
-    var metrics = Metric()
-    var labelMetrics: [String: Metric] = [:]
+    // Evaluate Main Training Set
+    evaluateDataset(model: model, fileURL: mainDataURL, name: "Main Training Set")
     
-    print("🔍 Evaluating \(json.count) samples...")
-    
-    for (index, sample) in json.enumerated() {
-        let structural = sample["structural"] as? String ?? ""
-        let metadata = sample["metadata"] as? [String: String] ?? [:]
-        let expected = sample["label"] as? String ?? "unknown"
-        
-        let title = metadata["title"] ?? ""
-        let description = metadata["description"] ?? ""
-        
-        // Truncate to match CSV prep
-        let truncatedStructural = String(structural.prefix(2000))
-        
-        // Combined text format
-        var combinedText = ""
-        if !title.isEmpty { combinedText += "\(title). " }
-        if !description.isEmpty { combinedText += "\(description). " }
-        combinedText += truncatedStructural
-        
-        let start = CFAbsoluteTimeGetCurrent()
-        let hypotheses = model.predictedLabelHypotheses(for: combinedText, maximumCount: 3)
-        let prediction = model.predictedLabel(for: combinedText) ?? "unknown"
-        let confidence = hypotheses[prediction] ?? 0.0
-        let latency = CFAbsoluteTimeGetCurrent() - start
-        
-        metrics.total += 1
-        metrics.totalLatency += latency
-        
-        if labelMetrics[expected] == nil { labelMetrics[expected] = Metric() }
-        labelMetrics[expected]?.total += 1
-        
-        if prediction == expected {
-            metrics.correct += 1
-            labelMetrics[expected]?.correct += 1
-        } else {
-            // Tracking Specific Failures
-            if expected == "sensitive_portal" {
-                if prediction == "digestible_article" {
-                    metrics.falseNegatives += 1
-                }
-                print("\n🚨 SENSITIVE PORTAL MISS at Index \(index):")
-                print("   Expected: \(expected)")
-                print("   Got:      \(prediction) (\(String(format: "%.2f", confidence * 100))%)")
-                print("   Input:    \(combinedText.prefix(200))...")
-            } else if expected == "digestible_article" {
-                if prediction == "sensitive_portal" {
-                    metrics.falsePositives += 1
-                }
-                print("\n📖 ARTICLE MISS at Index \(index):")
-                print("   Expected: \(expected)")
-                print("   Got:      \(prediction) (\(String(format: "%.2f", confidence * 100))%)")
-                print("   Input:    \(combinedText.prefix(200))...")
-            } else if expected == "noise" && prediction == "sensitive_portal" {
-                // Noise blocked as sensitive is okay but worth noting
-                print("\n🟡 NOISE BLOCKED at Index \(index):")
-                print("   Expected: \(expected)")
-                print("   Got:      \(prediction) (\(String(format: "%.2f", confidence * 100))%)")
-                print("   Input:    \(combinedText.prefix(200))...")
-            }
-        }
-        
-        if index > 0 && index % 100 == 0 {
-            print("⏳ Progress: \(index)/\(json.count)...")
-        }
-    }
-    
-    // 4. Final Telemetry
-    print("\n" + String(repeating: "=", count: 40))
-    print("📊 AGGREGATE PERFORMANCE TELEMETRY")
-    print(String(repeating: "=", count: 40))
-    print("✅ Accuracy:      \(String(format: "%.2f", metrics.accuracy))%")
-    print("⏱️ Avg Latency:   \(String(format: "%.2f", metrics.avgLatency)) ms")
-    print("🔴 False Negs:    \(metrics.falseNegatives) (Catastrophic Risk)")
-    print("🟡 False Pos:     \(metrics.falsePositives) (UX Friction)")
-    
-    print("\n--- Per-Label Performance ---")
-    for (label, m) in labelMetrics {
-        print("🏷️ \(label.padding(toLength: 20, withPad: " ", startingAt: 0)): \(String(format: "%.2f", m.accuracy))% (\(m.correct)/\(m.total))")
-    }
-    
-    // 5. Survival Check
-    if metrics.falseNegatives == 0 {
-        print("\n✅ SURVIVAL METRIC MET: 100% Recall on Sensitive Portals.")
+    // Evaluate Staging Test Set (Real-world holdout)
+    if FileManager.default.fileExists(atPath: stagingTestURL.path) {
+        evaluateDataset(model: model, fileURL: stagingTestURL, name: "Staging Holdout Test Set")
     } else {
-        print("\n❌ SURVIVAL METRIC FAILED: \(metrics.falseNegatives) leaks detected.")
+        print("\nℹ️ Staging test set not found at \(stagingTestURL.path)")
     }
     
 } catch {

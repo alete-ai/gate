@@ -1,0 +1,8 @@
+{
+  "track_id": "003-edge-retraining-cli",
+  "type": "feature",
+  "status": "Completed",
+  "created_at": "2026-06-09T00:20:00Z",
+  "updated_at": "2026-06-09T00:36:00Z",
+  "description": "Create an automated CLI pipeline/action in the gate workspace to push local extractions, pull, label, anonymize, compile datasets, retrain and verify the PrivacyGatekeeper CoreML classifier."
+}
