@@ -10,7 +10,7 @@ let package = Package(
     products: [
         .library(
             name: "AleteGateKit",
-            type: .dynamic,
+            type: .static,
             targets: ["AleteGateKit"]),
     ],
     dependencies: [
