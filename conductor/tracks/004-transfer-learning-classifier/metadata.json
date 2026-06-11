@@ -1,0 +1,8 @@
+{
+  "track_id": "004-transfer-learning-classifier",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-06-11T17:15:00Z",
+  "updated_at": "2026-06-11T17:15:00Z",
+  "description": "Implement Create ML Transfer Learning for the PrivacyGatekeeper edge classifier to improve accuracy using OS-provided embeddings (targeting v1.0.0 release)."
+}
