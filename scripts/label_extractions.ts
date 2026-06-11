@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import crypto from 'node:crypto';
 import { GoogleGenAI } from '@google/genai';
 
 const DEV_ENV_PATH = '/Users/stoyan/git/vedai/worktrees/chore/edge_retrain/apps/analysis-service/.env.development';
@@ -7,7 +8,47 @@ const INPUT_FILE = path.resolve('data/raw_staging_extractions.json');
 const OUTPUT_FILE = path.resolve('data/raw_staging_labeled.json');
 const MODEL_ID = 'gemini-2.5-flash';
 const LOCATION = 'us-central1';
-const CONCURRENCY = 10; // Process 10 items concurrently
+const CONCURRENCY = 30; // Process 30 items concurrently
+
+function normalizeUrl(url: string): string {
+  try {
+    const parsed = new URL(url);
+    parsed.hostname = parsed.hostname.toLowerCase();
+    const trackingParams = [
+      'utm_source',
+      'utm_medium',
+      'utm_campaign',
+      'utm_term',
+      'utm_content',
+      'fbclid',
+      'gclid',
+    ];
+    trackingParams.forEach((param) => parsed.searchParams.delete(param));
+    let normalized = parsed.toString();
+    if (normalized.endsWith('/')) {
+      normalized = normalized.slice(0, -1);
+    }
+    return normalized;
+  } catch {
+    return url.trim().toLowerCase().replace(/\/$/, '');
+  }
+}
+
+function normalizeMarkdown(markdown: string): string {
+  if (!markdown) return '';
+  return markdown
+    .replace(/\r\n/g, '\n')
+    .replace(/<!--[\s\S]*?-->/g, '')
+    .split('\n')
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0)
+    .join('\n');
+}
+
+function generateContentHash(url: string, markdown: string): string {
+  const combined = `${normalizeUrl(url)}|${normalizeMarkdown(markdown)}`;
+  return crypto.createHash('sha256').update(combined).digest('hex');
+}
 
 function getGoogleProjectId(): string {
   if (!fs.existsSync(DEV_ENV_PATH)) {
@@ -110,7 +151,24 @@ async function run() {
   });
 
   const extractions = JSON.parse(fs.readFileSync(INPUT_FILE, 'utf-8'));
-  console.log(`Loaded ${extractions.length} raw extractions to label concurrently.`);
+  console.log(`Loaded ${extractions.length} raw extractions to label.`);
+
+  // Load existing labels for checkpointing
+  const cache = new Map<string, string>();
+  if (fs.existsSync(OUTPUT_FILE)) {
+    try {
+      const existing = JSON.parse(fs.readFileSync(OUTPUT_FILE, 'utf-8'));
+      for (const item of existing) {
+        const hash = item.hash || generateContentHash(item.url, item.content_markdown);
+        if (item.label) {
+          cache.set(hash, item.label);
+        }
+      }
+      console.log(`Loaded ${cache.size} existing labels from cache.`);
+    } catch (err) {
+      console.warn('Could not read existing labeled file, starting fresh labeling.', err);
+    }
+  }
 
   const labeledResults: any[] = [];
   
@@ -119,12 +177,22 @@ async function run() {
     const batch = extractions.slice(i, i + CONCURRENCY);
     console.log(`\nProcessing batch ${Math.floor(i / CONCURRENCY) + 1}/${Math.ceil(extractions.length / CONCURRENCY)}...`);
     
-    const promises = batch.map((item, offset) => 
-      labelItem(ai, item, i + offset + 1, extractions.length)
-    );
+    const promises = batch.map(async (item, offset) => {
+      const hash = item.hash || generateContentHash(item.url, item.content_markdown);
+      const index = i + offset + 1;
+      if (cache.has(hash)) {
+        const label = cache.get(hash)!;
+        console.log(`[${index}/${extractions.length}] Cached: "${item.title || 'Untitled'}" -> ${label}`);
+        return { ...item, label };
+      }
+      return labelItem(ai, item, index, extractions.length);
+    });
     
     const results = await Promise.all(promises);
     labeledResults.push(...results);
+
+    // Save incrementally
+    fs.writeFileSync(OUTPUT_FILE, JSON.stringify(labeledResults, null, 2), 'utf-8');
   }
 
   // Calculate metrics
@@ -137,8 +205,6 @@ async function run() {
     else if (item.label === 'noise') countNoise++;
   }
 
-  // Save labeled results
-  fs.writeFileSync(OUTPUT_FILE, JSON.stringify(labeledResults, null, 2), 'utf-8');
   console.log(`\n✅ Labeling Complete! Labeled records saved to ${OUTPUT_FILE}`);
   console.log(`--- Label Summary ---`);
   console.log(`Portals:   ${countPortals}`);
