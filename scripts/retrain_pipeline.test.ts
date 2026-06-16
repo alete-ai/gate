@@ -1,7 +1,8 @@
 import { describe, it, expect } from 'vitest';
-import { normalizeUrl, normalizeMarkdown, generateContentHash } from './retrain_pipeline.js';
+import { normalizeUrl, normalizeMarkdown, generateContentHash, validateExtractionLabels } from './retrain_pipeline.js';
 
 describe('Retrain Pipeline Helper Functions', () => {
+
   it('should normalize URLs by lowercasing and stripping tracking query params', () => {
     const input = 'HTTPS://www.Example.com/Path/To/Page?utm_source=test&fbclid=123&keep=true';
     const output = normalizeUrl(input);
@@ -24,3 +25,23 @@ describe('Retrain Pipeline Helper Functions', () => {
     expect(hash1.length).toBe(64); // SHA-256 is 64 hex chars
   });
 });
+
+describe('Pipeline Label Validation', () => {
+
+  it('should pass on valid 4-class labels', () => {
+    const valid = [
+      { label: 'deep_work', url: 'https://github.com' },
+      { label: 'informational', url: 'https://wikipedia.org' }
+    ];
+    expect(() => validateExtractionLabels(valid)).not.toThrow();
+  });
+
+  it('should throw validation error when legacy labels are encountered', () => {
+    const invalid = [
+      { label: 'sensitive_portal', url: 'https://bank.com' },
+      { label: 'deep_work', url: 'https://github.com' }
+    ];
+    expect(() => validateExtractionLabels(invalid)).toThrow('Invalid label "sensitive_portal" detected');
+  });
+});
+

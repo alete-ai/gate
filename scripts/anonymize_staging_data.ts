@@ -21,11 +21,19 @@ export function redactPII(text: string): string {
     .replace(/\b\d{3}-\d{2}-\d{4}\b/g, '[REDACTED_SSN]')
     // Redact IP addresses
     .replace(/\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/g, '[IP_ADDRESS]')
+    // Redact project names / Google Cloud project IDs (e.g., vedai-4a1c3)
+    .replace(/\b[a-z0-9]+-[a-z0-9]+-\d{5,}\b/gi, '[PROJECT_ID]')
+    .replace(/vedai-4a1c3/gi, '[PROJECT_ID]')
+    .replace(/alete-cloud/gi, '[PROJECT_ID]')
+    // Redact credential query params
+    .replace(/(?:user|username)=([a-zA-Z0-9_-]+)/gi, 'user=[REDACTED_USER]')
+    .replace(/(?:pass|password)=([a-zA-Z0-9_-]+)/gi, 'password=[REDACTED_PASS]')
     // Redact typical API keys / long hex or base64 tokens (32+ chars)
     .replace(/\b[a-zA-Z0-9_-]{32,}\b/g, '[TOKEN]')
     // Redact absolute URLs in markdown and text
     .replace(/https?:\/\/[^\s\)\"\'\>]+/gi, '[URL]');
 }
+
 
 function getHostname(urlStr: string): string {
   try {
@@ -106,4 +114,8 @@ async function run() {
   console.log(`\n✅ Anonymization Complete! Saved ${anonymizedData.length} scrubbed records to ${OUTPUT_FILE}`);
 }
 
-run().catch(console.error);
+const isMain = process.argv[1] && (process.argv[1].endsWith('anonymize_staging_data.ts') || process.argv[1].endsWith('anonymize_staging_data.js') || process.argv[1].endsWith('anonymize_staging_data'));
+if (isMain) {
+  run().catch(console.error);
+}
+

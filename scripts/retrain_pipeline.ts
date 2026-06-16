@@ -65,6 +65,16 @@ export function generateContentHash(url: string, markdown: string): string {
   return crypto.createHash('sha256').update(combined).digest('hex');
 }
 
+export function validateExtractionLabels(extractions: any[]): void {
+  const validLabels = new Set(['deep_work', 'informational', 'communication', 'noise']);
+  for (const item of extractions) {
+    if (!item.label || !validLabels.has(item.label)) {
+      throw new Error(`Invalid label "${item.label}" detected for item: ${item.url || 'unknown'}`);
+    }
+  }
+}
+
+
 // Credential Resolvers
 function getLocalUri(): string {
   if (fs.existsSync(DEV_ENV_PATH)) {
