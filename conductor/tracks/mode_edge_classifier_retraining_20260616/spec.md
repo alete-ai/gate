@@ -15,42 +15,47 @@ We will utilize the existing retraining orchestrator pipeline CLI (`scripts/retr
 
 ## 2. Objectives
 
-1.  **Gemini Auto-Labeling Update:** Refactor `scripts/label_extractions.ts` to query Gemini 3.5 Flash using a prompt tailored for the 4 cognitive modes.
-2.  **Dataset Compilation Expansion:** Modify `scripts/compile_datasets.ts` and `scripts/anonymize_staging_data.ts` to handle, validate, and compile datasets mapped to the new classes.
-3.  **Swift Model Training Upgrade:** Adapt `scripts/train_model.swift` to train the Apple MaxEnt text classifier with the updated 4-class taxonomy.
-4.  **Verification & Metrics Verification:** Refactor `scripts/verify_model.swift` to output evaluation matrices (precision, recall, F1, accuracy) across the 4 classes, ensuring validation accuracy is maintained above 90% before exporting the model weights.
+1.  **Google Gemini Pro Auto-Labeling:** Update `scripts/label_extractions.ts` to utilize Google's most capable model available in Vertex AI for reasoning and classification: **Gemini 2.5 Pro** (using `gemini-2.5-pro` model identifier), ensuring the highest label quality for complex developer contexts.
+2.  **PII Scrubbing & Anonymization:** Implement strict scrubbing in `scripts/anonymize_staging_data.ts` to strip personal emails, usernames, tokens, and API credentials from the extractions.
+3.  **Dataset Balancing & Overfitting Prevention:** Modify `scripts/compile_datasets.ts` to enforce a balanced sample count across all 4 target classes:
+    - Target at least 150-200 samples per class in the training dataset.
+    - Prevent overfitting by downsampling overrepresented classes (e.g. `informational` or `noise`) using deterministic content hashing.
+    - Boost underrepresented classes (e.g. `communication` or `deep_work`) using heuristic regex boosters or custom few-shot templates.
+4.  **Holdout Test Set Retention:** Pull all raw staging extractions from the staging database. Deterministically split the dataset:
+    - **20% Holdout Test Set:** Save as `data/staging_test_set.json` (git-ignored). This set must be stratified (proportional class distribution) and never used during model training to avoid validation leakage.
+    - **80% Training Set:** Merged with the core training dataset to create the flat training input.
+5.  **Swift Model Training & Verification:** Upgrade `scripts/train_model.swift` and `scripts/verify_model.swift` to train and evaluate the Apple MaxEnt text classifier, exporting individual precision/recall/F1 metrics for all 4 classes.
 
 ---
 
 ## 3. Technical Requirements
 
-### A. Gemini Labeling Refactor
+### A. Gemini Pro Labeling
+- **File:** `scripts/label_extractions.ts`
+- **Model ID:** Update `MODEL_ID` to `'gemini-2.5-pro'` (or latest stable Vertex Pro model equivalent).
+- **Prompt definition:** Define clear criteria and few-shot examples for the 4 cognitive classes:
+  - `deep_work`: Pages representing authoring, editing, coding, or modeling (e.g., GitHub pull request files, Google Doc editing, Jupyter notebooks, local IDEs).
+  - `informational`: Pages representing research, reading, or learning (e.g., StackOverflow questions/answers, library documentation, news articles, Wikipedia).
+  - `communication`: Pages representing team collaboration or messaging (e.g., Slack channels, Microsoft Teams, Discord, emails, DMs).
+  - `noise`: Pages representing distractions or transactional landing pages (e.g., Twitter feeds, YouTube, e-commerce, empty loading screens).
+- **Output Constraint:** Constrain the LLM's response to only return one of the 4 label strings. Add automatic verification to retry on invalid label outputs.
 
-- File: `scripts/label_extractions.ts`
-- **System Prompt Update:**
-  - Define the 4 cognitive modes:
-    - `deep_work`: Page context represents creation/editing/authoring (e.g. GitHub pull request files, Google Doc editing, coding workspaces, local IDE hosts).
-    - `informational`: Page context represents research or reading (e.g. StackOverflow answers, language documentation, technical blogs, Wikipedia articles).
-    - `communication`: Page context represents collaboration (e.g. Slack web channels, Microsoft Teams chat, Gmail composer or inbox).
-    - `noise`: Page context represents non-productive distractions (e.g. Twitter feed, YouTube recommendations, retail e-commerce).
-  - Constrain the output JSON to only emit these 4 values.
-
-### B. Compilation & PII Scrubbing
-
-- File: `scripts/anonymize_staging_data.ts` and `scripts/compile_datasets.ts`
-- Verify dataset balancing. Ensure each class has sufficient representation (targeting at least 150-200 samples per class).
-- Enforce strict PII scrubbing: strip all emails, personal names, and API keys.
+### B. Dataset Balancing & Partitioning
+- **File:** `scripts/compile_datasets.ts`
+- **Stratified Split:** Implement an 80/20 train/test split on the pulled staging records.
+- **Class Balancing:**
+  - Cap class size at a maximum of 250 samples to prevent single-class dominance.
+  - Implement heuristic boosting for sparse classes (e.g. injecting samples matching Slack/Discord domains or GitHub/docs keywords).
 
 ### C. Create ML Training & Verification
-
-- File: `scripts/train_model.swift` and `scripts/verify_model.swift`
-- Verify compatibility of MaxEnt text classifier features with the new labels.
-- Calculate class-specific precision and recall. If recall for `deep_work` or `communication` is low (due to high overlap with other classes), add custom heuristic keyword boosters during dataset compilation.
-- Export the finalized model to `models/PrivacyGatekeeper.mlmodel`.
+- **Files:** `scripts/train_model.swift` and `scripts/verify_model.swift`
+- **Classification Taxonomy:** Train the Apple MaxEnt text classifier with the updated 4 classes.
+- **Evaluation:** Report precision, recall, and F1 metrics for each class. Overall accuracy must exceed 90%.
 
 ---
 
 ## 4. Out of Scope
 
-- Client-side extension scraper changes (handled by the `vedai` client track).
-- Modifying the NestJS or Mongoose database structures (already set up).
+- Client-side extension scraper changes (handled by the client track).
+- Modifying the NestJS or Mongoose database structures.
+
