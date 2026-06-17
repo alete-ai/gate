@@ -28,7 +28,7 @@ do {
     let metadata = MLModelMetadata(
         author: "Stoyan Dimitrov <https://github.com/StoyanD>",
         shortDescription: "Alete PrivacyGatekeeper: Edge-based structural text classifier.",
-        version: "0.3.3"
+        version: "1.0.0"
     )
     
     // Remove existing model if it exists

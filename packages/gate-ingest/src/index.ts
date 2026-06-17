@@ -3,8 +3,9 @@ import { structuralPlugin } from './config.js';
 import { mapToTokens } from './token-mapper.js';
 
 export enum GateLabel {
-  SENSITIVE_PORTAL = 'sensitive_portal',
-  DIGESTIBLE_ARTICLE = 'digestible_article',
+  DEEP_WORK = 'deep_work',
+  INFORMATIONAL = 'informational',
+  COMMUNICATION = 'communication',
   NOISE = 'noise',
   UNKNOWN = 'unknown',
 }

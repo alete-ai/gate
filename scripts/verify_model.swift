@@ -40,8 +40,8 @@ func buildClassifierInput(urlHost: String?, urlPathKeywords: [String]?, title: S
 struct Metric {
     var total: Int = 0
     var correct: Int = 0
-    var falsePositives: Int = 0 // digestible_article predicted as sensitive_portal
-    var falseNegatives: Int = 0 // sensitive_portal predicted as digestible_article
+    var falsePositives: Int = 0 // noise/informational predicted as deep_work/communication
+    var falseNegatives: Int = 0 // deep_work/communication predicted as noise
     var totalLatency: Double = 0
     
     var accuracy: Double {
@@ -50,6 +50,30 @@ struct Metric {
     
     var avgLatency: Double {
         return total > 0 ? (totalLatency / Double(total)) * 1000 : 0 // in ms
+    }
+}
+
+struct ClassMetrics {
+    var tp = 0
+    var fp = 0
+    var fn = 0
+    var total = 0
+    
+    var precision: Double {
+        let denom = tp + fp
+        return denom > 0 ? Double(tp) / Double(denom) : 0.0
+    }
+    
+    var recall: Double {
+        let denom = tp + fn
+        return denom > 0 ? Double(tp) / Double(denom) : 0.0
+    }
+    
+    var f1: Double {
+        let p = precision
+        let r = recall
+        let denom = p + r
+        return denom > 0 ? 2.0 * (p * r) / denom : 0.0
     }
 }
 
@@ -72,27 +96,46 @@ func evaluateDataset(model: NLModel, fileURL: URL, name: String) {
         }
         
         var metrics = Metric()
-        var labelMetrics: [String: Metric] = [:]
+        var classStats: [String: ClassMetrics] = [:]
+        let targetClasses = ["deep_work", "informational", "communication", "noise"]
+        for cls in targetClasses {
+            classStats[cls] = ClassMetrics()
+        }
         
         print("🔍 Running inference on \(json.count) samples...")
         
         for (index, sample) in json.enumerated() {
             let structural = sample["structural"] as? String ?? ""
             let metadata = sample["metadata"] as? [String: Any] ?? [:]
-            let expected = sample["label"] as? String ?? "unknown"
+            
+            // Map legacy labels if they exist in the test dataset to keep compatibility
+            let rawExpected = sample["label"] as? String ?? "unknown"
+            let expected: String
+            if rawExpected == "sensitive_portal" || rawExpected == "digestible_article" {
+                let url = metadata["url"] as? String ?? sample["url"] as? String ?? ""
+                if rawExpected == "digestible_article" {
+                    expected = "informational"
+                } else {
+                    let urlLower = url.lowercased()
+                    if urlLower.contains("slack") || urlLower.contains("mail") || urlLower.contains("teams") || urlLower.contains("discord") {
+                        expected = "communication"
+                    } else {
+                        expected = "deep_work"
+                    }
+                }
+            } else {
+                expected = rawExpected
+            }
             
             let title = metadata["title"] as? String ?? sample["title"] as? String ?? ""
             let urlHost = metadata["urlHost"] as? String ?? sample["urlHost"] as? String ?? ""
             let urlPathKeywords = metadata["urlPathKeywords"] as? [String] ?? sample["urlPathKeywords"] as? [String] ?? []
             
-            // Truncate structural tokens
-            let truncatedStructural = String(structural.prefix(2000))
-            
             // Combined text format matching Create ML input
-            let combinedText = buildClassifierInput(urlHost: urlHost, urlPathKeywords: urlPathKeywords, title: title, tokens: truncatedStructural)
+            let combinedText = buildClassifierInput(urlHost: urlHost, urlPathKeywords: urlPathKeywords, title: title, tokens: structural)
             
             let start = CFAbsoluteTimeGetCurrent()
-            let hypotheses = model.predictedLabelHypotheses(for: combinedText, maximumCount: 3)
+            let hypotheses = model.predictedLabelHypotheses(for: combinedText, maximumCount: 4)
             let prediction = model.predictedLabel(for: combinedText) ?? "unknown"
             let confidence = hypotheses[prediction] ?? 0.0
             let latency = CFAbsoluteTimeGetCurrent() - start
@@ -100,24 +143,33 @@ func evaluateDataset(model: NLModel, fileURL: URL, name: String) {
             metrics.total += 1
             metrics.totalLatency += latency
             
-            if labelMetrics[expected] == nil { labelMetrics[expected] = Metric() }
-            labelMetrics[expected]?.total += 1
+            if classStats[expected] == nil {
+                classStats[expected] = ClassMetrics()
+            }
+            classStats[expected]?.total += 1
             
             if prediction == expected {
                 metrics.correct += 1
-                labelMetrics[expected]?.correct += 1
+                classStats[expected]?.tp += 1
             } else {
-                // Track failures
-                if expected == "sensitive_portal" {
-                    if prediction == "digestible_article" {
-                        metrics.falseNegatives += 1
-                    }
+                classStats[expected]?.fn += 1
+                if classStats[prediction] == nil {
+                    classStats[prediction] = ClassMetrics()
+                }
+                classStats[prediction]?.fp += 1
+                
+                // Track leaks and blocks
+                let expectedIsSensitive = expected == "deep_work" || expected == "communication"
+                let predictedIsSensitive = prediction == "deep_work" || prediction == "communication"
+                
+                if expectedIsSensitive && prediction == "noise" {
+                    metrics.falseNegatives += 1
                     print("🚨 [Index \(index)] PORTAL LEAK: Expected \(expected), Got \(prediction) (\(String(format: "%.1f", confidence * 100))%)")
-                } else if expected == "digestible_article" {
-                    if prediction == "sensitive_portal" {
-                        metrics.falsePositives += 1
-                    }
+                } else if (expected == "noise" || expected == "informational") && predictedIsSensitive {
+                    metrics.falsePositives += 1
                     print("📖 [Index \(index)] FALSE BLOCK: Expected \(expected), Got \(prediction) (\(String(format: "%.1f", confidence * 100))%)")
+                } else {
+                    print("❌ [Index \(index)] MISCLASS: Expected \(expected), Got \(prediction) (\(String(format: "%.1f", confidence * 100))%)")
                 }
             }
         }
@@ -129,15 +181,23 @@ func evaluateDataset(model: NLModel, fileURL: URL, name: String) {
         print("🔴 False Negs (Leaks):    \(metrics.falseNegatives)")
         print("🟡 False Pos (Blocks):    \(metrics.falsePositives)")
         
-        print("\n--- Per-Label Accuracy ---")
-        for (label, m) in labelMetrics {
-            print("🏷️ \(label.padding(toLength: 20, withPad: " ", startingAt: 0)): \(String(format: "%.2f", m.accuracy))% (\(m.correct)/\(m.total))")
+        print("\n--- Per-Class Performance Matrix ---")
+        print("LABEL               | PRECISION | RECALL    | F1 SCORE  | SUPPORT")
+        print("--------------------|-----------|-----------|-----------|--------")
+        for label in targetClasses.sorted() {
+            let m = classStats[label] ?? ClassMetrics()
+            let pStr = String(format: "%.4f", m.precision)
+            let rStr = String(format: "%.4f", m.recall)
+            let fStr = String(format: "%.4f", m.f1)
+            let sStr = String(m.total)
+            print("\(label.padding(toLength: 19, withPad: " ", startingAt: 0)) | \(pStr.padding(toLength: 9, withPad: " ", startingAt: 0)) | \(rStr.padding(toLength: 9, withPad: " ", startingAt: 0)) | \(fStr.padding(toLength: 9, withPad: " ", startingAt: 0)) | \(sStr)")
         }
         
     } catch {
         print("❌ Error reading or parsing dataset: \(error.localizedDescription)")
     }
 }
+
 
 let projectRoot = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
 let modelURL = projectRoot.appendingPathComponent("models/PrivacyGatekeeper.mlmodel")

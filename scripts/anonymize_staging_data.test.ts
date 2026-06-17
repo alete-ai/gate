@@ -47,4 +47,22 @@ describe('PII Anonymization Logic', () => {
     expect(output).not.toContain('123-456-7890');
     expect(output).not.toContain('987.654.3210');
   });
+
+  it('should redact project IDs and names', () => {
+    const input = 'We are hosting on vedai-4a1c3 and alete-cloud, or project gen-lang-client-0627886001.';
+    const output = redactPII(input);
+    expect(output).toContain('[PROJECT_ID]');
+    expect(output).not.toContain('vedai-4a1c3');
+    expect(output).not.toContain('alete-cloud');
+  });
+
+  it('should redact credentials and usernames', () => {
+    const input = 'Connection options: username=stoyan_dev&password=my_secret_pass';
+    const output = redactPII(input);
+    expect(output).toContain('user=[REDACTED_USER]');
+    expect(output).toContain('password=[REDACTED_PASS]');
+    expect(output).not.toContain('stoyan_dev');
+    expect(output).not.toContain('my_secret_pass');
+  });
 });
+

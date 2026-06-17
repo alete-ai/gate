@@ -6,7 +6,7 @@ import { GoogleGenAI } from '@google/genai';
 const DEV_ENV_PATH = '/Users/stoyan/git/vedai/worktrees/chore/edge_retrain/apps/analysis-service/.env.development';
 const INPUT_FILE = path.resolve('data/raw_staging_extractions.json');
 const OUTPUT_FILE = path.resolve('data/raw_staging_labeled.json');
-const MODEL_ID = 'gemini-2.5-flash';
+const MODEL_ID = 'gemini-2.5-pro';
 const LOCATION = 'us-central1';
 const CONCURRENCY = 30; // Process 30 items concurrently
 
@@ -69,10 +69,25 @@ async function labelItem(ai: GoogleGenAI, item: any, index: number, total: numbe
   const structuralSnippet = (item.structural_markdown || '').substring(0, 2000);
 
   const prompt = `You are an expert data labeling assistant for a local, edge-based privacy gatekeeper.
-Your task is to classify the following web extraction into one of these three categories:
-1. \`sensitive_portal\`: Login screens, payment pages, healthcare portals, dental plans, account settings, utility bill payment forms, checkout pages, and other interfaces containing highly sensitive PII.
-2. \`digestible_article\`: Long-form news, essays, blogs, Medium/Substack articles, educational content, financial news (not portal), scientific publications, or readable story content.
-3. \`noise\`: Marketing landing pages, Google search result pages, eBay/Amazon product listings, empty SPA templates, loading states, and other functional web noise.
+Your task is to classify the following web extraction into exactly one of these four categories:
+1. \`deep_work\`: Pages representing creation, authoring, editing, coding, designing, or modeling (e.g., GitHub pull request files, Google Doc editing, Jupyter notebooks, local IDEs, Figma design canvas, local code compilers).
+2. \`informational\`: Pages representing research, reading, learning, or knowledge acquisition (e.g., StackOverflow questions/answers, technical blogs, Wikipedia articles, library documentation, documentation books).
+3. \`communication\`: Pages representing team collaboration, messaging, meetings, or emails (e.g., Slack channels, Microsoft Teams, Discord servers, Gmail composer or inbox, Zoom links).
+4. \`noise\`: Pages representing non-productive distractions or transaction/landing/loading noise (e.g., Twitter/X feeds, YouTube video lists, e-commerce shopping, empty loading screen placeholders, browser new-tab screens).
+
+EXAMPLES:
+- URL: https://github.com/alete-ai/gate/pull/2/files
+  Title: chore(gate): retrain edge classifier by StoyanD
+  Label: deep_work
+- URL: https://stackoverflow.com/questions/11227809/how-to-read-a-file-in-nodejs
+  Title: node.js - How to read a file - Stack Overflow
+  Label: informational
+- URL: https://app.slack.com/client/T012345/C67890
+  Title: Slack | general | Alete Workspace
+  Label: communication
+- URL: https://www.youtube.com/watch?v=dQw4w9WgXcQ
+  Title: Rick Astley - Never Gonna Give You Up (Official Music Video)
+  Label: noise
 
 INPUT DATA:
 URL: ${item.url}
@@ -88,11 +103,12 @@ Structural Markdown Snippet:
 ${structuralSnippet}
 """
 
-You MUST reply with exactly one of the three labels: \`sensitive_portal\`, \`digestible_article\`, or \`noise\`. Do not include any other text, reasoning, or markdown formatting.`;
+You MUST reply with exactly one of the four labels: \`deep_work\`, \`informational\`, \`communication\`, or \`noise\`. Do not include any other text, reasoning, or markdown formatting.`;
 
   let attempts = 0;
   let success = false;
   let label = 'unknown';
+  const validLabels = new Set(['deep_work', 'informational', 'communication', 'noise']);
 
   while (attempts < 3 && !success) {
     try {
@@ -103,14 +119,14 @@ You MUST reply with exactly one of the three labels: \`sensitive_portal\`, \`dig
 
       const text = (response.text || '').trim().toLowerCase();
       
-      if (text.includes('sensitive_portal')) {
-        label = 'sensitive_portal';
-        success = true;
-      } else if (text.includes('digestible_article')) {
-        label = 'digestible_article';
-        success = true;
-      } else if (text.includes('noise')) {
-        label = 'noise';
+      let matchedLabel = '';
+      if (text.includes('deep_work')) matchedLabel = 'deep_work';
+      else if (text.includes('informational')) matchedLabel = 'informational';
+      else if (text.includes('communication')) matchedLabel = 'communication';
+      else if (text.includes('noise')) matchedLabel = 'noise';
+
+      if (matchedLabel && validLabels.has(matchedLabel)) {
+        label = matchedLabel;
         success = true;
       } else {
         attempts++;
@@ -158,12 +174,14 @@ async function run() {
   if (fs.existsSync(OUTPUT_FILE)) {
     try {
       const existing = JSON.parse(fs.readFileSync(OUTPUT_FILE, 'utf-8'));
+      const validLabels = new Set(['deep_work', 'informational', 'communication', 'noise']);
       for (const item of existing) {
         const hash = item.hash || generateContentHash(item.url, item.content_markdown);
-        if (item.label) {
+        if (item.label && validLabels.has(item.label)) {
           cache.set(hash, item.label);
         }
       }
+
       console.log(`Loaded ${cache.size} existing labels from cache.`);
     } catch (err) {
       console.warn('Could not read existing labeled file, starting fresh labeling.', err);
@@ -196,21 +214,24 @@ async function run() {
   }
 
   // Calculate metrics
-  let countPortals = 0;
-  let countArticles = 0;
+  let countDeepWork = 0;
+  let countInformational = 0;
+  let countCommunication = 0;
   let countNoise = 0;
   for (const item of labeledResults) {
-    if (item.label === 'sensitive_portal') countPortals++;
-    else if (item.label === 'digestible_article') countArticles++;
+    if (item.label === 'deep_work') countDeepWork++;
+    else if (item.label === 'informational') countInformational++;
+    else if (item.label === 'communication') countCommunication++;
     else if (item.label === 'noise') countNoise++;
   }
 
   console.log(`\n✅ Labeling Complete! Labeled records saved to ${OUTPUT_FILE}`);
   console.log(`--- Label Summary ---`);
-  console.log(`Portals:   ${countPortals}`);
-  console.log(`Articles:  ${countArticles}`);
-  console.log(`Noise:     ${countNoise}`);
-  console.log(`Total:     ${labeledResults.length}`);
+  console.log(`Deep Work:     ${countDeepWork}`);
+  console.log(`Informational: ${countInformational}`);
+  console.log(`Communication: ${countCommunication}`);
+  console.log(`Noise:         ${countNoise}`);
+  console.log(`Total:         ${labeledResults.length}`);
 }
 
 run().catch(console.error);

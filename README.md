@@ -17,12 +17,11 @@ Based on the latest **Strategic Verification Audit** conducted on the native App
 
 | Metric | Result | Note |
 | :--- | :--- | :--- |
-| **Total Accuracy** | **97.60%** | Comprehensive cross-category validation |
-| **Avg. Inference Latency** | **0.48 ms** | Benchmark on Apple Silicon substrate |
-| **Survival Recall** | **100.00%** | Zero sensitive portals misclassified as digestible articles |
-| **Article Recall** | **100.00%** | Perfect fidelity for preserving user access to content |
+| **Training Set Accuracy** | **97.60%** | Verified on training set substrate |
+| **Holdout Test Set Accuracy** | **86.89%** | Evaluated on staging holdout set |
+| **Avg. Inference Latency** | **0.97 ms** | Sub-ms execution on edge substrate |
 
-*Tests executed on the `PrivacyGatekeeper` MaxEnt model (v0.1.0) using the `verify_model.swift` harness.*
+*Tests executed on the `PrivacyGatekeeper` MaxEnt model (v1.0.0) using the `verify_model.swift` harness.*
 
 ---
 
@@ -88,7 +87,7 @@ func classifyContent(tokens: String) async throws -> String {
     let gatekeeper = try PrivacyGatekeeper()
     let prediction = try gatekeeper.prediction(text: tokens)
     
-    // returns 'sensitive_portal', 'digestible_article', or 'noise'
+    // returns 'deep_work', 'informational', 'communication', or 'noise'
     return prediction.label 
 }
 ```
