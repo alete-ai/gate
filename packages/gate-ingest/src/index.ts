@@ -93,6 +93,8 @@ function truncateToCap(text: string, cap: number): { truncated: string; isTrunca
   return { truncated, isTruncated: true };
 }
 
+
+
 /**
  * The unified ingestion pipeline for Alete Gate.
  * Converts raw HTML into both structural tokens and semantic Markdown.
@@ -102,28 +104,163 @@ export async function processHtml(html: string, options: IngestionOptions = {}):
     initialize();
   }
 
+  const layoutNoiseSelectors = [
+    // Core structural layout tags
+    'header',
+    'footer',
+    'nav',
+    'aside',
+    'form[action*="consent.youtube.com"]',
+    'c-wiz[class*="VfPpkd"]',
+    'g-menu',
+
+    // Role-based elements
+    '[role="banner"]',
+    '[role="navigation"]',
+    '[role="contentinfo"]',
+    '[role="complementary"]',
+    '[aria-modal="true"]',
+    '[data-text-ad]',
+
+    // Class/attribute wildcard selectors (General noise)
+    '[class*="header"]',
+    '[class*="footer"]',
+    '[class*="nav"]',
+    '[class*="menu"]',
+    '[class*="sidebar"]',
+    '[class*="share"]',
+    '[class*="ad"]',
+    '[class*="social"]',
+    '[class*="cookie"]',
+    '[class*="banner"]',
+    '[class*="modal"]',
+    '[class*="sponsor"]',
+    '[class*="gb_"]',
+
+    // Global layout IDs and class names
+    '#appbar',
+    '#top_nav',
+    '#foot',
+    '#rhs',
+    '#tads',
+    '#bottomads',
+    '.fbar',
+    '.global-nav',
+    '.global-footer',
+    '.right-rail',
+    '.left-rail',
+    '.social-actions-bar',
+    '.cookie-consent-banner',
+    '.sign-in-modal',
+    '.msg-overlay-container',
+
+    // Google News / Google Search specific classes
+    '.tQj5Y',
+    '.gb_Na',
+    '.gb_1e',
+    '.Ax4B8',
+    '.yNVtPc',
+    '.SSPGKf',
+    '.bwOy4d',
+    '.iN1nBb',
+    '.mN1ivc',
+    '.jK4DKf',
+    '.lG53Ec',
+    '.W8yrY',
+    '.XlKvRb',
+
+    // YouTube specific tags/selectors
+    'ytd-masthead',
+    '#guide',
+    'app-drawer',
+    'ytd-mini-guide-renderer',
+    '#secondary',
+    'ytd-watch-next-secondary-results-renderer',
+    'ytd-popup-container',
+    'tp-yt-paper-dialog',
+    'ytd-consent-bump-v2-renderer',
+    'ytd-add-to-playlist-renderer',
+    'ytd-unified-share-panel-renderer',
+    '#player-ads',
+    '.ytp-ad-module',
+    'ytd-ad-slot-renderer',
+    'ytd-promoted-sparkles-text-search-renderer',
+    'ytd-in-feed-ad-layout-renderer',
+    'ytd-feed-filter-chip-bar-renderer',
+    'yt-upsell-dialog-renderer',
+    '#chips',
+    'ytd-menu-renderer',
+    'ytd-sponsorships-button',
+
+    // ZeroHedge specific classes/layout structures
+    '.Header_siteHeader__TYYsX',
+    '.Footer_container__pP_Gj',
+    '.sidebar-left',
+    '.sidebar-right',
+    '.SidebarLeft_container__5EyEw',
+    '.SidebarRight_container__mTgfh',
+    '.ArticleFooter_footer__K4v3K',
+    '.leaderboard-container',
+    '.leaderboard',
+    '.adv',
+    '.banner',
+    '.bottom-banner-container',
+    '.sponsored',
+    '.SimplePaginator_paginator__NsxDa',
+    '.DebateButton_promoButtonSection__C1zdK',
+    '.ZeroHedgeReads_container__dQSbV',
+    '.MMWidgetFeb12_container__3UvjX',
+    '.BlockSearch_container__TSPdm',
+    '.TheMarketEarHomePageSidebar_container__M1KBo',
+    '.TopPosts_posts__f0jV5',
+  ];
+
   // 1. Generate Structural Markdown using the custom plugin
   const structuralMd = htmlToMarkdown(html, {
-    hooks: [structuralPlugin]
+    plugins: {
+      filter: {
+        exclude: layoutNoiseSelectors,
+        processChildren: false,
+      },
+    },
+    hooks: [structuralPlugin],
   });
 
   let metadata: Record<string, string> = {};
-  let semantic = htmlToMarkdown(html, withMinimalPreset({
-    plugins: {
-      isolateMain: false,
-      tagOverrides: {
-        a: { enter: '', exit: '' },
-        img: { enter: '', exit: '' },
-        svg: { enter: '', exit: '' },
-        canvas: { enter: '', exit: '' },
+  let semantic = htmlToMarkdown(
+    html,
+    withMinimalPreset({
+      plugins: {
+        isolateMain: false,
+        filter: {
+          exclude: [
+            ...layoutNoiseSelectors,
+            'form',
+            'fieldset',
+            'object',
+            'embed',
+            'iframe',
+            'input',
+            'textarea',
+            'select',
+            'button',
+          ],
+          processChildren: false,
+        },
+        tagOverrides: {
+          a: { enter: '', exit: '' },
+          img: { enter: '', exit: '' },
+          svg: { enter: '', exit: '' },
+          canvas: { enter: '', exit: '' },
+        },
+        frontmatter: {
+          onExtract: (fm) => {
+            metadata = fm;
+          },
+        },
       },
-      frontmatter: {
-        onExtract: (fm) => {
-          metadata = fm;
-        }
-      }
-    }
-  })).trim();
+    })
+  ).trim();
 
   // 2.1 Fallback metadata if not found in head
   if (!metadata.title) {

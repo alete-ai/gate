@@ -220,8 +220,19 @@ async function main() {
     console.log('[Dry Run] Would invoke pull, label, anonymize, and compile datasets scripts.');
   } else {
     // 2.1 Pull extractions
-    console.log('Pulling extractions from staging...');
-    runCommand('pnpm exec tsx scripts/pull_staging_extractions.ts', silent);
+    const useReprocessed = args.includes('--use-reprocessed');
+    if (useReprocessed) {
+      console.log('Using reprocessed staging data from data/raw_staging_reprocessed.json...');
+      const reprocessedPath = path.join(DATA_DIR, 'raw_staging_reprocessed.json');
+      const targetPath = path.join(DATA_DIR, 'raw_staging_extractions.json');
+      if (!fs.existsSync(reprocessedPath)) {
+        throw new Error(`Reprocessed file not found at ${reprocessedPath}. Run scripts/reprocess_staging_data.ts first!`);
+      }
+      fs.copyFileSync(reprocessedPath, targetPath);
+    } else {
+      console.log('Pulling extractions from staging...');
+      runCommand('pnpm exec tsx scripts/pull_staging_extractions.ts', silent);
+    }
 
     // 2.2 Label extractions
     const runLabel = !skipLabeling || !fs.existsSync(LABELED_FILE);
