@@ -23,4 +23,15 @@ final class AleteGateKitTests: XCTestCase {
         XCTAssertNotNil(articleResult.scores)
         XCTAssertEqual(articleResult.scores?[.informational], articleResult.confidence)
     }
+    
+    func testModel2VecClassification() async throws {
+        let agent = try await Model2VecClassifier()
+        XCTAssertNotNil(agent)
+        
+        let portalTokens = "structFormStart structLabel Username structInputText Username EnterUsername structButton Login structFormEnd"
+        let portalResult = try agent.classify(text: portalTokens)
+        print("🔍 MODEL2VEC PORTAL CLASSIFIED AS: \(portalResult.label) (Confidence: \(portalResult.confidence))")
+        XCTAssertNotEqual(portalResult.label, "unknown")
+        XCTAssertGreaterThan(portalResult.confidence, 0.0)
+    }
 }

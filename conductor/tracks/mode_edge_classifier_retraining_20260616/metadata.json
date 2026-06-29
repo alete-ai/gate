@@ -1,8 +1,0 @@
-{
-  "track_id": "mode_edge_classifier_retraining_20260616",
-  "type": "feature",
-  "status": "In Progress",
-  "created_at": "2026-06-16T16:24:00Z",
-  "updated_at": "2026-06-16T16:28:00Z",
-  "description": "Retrain the local PrivacyGatekeeper CoreML classifier on 4 new target categories (deep_work, informational, communication, noise) using Gemini 2.5 Pro for labeling and implementing stratified dataset balancing."
-}

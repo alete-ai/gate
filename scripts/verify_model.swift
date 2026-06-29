@@ -43,6 +43,7 @@ struct Metric {
     var falsePositives: Int = 0 // noise/informational predicted as deep_work/communication
     var falseNegatives: Int = 0 // deep_work/communication predicted as noise
     var totalLatency: Double = 0
+    var latencies: [Double] = []
     
     var accuracy: Double {
         return total > 0 ? (Double(correct) / Double(total)) * 100 : 0
@@ -50,6 +51,26 @@ struct Metric {
     
     var avgLatency: Double {
         return total > 0 ? (totalLatency / Double(total)) * 1000 : 0 // in ms
+    }
+    
+    var p50: Double {
+        guard !latencies.isEmpty else { return 0 }
+        let sorted = latencies.sorted()
+        return sorted[sorted.count / 2] * 1000
+    }
+    
+    var p90: Double {
+        guard !latencies.isEmpty else { return 0 }
+        let sorted = latencies.sorted()
+        let index = Int(Double(sorted.count) * 0.9)
+        return sorted[min(index, sorted.count - 1)] * 1000
+    }
+    
+    var p99: Double {
+        guard !latencies.isEmpty else { return 0 }
+        let sorted = latencies.sorted()
+        let index = Int(Double(sorted.count) * 0.99)
+        return sorted[min(index, sorted.count - 1)] * 1000
     }
 }
 
@@ -142,6 +163,7 @@ func evaluateDataset(model: NLModel, fileURL: URL, name: String) {
             
             metrics.total += 1
             metrics.totalLatency += latency
+            metrics.latencies.append(latency)
             
             if classStats[expected] == nil {
                 classStats[expected] = ClassMetrics()
@@ -178,6 +200,9 @@ func evaluateDataset(model: NLModel, fileURL: URL, name: String) {
         print("\n📊 RESULTS FOR \(name.uppercased())")
         print("✅ Accuracy:      \(String(format: "%.2f", metrics.accuracy))%")
         print("⏱️ Avg Latency:   \(String(format: "%.2f", metrics.avgLatency)) ms")
+        print("⏱️ P50 Latency:   \(String(format: "%.2f", metrics.p50)) ms")
+        print("⏱️ P90 Latency:   \(String(format: "%.2f", metrics.p90)) ms")
+        print("⏱️ P99 Latency:   \(String(format: "%.2f", metrics.p99)) ms")
         print("🔴 False Negs (Leaks):    \(metrics.falseNegatives)")
         print("🟡 False Pos (Blocks):    \(metrics.falsePositives)")
         

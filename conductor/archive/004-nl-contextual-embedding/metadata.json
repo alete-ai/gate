@@ -1,0 +1,8 @@
+{
+  "track_id": "004-nl-contextual-embedding",
+  "type": "feature",
+  "status": "completed",
+  "created_at": "2026-06-29T15:53:00Z",
+  "updated_at": "2026-06-29T16:04:00Z",
+  "description": "Implement NLContextualEmbedding transformer-based classifier for Alete-Gate, train it on target categories, and benchmark inference performance against the legacy MaxEnt model."
+}
