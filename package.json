@@ -1,6 +1,6 @@
 {
   "name": "alete-gate-workspace",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "private": true,
   "description": "Workspace for Alete Gate packages",
   "scripts": {

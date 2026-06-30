@@ -1,6 +1,6 @@
 {
   "name": "@alete-ai/gate-ingest",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Unified ingestion and token-mapping pipeline for the Alete PrivacyGatekeeper.",
   "keywords": [
     "edge",
