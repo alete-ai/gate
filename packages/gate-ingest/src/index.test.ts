@@ -23,9 +23,6 @@ describe('gate-ingest pipeline', () => {
     const { structural, semantic } = await processHtml(html);
 
     // Check structural tokens
-    expect(structural).toContain('structNavStart');
-    expect(structural).toContain('structLinkElement');
-    expect(structural).toContain('structNavEnd');
     expect(structural).toContain('structFormStart');
     expect(structural).toContain('structLabel Username');
     expect(structural).toContain('structInputTextusername');

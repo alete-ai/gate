@@ -23,4 +23,5 @@ final class AleteGateKitTests: XCTestCase {
         XCTAssertNotNil(articleResult.scores)
         XCTAssertEqual(articleResult.scores?[.informational], articleResult.confidence)
     }
+
 }

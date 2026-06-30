@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+      <html>
+      <head>
+        <title>Docker Containerization: Building Lightweight and Isolated Environments</title>
+      </head>
+      <body>
+        <article class="tech-article">
+          
+      <h1>Docker Containerization: Building Lightweight and Isolated Environments</h1>
+      <p>Docker is a platform for developing, shipping, and running applications inside isolated environments called containers. Containers package all code, runtimes, system tools, and settings needed to run an application.</p>
+      <p>A Dockerfile is a text document that contains all the commands a user could call on the command line to assemble an image.</p>
+      <h2>Optimizing Docker Image Size</h2>
+      <p>To reduce container startup latency, you should minimize the size of your images. Use multi-stage builds to compile your application in a build container, then copy only the compiled binary to a lightweight runtime image.</p>
+      <p>Additionally, take advantage of layer caching by copying dependencies first, running install commands, and copying source files last. This prevents reinstalling libraries when source files change.</p>
+    
+        </article>
+      </body>
+      </html>

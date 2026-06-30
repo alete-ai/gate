@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Gmail - Inbox - stoyan@alete.ai</title>
+</head>
+<body>
+  <div class="gmail-wrapper">
+    <header class="gmail-header">
+      <div class="search-bar">
+        <input type="text" placeholder="Search mail" />
+      </div>
+    </header>
+    <div class="gmail-body">
+      <nav class="gmail-sidebar">
+        <button class="compose-btn">Compose</button>
+        <ul class="folders">
+          <li class="active">Inbox (12)</li>
+          <li>Starred</li>
+          <li>Snoozed</li>
+          <li>Sent</li>
+          <li>Drafts (3)</li>
+        </ul>
+      </nav>
+      <main class="email-list-container">
+        <div class="email-item unread">
+          <div class="sender">GitHub</div>
+          <div class="subject">PR #4 Merged: Refactor edge classifier token mapper</div>
+          <div class="snippet">Stoyan Dimitrov merged PR #4 into main. You are receiving this notification because...</div>
+          <div class="date">3:42 PM</div>
+        </div>
+        <div class="email-item unread">
+          <div class="sender">Vertex AI Telemetry</div>
+          <div class="subject">Monthly Cloud Spend and Savings Report</div>
+          <div class="snippet">Your monthly report is ready. Cloud budget usage: 42% ($84/month). Scale to zero...</div>
+          <div class="date">1:15 PM</div>
+        </div>
+        <div class="email-item">
+          <div class="sender">Apple Developer</div>
+          <div class="subject">Your App Store build is ready to test</div>
+          <div class="snippet">Build version 2.0.0 (42) has finished processing and is ready for TestFlight...</div>
+          <div class="date">Yesterday</div>
+        </div>
+      </main>
+      <form class="email-composer">
+        <div class="composer-header">New Message</div>
+        <input type="text" class="to-field" placeholder="To" value="s.dimitrov19@gmail.com" />
+        <input type="text" class="subject-field" placeholder="Subject" value="Edge Retrain Verification Results" />
+        <textarea class="email-body-text">Hi Stoyan,
+
+Here are the results of the model retraining. The holdout test set accuracy is now looking very promising with natural language support.
+
+Best,
+Serra</textarea>
+        <button type="submit" class="send-btn">Send</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

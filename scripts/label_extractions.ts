@@ -71,9 +71,9 @@ async function labelItem(ai: GoogleGenAI, item: any, index: number, total: numbe
   const prompt = `You are an expert data labeling assistant for a local, edge-based privacy gatekeeper.
 Your task is to classify the following web extraction into exactly one of these four categories:
 1. \`deep_work\`: Pages representing creation, authoring, editing, coding, designing, or modeling (e.g., GitHub pull request files, Google Doc editing, Jupyter notebooks, local IDEs, Figma design canvas, local code compilers).
-2. \`informational\`: Pages representing research, reading, learning, or knowledge acquisition (e.g., StackOverflow questions/answers, technical blogs, Wikipedia articles, library documentation, documentation books).
+2. \`informational\`: Pages representing research, reading, learning, or knowledge acquisition (e.g., StackOverflow questions/answers, technical blogs, Wikipedia articles, library documentation, documentation books). Note: Aggregator dashboards, news feeds, or portal homepages that only provide list summaries or short blurbs of articles (such as news.google.com or wire.com) must NOT be labeled as informational.
 3. \`communication\`: Pages representing team collaboration, messaging, meetings, or emails (e.g., Slack channels, Microsoft Teams, Discord servers, Gmail composer or inbox, Zoom links).
-4. \`noise\`: Pages representing non-productive distractions or transaction/landing/loading noise (e.g., Twitter/X feeds, YouTube video lists, e-commerce shopping, empty loading screen placeholders, browser new-tab screens).
+4. \`noise\`: Pages representing non-productive distractions, transaction/landing/loading noise, or aggregator feeds and news dashboards (e.g., Twitter/X feeds, YouTube video lists, e-commerce shopping, empty loading screen placeholders, browser new-tab screens, news.google.com, wire.com, or portals displaying list blurbs instead of full articles).
 
 EXAMPLES:
 - URL: https://github.com/alete-ai/gate/pull/2/files
@@ -87,6 +87,12 @@ EXAMPLES:
   Label: communication
 - URL: https://www.youtube.com/watch?v=dQw4w9WgXcQ
   Title: Rick Astley - Never Gonna Give You Up (Official Music Video)
+  Label: noise
+- URL: https://news.google.com/home?hl=en-US&gl=US&ceid=US:en
+  Title: Google News - Overview
+  Label: noise
+- URL: https://www.wire.com
+  Title: Wire: Latest Headlines
   Label: noise
 
 INPUT DATA:
@@ -198,7 +204,9 @@ async function run() {
     const promises = batch.map(async (item, offset) => {
       const hash = item.hash || generateContentHash(item.url, item.content_markdown);
       const index = i + offset + 1;
-      if (cache.has(hash)) {
+      const urlLower = (item.url || '').toLowerCase();
+      const isNewsDashboard = urlLower.includes('news.google.com') || urlLower.includes('wire.com');
+      if (cache.has(hash) && !isNewsDashboard) {
         const label = cache.get(hash)!;
         console.log(`[${index}/${extractions.length}] Cached: "${item.title || 'Untitled'}" -> ${label}`);
         return { ...item, label };

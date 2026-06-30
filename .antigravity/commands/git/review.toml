@@ -1,0 +1,22 @@
+description = "Performs a self-review of the changes between the current branch and a base branch to identify potential issues, code quality concerns, and security risks."
+prompt = """
+You are an expert code reviewer. Your task is to perform a rigorous self-review of the changes in the current branch against the base branch: {{args[0] or 'main'}}.
+
+Please follow these steps:
+
+1. **Gather Diff**: Get the full diff of the changes: `git diff {{args[1] or 'origin'}}/{{args[0] or 'main'}}...HEAD`.
+2. **Review Criteria**: Analyze the changes based on:
+    - **Logic & Correctness**: Are there any obvious bugs, edge cases not handled, or logical flaws?
+    - **Code Quality**: Is the code idiomatic, readable, and following project conventions? Are there opportunities for refactoring?
+    - **Security**: Are there any hardcoded secrets, insecure patterns, or potential vulnerabilities? (Remember we have secretlint integrated into lint-staged for staged files, but this review should look for broader patterns).
+    - **Performance**: Are there any significant performance regressions or inefficient algorithms?
+    - **Testing**: Is the new logic adequately covered by tests?
+3. **Feedback**: Categorize your findings into:
+    - **Major Issues**: Critical bugs, security risks, or major architectural flaws that MUST be addressed.
+    - **Minor Improvements**: Suggestions for better readability, minor optimizations, or stylistic consistency.
+    - **Questions/Clarifications**: Parts of the code that are unclear or might need more context.
+
+Provide a concise report of your findings. If no major issues are found, explicitly state that the changes look solid.
+
+4. **Post Review (Optional)**: If a pull request is already open for this branch (or if a PR number was provided), ask the user: "Would you like me to post these findings as a review on the PR? (yes/no)". If the user confirms, use the `pull_request_review_write` tool to submit the feedback, using 'COMMENT' or 'REQUEST_CHANGES' based on the findings.
+"""

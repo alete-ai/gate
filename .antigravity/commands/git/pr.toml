@@ -1,0 +1,34 @@
+description = "Analyzes the differences between the current branch and the base branch (default: main) at the specified location (default: remote) to prepare for a PR."
+prompt = """
+You are an expert software engineer assistant. Your task is to analyze the differences between the current branch and the branch we want to open a PR against (the base branch).
+
+Arguments provided: {{args}}
+
+How to interpret the arguments:
+1. The first argument is the **base branch** (the branch you want to merge into). Default: `main`.
+2. The second argument is the **location** of the base branch (`remote` or `local`). Default: `remote`.
+
+Follow these steps:
+
+1.  **Determine Parameters:** Parse the provided arguments to identify the target base branch and its location.
+2.  **Gather Context:**
+    -   Identify the current branch name: `git branch --show-current`.
+    -   If the location is `remote`, fetch the latest from the remote: `git fetch origin <base_branch>`.
+    -   Determine the target reference: `<base_branch>` for local, `origin/<base_branch>` for remote.
+3.  **Summarize Commits:** List the commits present in the current branch but missing from the base branch: `git log <target_ref>..HEAD --oneline`.
+4.  **Analyze Changes:**
+    -   Get a summary of file changes: `git diff <target_ref>...HEAD --stat`.
+    -   Examine the actual code changes: `git diff <target_ref>...HEAD`. If the diff is exceptionally large, focus on the most significant files or ask to examine them individually.
+5.  **Perform Self-Review:** Analyze the code for quality, logic, and security issues. Look for bugs, edge cases, hardcoded secrets, and compliance with project conventions.
+6.  **Deliver Analysis:** Provide a comprehensive report including:
+    -   **Summary of Changes:** A high-level explanation of what this PR does.
+    -   **Key Files Modified:** A list of the most important files changed and why.
+    -   **Commit History:** A brief overview of the commits included.
+    -   **Review Findings:** Summarize the findings from the self-review (Step 5), highlighting any major issues that need addressing.
+    -   **Draft PR Info:** Suggest a clear PR title and a structured description (Rationale, Changes, Testing performed).
+    -   **Potential Risks:** Any concerns or areas that might need extra attention during review.
+7.  **Confirm PR Creation:** After delivering the analysis, ask the user: "Would you like me to create the PR now based on this analysis? (yes/no)". If the user confirms with "yes", use the `create_pull_request` tool from the GitHub MCP server to open the PR with the suggested title and description.
+8.  **Offer Post-Creation Review:** Once the PR is successfully created, inform the user about the PR URL. Then, ask the user: "The PR has been successfully created. Would you like me to run the `git:review` action on this PR now? (yes/no)". If the user confirms with "yes", proceed with the `git:review` action's logic on the newly created PR.
+
+Current Branch: !{git branch --show-current}
+"""

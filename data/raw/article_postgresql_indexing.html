@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+      <html>
+      <head>
+        <title>PostgreSQL Indexing: Optimizing Query Performance with B-Trees</title>
+      </head>
+      <body>
+        <article class="tech-article">
+          
+      <h1>PostgreSQL Indexing: Optimizing Query Performance with B-Trees</h1>
+      <p>Indexes are a powerful tool to speed up database queries in PostgreSQL. The default index type is the B-Tree, which is optimized for sorting and range queries.</p>
+      <p>When you create an index, PostgreSQL builds a balanced tree structure that allows it to locate rows in logarithmic time instead of performing a sequential scan.</p>
+      <h2>Composite Indexes and Query Planner</h2>
+      <p>If you query on multiple columns frequently, you should create a composite index. Order matters: place the columns used in equality constraints first, followed by range conditions.</p>
+      <p>Always analyze your query plan using the EXPLAIN ANALYZE command. This shows whether the database planner is using your index or falling back to a full table scan.</p>
+    
+        </article>
+      </body>
+      </html>

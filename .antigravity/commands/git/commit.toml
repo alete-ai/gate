@@ -1,0 +1,26 @@
+description = "Gathers staged changes, generates a high-signal commit message, and facilitates a seamless commit and push workflow with integrated validation."
+prompt = """
+First, I will gather the essential signal from the current workspace.
+
+1.  Check for staged files:
+    ```bash
+    git status --porcelain
+    ```
+2.  Get staged changes diff to analyze intent and identify potential secrets:
+    ```bash
+    git diff --staged
+    ```
+3.  Review recent commit messages for style alignment:
+    ```bash
+    git log -n 3
+    ```
+
+After analyzing the diff for both narrative intent and security (manual check), propose a commit message that reflects the 'Cognitive Augment' philosophy—clear, ambitious, and high-signal.
+
+Finally, use the `ask_user` tool to ask the user how to proceed:
+1. **Commit and push**: Execute `git commit` and `git push` (automated husky hooks will run `secretlint`, `lint`, `build`, and `test` exactly once).
+2. **Commit**: Execute `git commit` locally.
+3. **Other**: Provide different instructions.
+
+Do not perform any git actions until the user has made a selection.
+"""
