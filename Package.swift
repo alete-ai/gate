@@ -1,11 +1,11 @@
-// swift-tools-version: 6.0
+// swift-tools-version:5.5
 import PackageDescription
 
 let package = Package(
     name: "AleteGate",
     platforms: [
-        .iOS(.v18),
-        .macOS(.v15)
+        .iOS(.v14),
+        .macOS(.v11)
     ],
     products: [
         .library(
@@ -14,20 +14,14 @@ let package = Package(
             targets: ["AleteGateKit"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/huggingface/swift-transformers", from: "1.3.0")
+        // Zero dependencies for high structural resilience
     ],
     targets: [
         .target(
             name: "AleteGateKit",
-            dependencies: [
-                .product(name: "Tokenizers", package: "swift-transformers")
-            ],
             path: "ios/AleteGateKit/Sources/AleteGateKit",
             resources: [
-                .process("Resources/PrivacyGatekeeper.mlmodel"),
-                .copy("Resources/Model2VecGatekeeper.mlpackage"),
-                .copy("Resources/Model2VecTokenizerDir"),
-                .process("Resources/Model2VecClasses.json")
+                .process("Resources/PrivacyGatekeeper.mlmodel")
             ]
         ),
         .testTarget(
