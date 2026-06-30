@@ -1,7 +1,33 @@
 import XCTest
+import NaturalLanguage
 @testable import AleteGateKit
 
 final class AleteGateKitTests: XCTestCase {
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        
+        if #available(iOS 17.0, macOS 14.0, *) {
+            if let embedding = NLContextualEmbedding(language: .english) {
+                if !embedding.hasAvailableAssets {
+                    print("⏳ Alete Gate Tests: Contextual embedding assets not found. Requesting download...")
+                    let semaphore = DispatchSemaphore(value: 0)
+                    embedding.requestAssets { result, error in
+                        if let error = error {
+                            print("⚠️ Alete Gate Tests: Failed to download assets: \(error)")
+                        } else {
+                            print("✅ Alete Gate Tests: Assets download completed with status: \(result == .available ? "available" : "not available")")
+                        }
+                        semaphore.signal()
+                    }
+                    // Wait up to 120 seconds for the download in CI
+                    _ = semaphore.wait(timeout: .now() + 120)
+                } else {
+                    print("✅ Alete Gate Tests: Contextual embedding assets are already available.")
+                }
+            }
+        }
+    }
+    
     func testGateClassifierInitialization() throws {
         let agent = try GateClassifier()
         XCTAssertNotNil(agent)
