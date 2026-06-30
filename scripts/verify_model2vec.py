@@ -10,10 +10,13 @@ def build_classifier_input(url_host, url_path_keywords, title, tokens):
     if url_host:
         clean_host = url_host.lower().strip().replace("www.", "")
         if clean_host:
-            combined += f"urlHost_{clean_host} "
+            import re
+            parts = re.split(r'[.-]+', clean_host)
+            host_camel = "".join([p.capitalize() for p in parts])
+            combined += f"urlHost{host_camel} "
     
     if url_path_keywords:
-        combined += " ".join([f"urlPath_{kw}" for kw in url_path_keywords]) + " "
+        combined += " ".join([f"urlPath{kw.capitalize()}" for kw in url_path_keywords]) + " "
         
     if title:
         clean_title = title.lower()
@@ -21,7 +24,7 @@ def build_classifier_input(url_host, url_path_keywords, title, tokens):
         clean_title = re.sub(r'[^a-z0-9\s]', ' ', clean_title)
         words = [w.strip() for w in clean_title.split() if w.strip()]
         if words:
-            combined += " ".join([f"title_{w}" for w in words]) + " "
+            combined += " ".join([f"title{w.capitalize()}" for w in words]) + " "
             
     combined += tokens.strip()
     return combined.strip()

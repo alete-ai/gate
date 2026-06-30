@@ -3,7 +3,7 @@ import { structuralPlugin } from './config.js';
 import { mapToTokens } from './token-mapper.js';
 
 export enum GateLabel {
-  DEEP_WORK = 'deep_work',
+  PRIVACY_WORK = 'privacy_work',
   INFORMATIONAL = 'informational',
   COMMUNICATION = 'communication',
   NOISE = 'noise',
@@ -39,6 +39,10 @@ export interface IngestionOptions {
    * Override the semantic token cap for this specific call.
    */
   semanticTokenCap?: number;
+  /**
+   * Preserve lowercase natural language words in the structural return.
+   */
+  keepNaturalLanguage?: boolean;
 }
 
 export interface GlobalConfig {
@@ -285,8 +289,29 @@ export async function processHtml(html: string, options: IngestionOptions = {}):
   const { truncated, isTruncated } = truncateToCap(semantic, cap);
   semantic = truncated;
 
+  const structuralRaw = mapToTokens(structuralMd, options.keepNaturalLanguage);
+  
+  // Strategy 2: Calculate density of structural layout tags vs normal text
+  const structuralTokens = ['structLinkElement', 'structButtonElement', 'structInputElement', 'structNavStart', 'structNavEnd', 'sysHeader1', 'sysHeader2', 'sysHeader3'];
+  const words = structuralRaw.split(/\s+/);
+  const totalWords = words.length;
+  let structCount = 0;
+  for (const w of words) {
+    if (structuralTokens.some(t => w.includes(t))) {
+      structCount++;
+    }
+  }
+  
+  const density = totalWords > 0 ? structCount / totalWords : 0;
+  let finalStructural = structuralRaw;
+  if (density > 0.45) {
+    finalStructural = 'layoutHighLinkDensity ' + finalStructural;
+  } else if (density < 0.20 && totalWords > 15) {
+    finalStructural = 'layoutHighTextDensity ' + finalStructural;
+  }
+
   return {
-    structural: mapToTokens(structuralMd),
+    structural: finalStructural,
     semantic,
     metadata,
     isTruncated

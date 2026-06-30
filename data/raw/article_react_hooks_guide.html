@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+      <html>
+      <head>
+        <title>Understanding React Hooks: A Deep Dive into useEffect and state</title>
+      </head>
+      <body>
+        <article class="tech-article">
+          
+      <h1>Understanding React Hooks: A Deep Dive into useEffect and state</h1>
+      <p>React hooks were introduced in version 16.8 to allow developers to use state and other React features without writing a class. The most commonly used hooks are useState and useEffect.</p>
+      <p>The useState hook returns a stateful value and a function to update it. During the initial render, the returned state is the same as the value passed as the first argument.</p>
+      <p>The useEffect hook lets you perform side effects in function components. It serves the same purpose as componentDidMount, componentDidUpdate, and componentWillUnmount in React classes.</p>
+      <h2>Managing Dependency Arrays in useEffect</h2>
+      <p>If you want to run an effect and clean it up only once, you can pass an empty array as a second argument. This tells React that your effect doesn't depend on any values from props or state.</p>
+      <p>However, you must be careful: if your effect uses variables from the outer scope, you must include them in the dependency array to avoid stale closures. Stale closures occur when a function captures variables that have since changed.</p>
+    
+        </article>
+      </body>
+      </html>

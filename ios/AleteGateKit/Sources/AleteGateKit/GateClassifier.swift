@@ -8,7 +8,7 @@ import NaturalLanguage
  */
 public final class GateClassifier {
     public enum GateLabel: String, CaseIterable {
-        case deepWork = "deep_work"
+        case privacyWork = "privacy_work"
         case informational = "informational"
         case communication = "communication"
         case noise = "noise"

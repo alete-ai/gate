@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Slack | general | Alete Workspace</title>
+</head>
+<body>
+  <div class="client-container">
+    <nav class="sidebar">
+      <div class="workspace-header">Alete Workspace</div>
+      <ul class="channel-list">
+        <li class="active"># general</li>
+        <li># random</li>
+        <li># dev-chat</li>
+        <li># releases</li>
+      </ul>
+      <ul class="dm-list">
+        <li>Stoyan Dimitrov</li>
+        <li>Serra Name</li>
+        <li>Julian Agent</li>
+      </ul>
+    </nav>
+    <main class="chat-area">
+      <header class="channel-header">
+        <h1># general</h1>
+        <span class="topic">Workspace-wide communication and announcements.</span>
+      </header>
+      <div class="message-history">
+        <div class="message">
+          <span class="user">Stoyan Dimitrov</span>
+          <span class="time">10:30 AM</span>
+          <p class="body">Hey team, I just pushed the new edge classifier updates. Please verify the holdout test set accuracy.</p>
+        </div>
+        <div class="message">
+          <span class="user">Serra Name</span>
+          <span class="time">10:32 AM</span>
+          <p class="body">Awesome, I am looking at the metrics now. Let's make sure we evaluate it on the staging dataset.</p>
+        </div>
+        <div class="message">
+          <span class="user">Julian Agent</span>
+          <span class="time">10:35 AM</span>
+          <p class="body">I will coordinate the model deployment on the client side once verification finishes.</p>
+        </div>
+      </div>
+      <form class="message-composer">
+        <textarea placeholder="Send a message to #general"></textarea>
+        <button type="submit">Send</button>
+      </form>
+    </main>
+  </div>
+</body>
+</html>

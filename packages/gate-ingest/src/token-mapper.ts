@@ -3,7 +3,7 @@
  * This prevents Apple's NLTokenizer from stripping critical punctuation.
  * We use camelCase because NLTokenizer splits snake_case (STRUCT_FORM_START -> STRUCT, FORM, START).
  */
-export function mapToTokens(text: string): string {
+export function mapToTokens(text: string, keepNaturalLanguage: boolean = false): string {
   // 1. Process explicit markers from structuralPlugin
   // We handle potential escaping from mdream
   let processed = text
@@ -65,10 +65,13 @@ export function mapToTokens(text: string): string {
     .replace(/https?:\/\/[^\s]+/g, '') // Remove URLs
     .replace(/[#*`_\[\]():]/g, ' '); // Remove remaining markdown chars + colons
 
-  // 6. Aggressively strip remaining natural language noise
+  // 6. Aggressively strip remaining natural language noise unless keepNaturalLanguage is true
   return processed
     .split(/\s+/)
     .filter(word => {
+      if (keepNaturalLanguage) {
+        return word.length > 0;
+      }
       return word.startsWith('struct') || 
              word.startsWith('sys') || 
              (/^[A-Z]/.test(word) && word.length > 2); // Keep capitalized words (titles, labels) > 2 chars

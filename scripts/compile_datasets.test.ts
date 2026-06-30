@@ -9,13 +9,13 @@ import {
 describe('Dataset Partitioning & Validation Logic', () => {
   it('should validate that all labels strictly belong to the 4 cognitive classes', () => {
     const validData = [
-      { label: 'deep_work' },
+      { label: 'privacy_work' },
       { label: 'informational' },
       { label: 'communication' },
       { label: 'noise' }
     ];
     const invalidData = [
-      { label: 'deep_work' },
+      { label: 'privacy_work' },
       { label: 'sensitive_portal' } // Legacy label
     ];
     
@@ -26,7 +26,7 @@ describe('Dataset Partitioning & Validation Logic', () => {
   it('should verify dataset class distribution balance', () => {
     // Balanced dataset (equal distribution)
     const balancedData = [
-      ...Array.from({ length: 150 }, () => ({ label: 'deep_work' })),
+      ...Array.from({ length: 150 }, () => ({ label: 'privacy_work' })),
       ...Array.from({ length: 160 }, () => ({ label: 'informational' })),
       ...Array.from({ length: 170 }, () => ({ label: 'communication' })),
       ...Array.from({ length: 180 }, () => ({ label: 'noise' }))
@@ -34,7 +34,7 @@ describe('Dataset Partitioning & Validation Logic', () => {
     
     // Imbalanced dataset (noise dominates)
     const imbalancedData = [
-      ...Array.from({ length: 50 }, () => ({ label: 'deep_work' })),
+      ...Array.from({ length: 50 }, () => ({ label: 'privacy_work' })),
       ...Array.from({ length: 50 }, () => ({ label: 'informational' })),
       ...Array.from({ length: 50 }, () => ({ label: 'communication' })),
       ...Array.from({ length: 300 }, () => ({ label: 'noise' }))
@@ -47,7 +47,7 @@ describe('Dataset Partitioning & Validation Logic', () => {
   it('should perform stratified 80/20 train/test split with no leakage', () => {
     // 100 items distributed evenly
     const dummyExtractions = [
-      ...Array.from({ length: 25 }, (_, i) => ({ id: `dw-${i}`, label: 'deep_work' })),
+      ...Array.from({ length: 25 }, (_, i) => ({ id: `dw-${i}`, label: 'privacy_work' })),
       ...Array.from({ length: 25 }, (_, i) => ({ id: `inf-${i}`, label: 'informational' })),
       ...Array.from({ length: 25 }, (_, i) => ({ id: `comm-${i}`, label: 'communication' })),
       ...Array.from({ length: 25 }, (_, i) => ({ id: `n-${i}`, label: 'noise' }))
@@ -65,7 +65,7 @@ describe('Dataset Partitioning & Validation Logic', () => {
       return acc;
     }, {});
     
-    expect(testCounts['deep_work']).toBe(5);
+    expect(testCounts['privacy_work']).toBe(5);
     expect(testCounts['informational']).toBe(5);
     expect(testCounts['communication']).toBe(5);
     expect(testCounts['noise']).toBe(5);

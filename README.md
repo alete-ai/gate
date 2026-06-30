@@ -4,24 +4,26 @@
 
 ## 🚀 Key Features
 
-- **On-Device MaxEnt Classification:** Sub-1ms native inference using Apple's `NLModel` substrate.
+- **Contextual Transformer Classification:** High-fidelity native inference using Apple's `NLContextualEmbedding` (BERT) transfer learning substrate.
+- **Adaptive Tokenization:** Preserves natural language lowercase context during ingestion to retain semantic signals for transformer embeddings.
+- **camelCase Feature Namespaces:** Transforms synthetic attributes (e.g., `urlHostGithubCom`) to prevent `NLTokenizer` split leakage.
+- **Layout Density Detection:** Automatically detects text-to-link ratio to append structural helper flags (`layoutHighTextDensity` / `layoutHighLinkDensity`).
 - **Semantic Metadata Extraction:** Powered by `@mdream/js` with fallback heuristics to extract titles and descriptions from fragmented HTML.
-- **Structural Ingestion:** Optimized "structural substrate" that purifies functional markers (forms, nav) while stripping natural language noise for higher signal-to-noise ratios.
 - **WXT-Optimized:** Zero-dependency browser bundle (332KB) with Node.js shims, ready for Safari and Chrome extensions.
 
 ---
 
 ## 📊 Performance Telemetry (Current Substrate)
 
-Based on the latest **Strategic Verification Audit** conducted on the native Apple Intelligence substrate after integrating semantic metadata:
+Based on the latest **Strategic Verification Audit** conducted on the native Apple Intelligence substrate:
 
 | Metric | Result | Note |
 | :--- | :--- | :--- |
-| **Training Set Accuracy** | **97.60%** | Verified on training set substrate |
-| **Holdout Test Set Accuracy** | **86.89%** | Evaluated on staging holdout set |
-| **Avg. Inference Latency** | **0.97 ms** | Sub-ms execution on edge substrate |
+| **Training Set Accuracy** | **98.43%** | Verified on balanced training set substrate |
+| **Holdout Test Set Accuracy** | **84.77%** | Evaluated on staging holdout test set |
+| **Avg. Inference Latency** | **83.45 ms** | BERT embedding extraction and classification |
 
-*Tests executed on the `PrivacyGatekeeper` MaxEnt model (v1.0.0) using the `verify_model.swift` harness.*
+*Tests executed on the `PrivacyGatekeeper` BERT model (v2.1.0) using the `verify_model.swift` harness.*
 
 ---
 
@@ -87,7 +89,7 @@ func classifyContent(tokens: String) async throws -> String {
     let gatekeeper = try PrivacyGatekeeper()
     let prediction = try gatekeeper.prediction(text: tokens)
     
-    // returns 'deep_work', 'informational', 'communication', or 'noise'
+    // returns 'privacy_work', 'informational', 'communication', or 'noise'
     return prediction.label 
 }
 ```

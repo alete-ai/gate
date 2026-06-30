@@ -29,7 +29,7 @@ async function reprocessItem(item: any, index: number, total: number): Promise<a
       return item;
     }
     const html = await res.text();
-    const result = await processHtml(html);
+    const result = await processHtml(html, { keepNaturalLanguage: true });
 
     console.log(`[${index}/${total}] Reprocessed: "${item.title || 'Untitled'}" (${result.semantic.length} chars, ${result.structural.length} tokens)`);
     return {
